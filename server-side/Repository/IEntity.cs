@@ -1,6 +1,6 @@
-﻿namespace Repository.Entities
+﻿namespace Repository
 {
-    internal interface IEntity
+    public interface IEntity
     {
         int Id { get; }
         DateTime CreatedAt { get; }
