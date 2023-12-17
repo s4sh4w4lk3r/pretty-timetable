@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Asc\" />
+    <Folder Include="Asc\Changes\" />
+    <Folder Include="Asc\Timetable\" />
   </ItemGroup>
 
 </Project>

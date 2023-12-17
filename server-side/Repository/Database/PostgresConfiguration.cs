@@ -1,6 +1,6 @@
 ﻿namespace Repository.Database
 {
-    internal class PostgresConfiguration : IDbConfiguration
+    public class PostgresConfiguration : IDbConfiguration
     {
         public required string ConnectionString { get; init; }
         public string? DefaultSchema { get; init; } 
