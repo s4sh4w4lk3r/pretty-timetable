@@ -1,3 +1,6 @@
+using Repository.Database;
+using WebApi.Extensions;
+
 namespace WebApi
 {
     public class Program
@@ -5,6 +8,10 @@ namespace WebApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.ConfigureIOptions();
+            builder.ConfigureServices();
+
             var app = builder.Build();
 
             app.MapGet("/", () => "Hello World!");

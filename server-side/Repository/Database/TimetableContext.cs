@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Exceptions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Exceptions;
-using Throw;
-using Repository.Entities.Timetable.Cards.Parts;
-using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable;
-using static Repository.Database.TimetableSchemaMethods;
+using Repository.Entities.Timetable.Cards;
+using Repository.Entities.Timetable.Cards.Parts;
+using Throw;
 
 namespace Repository.Database
 {
@@ -19,8 +18,18 @@ namespace Repository.Database
         {
             _configuration.ConnectionString.ThrowIfNull(() => new StringNullOrEmptyException()).IfWhiteSpace();
 #warning проверить.
+#warning добавить логгирование
             optionsBuilder.UseNpgsql(_configuration.ConnectionString, options => options.UseAdminDatabase(_configuration.AdminDbName));
         }
+
+        public DbSet<Cabinet> Cabinets => Set<Cabinet>();
+        public DbSet<LessonTime> LessonTimes => Set<LessonTime>();
+        public DbSet<Teacher> Teachers => Set<Teacher>();
+        public DbSet<Subject> Subjects => Set<Subject>();
+        public DbSet<ActualCard> ActualCards => Set<ActualCard>();
+        public DbSet<ActualTimetable> ActualTimetables => Set<ActualTimetable>();
+        public DbSet<StableCard> StableCards => Set<StableCard>();
+        public DbSet<StableTimetable> StableTimetables => Set<StableTimetable>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,16 +43,5 @@ namespace Repository.Database
                 modelBuilder.UseCollation(_configuration.Collation);
             }
         }
-
-        public DbSet<Cabinet> Cabinets => Set<Cabinet>();
-        public DbSet<LessonTime> LessonTimes => Set<LessonTime>();
-        public DbSet<Teacher> Teachers => Set<Teacher>();
-        public DbSet<Subject> Subjects => Set<Subject>();
-        public DbSet<ActualCard> ActualCards => Set<ActualCard>();
-        public DbSet<ActualTimetable> ActualTimetables => Set<ActualTimetable>();
-        public DbSet<StableCard> StableCards => Set<StableCard>();
-        public DbSet<StableTimetable> StableTimetables => Set<StableTimetable>();
-
-
     }
 }
