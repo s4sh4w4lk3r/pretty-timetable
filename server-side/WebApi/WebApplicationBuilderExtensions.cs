@@ -22,7 +22,6 @@ namespace WebApi
                     Version = "v1",
                     Title = "Timetable WebApi",
                     Description = "Timetable WebApi"
-#warning сделать сваггер дев онли
                 });
 
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

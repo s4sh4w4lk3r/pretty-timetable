@@ -10,9 +10,5 @@ namespace Repository.Entities.Timetable
         public DateTime CreatedAt { get; init; }
         public DateTime UpdatedAt { get; init; }
         public ICollection<StableCard>? Cards { get; init; }
-        public bool CheckNoDuplicates()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

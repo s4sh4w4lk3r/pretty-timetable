@@ -14,5 +14,6 @@ namespace Repository.Entities.Timetable.Cards
         public int SubjectId { get; }
         public int CabinetId { get; }
         public int LessonTimeId { get; }
+        public int RelatedTimetableId { get; }
     }
 }

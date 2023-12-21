@@ -17,8 +17,10 @@ namespace Repository.Entities.Timetable.Cards
         public DayOfWeek DayOfWeek { get; init; }
         public SubGroup SubGroup { get; init; }
 
-        public DateTime CreatedAt { get; init; }
+        public int RelatedTimetableId { get;init; } 
+        public StableTimetable? RelatedTimetable { get;init; } 
 
+        public DateTime CreatedAt { get; init; }
         public DateTime UpdatedAt { get; init; }
     }
 }

@@ -11,6 +11,10 @@
 		<PackageReference Include="HotChocolate" Version="13.8.1" />
 		<PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.8.1" />
 		<PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.8.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	</ItemGroup>

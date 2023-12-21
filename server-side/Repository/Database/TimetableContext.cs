@@ -1,11 +1,10 @@
-﻿using Exceptions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Repository.Entities.Timetable;
 using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable.Cards.Parts;
-using Throw;
+using static Repository.Database.TimetableSchemaMethods;
 
 namespace Repository.Database
 {
@@ -14,12 +13,18 @@ namespace Repository.Database
         private readonly PostgresConfiguration _configuration = options.Value ?? throw new ArgumentNullException($"{nameof(PostgresConfiguration)} является null.");
         private readonly ILoggerFactory _loggerFactory = loggerFactory ?? throw new ArgumentNullException($"{nameof(ILoggerFactory)} является null.");
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            _configuration.ConnectionString.ThrowIfNull(() => new StringNullOrEmptyException()).IfWhiteSpace();
-#warning проверить.
-#warning добавить логгирование
-            optionsBuilder.UseNpgsql(_configuration.ConnectionString, options => options.UseAdminDatabase(_configuration.AdminDbName));
+            ArgumentException.ThrowIfNullOrWhiteSpace(_configuration.ConnectionString);
+            ArgumentException.ThrowIfNullOrWhiteSpace(_configuration.AdminDbName);
+            ArgumentNullException.ThrowIfNull(loggerFactory);
+
+            optionsBuilder.UseLoggerFactory(_loggerFactory);
+            optionsBuilder.UseNpgsql(_configuration.ConnectionString, options => 
+            { options.UseAdminDatabase(_configuration.AdminDbName); 
+                options.MigrationsAssembly("WebApi"); 
+            });
         }
 
         public DbSet<Cabinet> Cabinets => Set<Cabinet>();
@@ -31,17 +36,23 @@ namespace Repository.Database
         public DbSet<StableCard> StableCards => Set<StableCard>();
         public DbSet<StableTimetable> StableTimetables => Set<StableTimetable>();
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            if (string.IsNullOrWhiteSpace(_configuration.DefaultSchema) is false)
-            {
-                modelBuilder.HasDefaultSchema(_configuration.DefaultSchema);
-            }
-
             if (string.IsNullOrWhiteSpace(_configuration.Collation) is false)
             {
                 modelBuilder.UseCollation(_configuration.Collation);
             }
+
+            modelBuilder.Entity<Cabinet>(ConfigureCabinet);
+            modelBuilder.Entity<LessonTime>(ConfigureLessonTime);
+            modelBuilder.Entity<Teacher>(ConfigureTeacher);
+            modelBuilder.Entity<Subject>(ConfigureSubject);
+            modelBuilder.Entity<ActualCard>(ConfigureActualCard);
+            modelBuilder.Entity<StableCard>(ConfigureStableCard);
+            modelBuilder.Entity<ActualTimetable>(ConfigureActualTimetable);
+            modelBuilder.Entity<StableTimetable>(ConfigureStableTimetable);
+            modelBuilder.Entity<Group>(ConfigureGroup);
         }
     }
 }

@@ -13,10 +13,14 @@ namespace WebApi
 
             var app = builder.Build();
 
-            using var scope = app.Services.CreateScope();
-            scope.ServiceProvider.GetRequiredService<TimetableContext>().Database.EnsureCreated();
-
             app.MapControllers();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
             app.Run();
         } 
     }
