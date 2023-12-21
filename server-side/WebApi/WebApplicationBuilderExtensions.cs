@@ -2,9 +2,9 @@
 using Repository.Database;
 using System.Reflection;
 
-namespace WebApi.Extensions
+namespace WebApi
 {
-    public static class WebApplicationBuilderExtensions
+    internal static class WebApplicationBuilderExtensions
     {
         public static void ConfigureIOptions(this WebApplicationBuilder builder)
         {

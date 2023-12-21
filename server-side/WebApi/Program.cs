@@ -1,5 +1,4 @@
 using Repository.Database;
-using WebApi.Extensions;
 
 namespace WebApi
 {
@@ -14,10 +13,11 @@ namespace WebApi
 
             var app = builder.Build();
 
-            app.MapGet("/", () => "Hello World!");
+            using var scope = app.Services.CreateScope();
+            scope.ServiceProvider.GetRequiredService<TimetableContext>().Database.EnsureCreated();
 
             app.MapControllers();
             app.Run();
-        }
+        } 
     }
 }
