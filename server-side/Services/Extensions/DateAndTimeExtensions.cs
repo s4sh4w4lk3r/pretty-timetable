@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Extenstions
+namespace Services.Extensions
 {
     public static class DateAndTimeExtensions
     {
