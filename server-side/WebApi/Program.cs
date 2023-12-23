@@ -21,7 +21,13 @@ namespace WebApi
                 app.UseSwaggerUI();
             }
 
-            app.Run();
+            using (var scope = app.Services.CreateScope())
+            {
+                var con = scope.ServiceProvider.GetRequiredService<Services.Asc.Timetable.Converter>();
+                con.ConvertAndSaveAsync(@"C:\\Users\\sanchous\\Desktop\\projects\\fine\\timetable-backend\\данные\\база.xml").Wait();
+            }
+
+            //app.Run();
         } 
     }
 }

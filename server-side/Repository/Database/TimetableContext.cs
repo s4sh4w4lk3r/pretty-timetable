@@ -35,6 +35,7 @@ namespace Repository.Database
         public DbSet<ActualTimetable> ActualTimetables => Set<ActualTimetable>();
         public DbSet<StableCard> StableCards => Set<StableCard>();
         public DbSet<StableTimetable> StableTimetables => Set<StableTimetable>();
+        public DbSet<Group> Groups => Set<Group>();
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
