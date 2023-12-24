@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Repository.Database;
+﻿using Repository.Database;
+using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
+using static Services.Asc.Timetable.StaticDeterminers;
 
 namespace Services.Asc.Timetable
 {
@@ -15,36 +16,36 @@ namespace Services.Asc.Timetable
         public List<Repository.Entities.Timetable.StableTimetable> StableTimetables { get; private set; } = [];
         public List<Repository.Entities.Timetable.Group> Groups { get; private set; } = [];
 
-        private AscClasses.AscTimetable? _ascTimetable;
+        private AscClasses.AscTimetable _ascTimetable = null!;
 
-        public async Task ConvertAndSaveAsync(XmlReader xmlReader)
+        public async Task ConvertAndSaveAsync(XmlReader xmlReader, CancellationToken cancellationToken = default)
         {
             var serializer = new XmlSerializer(typeof(AscClasses.AscTimetable));
-            _ascTimetable = serializer.Deserialize(xmlReader) as AscClasses.AscTimetable;
+            _ascTimetable = serializer.Deserialize(xmlReader) as AscClasses.AscTimetable ?? throw new SerializationException();
 
             xmlReader.Dispose();
 
-            FillDataForCards();
-            await SaveDataForCardsAsync();
-            await CreateCardsAndSaveAsync();
+            await StartConvertingAsync(cancellationToken);
         }
 
         public async Task ConvertAndSaveAsync(string path, CancellationToken cancellationToken = default)
         {
             var serializer = new XmlSerializer(typeof(AscClasses.AscTimetable));
             var xmlReader = XmlReader.Create(path);
-            _ascTimetable = serializer.Deserialize(xmlReader) as AscClasses.AscTimetable;
+            _ascTimetable = serializer.Deserialize(xmlReader) as AscClasses.AscTimetable ?? throw new SerializationException();
 
             xmlReader.Dispose();
 
-            FillDataForCards();
-            await SaveDataForCardsAsync(cancellationToken);
-            await timetableContext.SaveChangesAsync(cancellationToken);
-            await CreateCardsAndSaveAsync(cancellationToken);
-            await timetableContext.SaveChangesAsync(cancellationToken);
+            await StartConvertingAsync(cancellationToken);
         }
 
-
+        private async Task StartConvertingAsync(CancellationToken cancellationToken = default)
+        {
+            FillDataForCards();
+            await SaveDataForCardsAsync(cancellationToken);
+            await CreateCardsAndSaveLocallyAsync(cancellationToken);
+            await timetableContext.SaveChangesAsync(cancellationToken);
+        }
 
         private void FillDataForCards()
         {
@@ -84,22 +85,21 @@ namespace Services.Asc.Timetable
             await timetableContext.Subjects.AddRangeAsync(Subjects, cancellationToken);
             await timetableContext.LessonTimes.AddRangeAsync(LessonTimes, cancellationToken);
             await timetableContext.Cabinets.AddRangeAsync(Cabinets, cancellationToken);
-            
-        }
-        private async Task CreateCardsAndSaveAsync(CancellationToken cancellationToken = default)
-        {
-            var ascCards = _ascTimetable.Cards.Card;
-            List<Repository.Entities.Timetable.StableTimetable> stableTimetables = [];
-            var groupListFromRepo = await timetableContext.Set<Repository.Entities.Timetable.Group>().ToListAsync(cancellationToken);
+            await timetableContext.SaveChangesAsync(cancellationToken);
 
-            foreach (var group in groupListFromRepo)
+        }
+        private async Task CreateCardsAndSaveLocallyAsync(CancellationToken cancellationToken = default)
+        {
+            List<Repository.Entities.Timetable.StableTimetable> stableTimetables = [];
+
+            foreach (var group in Groups)
             {
                 var stableCardsOfCurrentGroup = new List<Repository.Entities.Timetable.Cards.StableCard>();
-                var lessonsOfCurrentGroup = _ascTimetable.Lessons.Lesson.Where(e=>e.Classids == group.AscId).ToList();
+                var lessonsOfCurrentGroup = _ascTimetable.Lessons.Lesson.Where(e => e.Classids == group.AscId).ToList();
                 var ascCardsOfCurrentGroup = new List<AscClasses.Card>();
                 foreach (var lesson in lessonsOfCurrentGroup)
                 {
-                    foreach (var card in ascCards)
+                    foreach (var card in _ascTimetable.Cards.Card)
                     {
                         if (card.Lessonid == lesson.Id)
                         {
@@ -114,22 +114,10 @@ namespace Services.Asc.Timetable
 
                     DayOfWeek dayOfWeek = DetermineDayOfWeek(card.Days);
 
-                    Repository.Entities.Timetable.Cards.Parts.Teacher teacher = await timetableContext.Teachers.SingleAsync(e => e.AscId == lesson.Teacherids, cancellationToken: cancellationToken);
-                    Repository.Entities.Timetable.Cards.Parts.Subject subject = await timetableContext.Subjects.SingleAsync(e => e.AscId == lesson.Subjectid, cancellationToken: cancellationToken);
-                    Repository.Entities.Timetable.Cards.Parts.LessonTime lessonTime = await timetableContext.LessonTimes.SingleAsync(e => e.Number == int.Parse(card.Period), cancellationToken: cancellationToken);
-
-                    //опять проблемные кабинеты здесь
-                    Repository.Entities.Timetable.Cards.Parts.Cabinet? cabinet = null;
-                    var ascCabinetsIds = lesson.Classroomids.Split(',');
-                    foreach (var ascCabinet in ascCabinetsIds)
-                    {
-                        cabinet = await timetableContext.Cabinets.FirstOrDefaultAsync(e => e.AscId == ascCabinet, cancellationToken: cancellationToken);
-                        if (cabinet is not null)
-                        {
-                            break;
-                        }
-                    }
-                    ArgumentNullException.ThrowIfNull(cabinet, nameof(cabinet));
+                    Repository.Entities.Timetable.Cards.Parts.Teacher teacher = Teachers.Single(e => e.AscId == lesson.Teacherids);
+                    Repository.Entities.Timetable.Cards.Parts.Subject subject = Subjects.Single(e => e.AscId == lesson.Subjectid);
+                    Repository.Entities.Timetable.Cards.Parts.LessonTime lessonTime = LessonTimes.Single(e => e.Number == int.Parse(card.Period));
+                    Repository.Entities.Timetable.Cards.Parts.Cabinet cabinet = DetermineCabinets(Cabinets, lesson.Classroomids);
 
                     Repository.Entities.Timetable.Cards.Parts.SubGroup subGroup = DetermineSubgroup(_ascTimetable.Groups.Group.Single(e => e.Id == lesson.Groupids).Name);
                     switch (DetermineWeekEvenness(card.Weeks))
@@ -197,50 +185,5 @@ namespace Services.Asc.Timetable
                 await timetableContext.AddAsync(currentStableTimetable, cancellationToken);
             }
         }
-        private static DayOfWeek DetermineDayOfWeek(string dayOfWeekCode)
-        {
-            const string MONDAY_CODE = "10000";
-            const string TUESDAY_CODE = "01000";
-            const string WEDNESDAY_CODE = "00100";
-            const string THURSDAY_CODE = "00010";
-            const string FRIDAY_CODE = "00001";
-
-            return dayOfWeekCode switch
-            {
-                MONDAY_CODE => DayOfWeek.Monday,
-                TUESDAY_CODE => DayOfWeek.Tuesday,
-                WEDNESDAY_CODE => DayOfWeek.Wednesday,
-                THURSDAY_CODE => DayOfWeek.Thursday,
-                FRIDAY_CODE => DayOfWeek.Friday,
-                _ => throw new ArgumentException("День недели не определен.")
-            };
-        }
-        private static WeekEvenness DetermineWeekEvenness(string weekCode)
-        {
-            const string ANY_WEEK_CODE = "11";
-            const string EVEN_WEEK_CODE = "10";
-            const string ODD_WEEK_CODE = "01";
-
-            return weekCode switch
-            {
-                ANY_WEEK_CODE => WeekEvenness.Both,
-                EVEN_WEEK_CODE => WeekEvenness.Even,
-                ODD_WEEK_CODE => WeekEvenness.Odd,
-                _ => throw new ArgumentException("Тип недели не определен.")
-            };
-        }
-        private static Repository.Entities.Timetable.Cards.Parts.SubGroup DetermineSubgroup(string subgroupCode)
-        {
-            return subgroupCode switch
-            {
-                "Весь класс" => Repository.Entities.Timetable.Cards.Parts.SubGroup.All,
-                "1 группа" => Repository.Entities.Timetable.Cards.Parts.SubGroup.FirstGroup,
-                "2 группа" => Repository.Entities.Timetable.Cards.Parts.SubGroup.SecondGroup,
-                "Мальчики" => Repository.Entities.Timetable.Cards.Parts.SubGroup.Males,
-                "Девочки" => Repository.Entities.Timetable.Cards.Parts.SubGroup.Females,
-                _ => throw new ArgumentException("Подгруппа не определена.")
-            };
-        }
-        private enum WeekEvenness { Both = 0, Even = 1, Odd = 2 }
     }
 }
