@@ -16,6 +16,7 @@ namespace Repository.Database
             entity.HasKey(c => c.Id);
             entity.Property(c => c.Address);
             entity.Property(c => c.Number);
+            entity.Property(c => c.FullName);
             entity.HasIndex(e => e.AscId).IsUnique().AreNullsDistinct();
         }
 

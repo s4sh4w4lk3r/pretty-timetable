@@ -1,4 +1,4 @@
-﻿using Services.Asc.Timetable;
+﻿using Services.Asc.Changes;
 
 namespace TestConsoleApp
 {
@@ -6,8 +6,9 @@ namespace TestConsoleApp
     {
         static void Main(string[] args)
         {
-            //Converter.Foo(@"C:\Users\sanchous\Desktop\projects\fine\timetable-backend\данные\замены.xml");
-            //new Converter(@"C:\Users\sanchous\Desktop\projects\fine\timetable-backend\данные\база.xml", null);
+            var path = @"C:\Users\sanchous\Desktop\projects\fine\timetable-backend\данные\замены.xml";
+            var c = new ChangesConverter(null);
+            c.ConvertAndSaveAsync(path).Wait();
         }
     }
 }

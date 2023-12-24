@@ -74,7 +74,8 @@ namespace Services.Asc.Timetable
                 AscId = e.Id,
                 Number = e.Short,
                 CreatedAt = DateTime.UtcNow,
-                Address = _ascTimetable.Buildings.Building.Single(b => b.Id == e.Buildingid).Name
+                Address = _ascTimetable.Buildings.Building.Single(b => b.Id == e.Buildingid).Name,
+                FullName = e.Name
             }).ToList();
         }
         private async Task SaveDataForCardsAsync(CancellationToken cancellationToken = default)

@@ -35,6 +35,7 @@ namespace WebApi
         {
             builder.Services.AddDbContext<TimetableContext>(contextLifetime: ServiceLifetime.Scoped, optionsLifetime: ServiceLifetime.Scoped);
             builder.Services.AddScoped<Services.Asc.Timetable.Converter>();
+            builder.Services.AddScoped<Services.Asc.Changes.ChangesConverter>();
         }
     }
 }
