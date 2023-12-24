@@ -29,7 +29,7 @@ namespace Services.Asc.Timetable
             await CreateCardsAndSaveAsync();
         }
 
-        public async Task ConvertAndSaveAsync(string path)
+        public async Task ConvertAndSaveAsync(string path, CancellationToken cancellationToken = default)
         {
             var serializer = new XmlSerializer(typeof(AscClasses.AscTimetable));
             var xmlReader = XmlReader.Create(path);
@@ -38,8 +38,10 @@ namespace Services.Asc.Timetable
             xmlReader.Dispose();
 
             FillDataForCards();
-            await SaveDataForCardsAsync();
-            await CreateCardsAndSaveAsync();
+            await SaveDataForCardsAsync(cancellationToken);
+            await timetableContext.SaveChangesAsync(cancellationToken);
+            await CreateCardsAndSaveAsync(cancellationToken);
+            await timetableContext.SaveChangesAsync(cancellationToken);
         }
 
 
@@ -82,7 +84,7 @@ namespace Services.Asc.Timetable
             await timetableContext.Subjects.AddRangeAsync(Subjects, cancellationToken);
             await timetableContext.LessonTimes.AddRangeAsync(LessonTimes, cancellationToken);
             await timetableContext.Cabinets.AddRangeAsync(Cabinets, cancellationToken);
-            await timetableContext.SaveChangesAsync(cancellationToken);
+            
         }
         private async Task CreateCardsAndSaveAsync(CancellationToken cancellationToken = default)
         {
@@ -93,9 +95,20 @@ namespace Services.Asc.Timetable
             foreach (var group in groupListFromRepo)
             {
                 var stableCardsOfCurrentGroup = new List<Repository.Entities.Timetable.Cards.StableCard>();
-                var ascCardsOfCurrentGroup = ascCards.Where(e => e.Classroomids == group.AscId).ToList();
+                var lessonsOfCurrentGroup = _ascTimetable.Lessons.Lesson.Where(e=>e.Classids == group.AscId).ToList();
+                var ascCardsOfCurrentGroup = new List<AscClasses.Card>();
+                foreach (var lesson in lessonsOfCurrentGroup)
+                {
+                    foreach (var card in ascCards)
+                    {
+                        if (card.Lessonid == lesson.Id)
+                        {
+                            ascCardsOfCurrentGroup.Add(card);
+                        }
+                    }
+                }
 
-                foreach (var card in ascCards)
+                foreach (var card in ascCardsOfCurrentGroup)
                 {
                     var lesson = _ascTimetable.Lessons.Lesson.Single(e => e.Id == card.Lessonid);
 
@@ -104,8 +117,20 @@ namespace Services.Asc.Timetable
                     Repository.Entities.Timetable.Cards.Parts.Teacher teacher = await timetableContext.Teachers.SingleAsync(e => e.AscId == lesson.Teacherids, cancellationToken: cancellationToken);
                     Repository.Entities.Timetable.Cards.Parts.Subject subject = await timetableContext.Subjects.SingleAsync(e => e.AscId == lesson.Subjectid, cancellationToken: cancellationToken);
                     Repository.Entities.Timetable.Cards.Parts.LessonTime lessonTime = await timetableContext.LessonTimes.SingleAsync(e => e.Number == int.Parse(card.Period), cancellationToken: cancellationToken);
+
                     //опять проблемные кабинеты здесь
-                    Repository.Entities.Timetable.Cards.Parts.Cabinet cabinet = await timetableContext.Cabinets.FirstAsync(e => lesson.Classroomids.Contains(e.AscId), cancellationToken: cancellationToken);
+                    Repository.Entities.Timetable.Cards.Parts.Cabinet? cabinet = null;
+                    var ascCabinetsIds = lesson.Classroomids.Split(',');
+                    foreach (var ascCabinet in ascCabinetsIds)
+                    {
+                        cabinet = await timetableContext.Cabinets.FirstOrDefaultAsync(e => e.AscId == ascCabinet, cancellationToken: cancellationToken);
+                        if (cabinet is not null)
+                        {
+                            break;
+                        }
+                    }
+                    ArgumentNullException.ThrowIfNull(cabinet, nameof(cabinet));
+
                     Repository.Entities.Timetable.Cards.Parts.SubGroup subGroup = DetermineSubgroup(_ascTimetable.Groups.Group.Single(e => e.Id == lesson.Groupids).Name);
                     switch (DetermineWeekEvenness(card.Weeks))
                     {
@@ -118,7 +143,8 @@ namespace Services.Asc.Timetable
                                 CabinetId = cabinet.Id,
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
-                                IsWeekEven = true
+                                IsWeekEven = true,
+                                CreatedAt = DateTime.UtcNow
                             });
 
                             stableCardsOfCurrentGroup.Add(new Repository.Entities.Timetable.Cards.StableCard()
@@ -129,7 +155,8 @@ namespace Services.Asc.Timetable
                                 CabinetId = cabinet.Id,
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
-                                IsWeekEven = false
+                                IsWeekEven = false,
+                                CreatedAt = DateTime.UtcNow
                             });
                             break;
 
@@ -142,7 +169,8 @@ namespace Services.Asc.Timetable
                                 CabinetId = cabinet.Id,
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
-                                IsWeekEven = true
+                                IsWeekEven = true,
+                                CreatedAt = DateTime.UtcNow
                             });
                             break;
 
@@ -155,7 +183,8 @@ namespace Services.Asc.Timetable
                                 CabinetId = cabinet.Id,
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
-                                IsWeekEven = false
+                                IsWeekEven = false,
+                                CreatedAt = DateTime.UtcNow
                             });
                             break;
 
@@ -164,7 +193,7 @@ namespace Services.Asc.Timetable
                     }
 
                 }
-                var currentStableTimetable = new Repository.Entities.Timetable.StableTimetable() { Cards = stableCardsOfCurrentGroup };
+                var currentStableTimetable = new Repository.Entities.Timetable.StableTimetable() { Cards = stableCardsOfCurrentGroup, GroupId = group.Id, CreatedAt = DateTime.UtcNow };
                 await timetableContext.AddAsync(currentStableTimetable, cancellationToken);
             }
         }
