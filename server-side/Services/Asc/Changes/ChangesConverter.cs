@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace Services.Asc.Changes
 {
-    public class ChangesConverter(TimetableContext timetableContext)
+    internal class ChangesConverter(TimetableContext timetableContext)
     {
 
         private Substitutions _substitutions = null!;

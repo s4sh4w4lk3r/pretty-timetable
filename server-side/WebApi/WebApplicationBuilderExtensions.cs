@@ -34,8 +34,7 @@ namespace WebApi
         private static void ConfigureDependencies(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<TimetableContext>(contextLifetime: ServiceLifetime.Scoped, optionsLifetime: ServiceLifetime.Scoped);
-            builder.Services.AddScoped<Services.Asc.Timetable.Converter>();
-            builder.Services.AddScoped<Services.Asc.Changes.ChangesConverter>();
+            builder.Services.AddScoped<Services.Asc.AscService>();
         }
     }
 }

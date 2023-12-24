@@ -6,7 +6,7 @@ using static Services.Asc.Timetable.StaticDeterminers;
 
 namespace Services.Asc.Timetable
 {
-    public class Converter(TimetableContext timetableContext)
+    internal class Converter(TimetableContext timetableContext)
     {
         public List<Repository.Entities.Timetable.Cards.Parts.Cabinet> Cabinets { get; private set; } = [];
         public List<Repository.Entities.Timetable.Cards.Parts.Teacher> Teachers { get; private set; } = [];
