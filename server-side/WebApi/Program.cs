@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Repository.Database;
 using Services.AcutalTimetables;
 
@@ -26,7 +27,7 @@ namespace WebApi
             {
                 var db = scope.ServiceProvider.GetRequiredService<TimetableContext>();
 
-/*                var ats = scope.ServiceProvider.GetRequiredService<ActualTimetableService>();
+                /*var ats = scope.ServiceProvider.GetRequiredService<ActualTimetableService>();
                 ats.Foo([
                     new DateOnly(2023, 12, 25),
                     new DateOnly(2023, 12, 26),
@@ -34,6 +35,14 @@ namespace WebApi
                     new DateOnly(2023, 12, 28),
                     new DateOnly(2023, 12, 29)]).Wait();*/
 
+                var tt = db.ActualTimetables.Where(e => e.Group.Name == "4È-2-20")
+                    .Include(e => e.Group)
+                    .Include(e => e.Cards).ThenInclude(e => e.Cabinet)
+                    .Include(e => e.Cards).ThenInclude(e => e.Teacher)
+                    .Include(e => e.Cards).ThenInclude(e => e.LessonTime)
+                    .Include(e => e.Cards).ThenInclude(e => e.Subject).Single();
+
+                var dd = tt.Cards.Where(e => e.Date.DayOfWeek == DayOfWeek.Monday).ToList();
             }
 
             app.Run();

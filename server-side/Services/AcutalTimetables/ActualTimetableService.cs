@@ -31,7 +31,7 @@ namespace Services.AcutalTimetables
 
                 foreach (var date in dates)
                 {
-                    foreach (var card in timetable.Cards.Where(e=>e.IsWeekEven == (checkDatesResult.Value % 2 == 0)))
+                    foreach (var card in timetable.Cards.Where(e=>e.IsWeekEven == (checkDatesResult.Value % 2 == 0) && e.DayOfWeek == date.DayOfWeek))
                     {
                         newActualTimetable.Cards.Add(GetActualCard(card, date, timetable.Id));
                     }
