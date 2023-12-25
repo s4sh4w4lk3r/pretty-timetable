@@ -3,7 +3,7 @@ using Services.Asc;
 
 namespace WebApi.Controllers
 {
-    [ApiController, Route("asc")]
+    [ApiController, Route("timetable/asc")]
     public class AscController(AscService ascService) : ControllerBase
     {
 #warning не забыть авторизацию
@@ -12,7 +12,7 @@ namespace WebApi.Controllers
         {
             var stream = timetable.OpenReadStream();
             await ascService.ImportTimetables(stream);
-            return Ok();
+            return Ok("Расписание добавлено.");
         }
 
         [HttpPost, Route("substitutions")]
@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         {
             var stream = substitutions.OpenReadStream();
             await ascService.ImportSubstitations(stream);
-            return Ok();
+            return Ok("Замены внесены.");
         }
     }
 }
