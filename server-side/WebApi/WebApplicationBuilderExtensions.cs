@@ -1,5 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 using Repository.Database;
+using Services.AcutalTimetables;
 using System.Reflection;
 
 namespace WebApi
@@ -35,6 +36,7 @@ namespace WebApi
         {
             builder.Services.AddDbContext<TimetableContext>(contextLifetime: ServiceLifetime.Scoped, optionsLifetime: ServiceLifetime.Scoped);
             builder.Services.AddScoped<Services.Asc.AscService>();
+            builder.Services.AddScoped<ActualTimetableService>();
         }
     }
 }

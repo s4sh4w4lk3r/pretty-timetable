@@ -1,4 +1,5 @@
 using Repository.Database;
+using Services.AcutalTimetables;
 
 namespace WebApi
 {
@@ -24,7 +25,14 @@ namespace WebApi
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<TimetableContext>();
-                var list = db.Teachers.ToList();
+
+                var ats = scope.ServiceProvider.GetRequiredService<ActualTimetableService>();
+                ats.Foo([
+                    new DateOnly(2023, 12, 25),
+                    new DateOnly(2023, 12, 26),
+                    new DateOnly(2023, 12, 27),
+                    new DateOnly(2023, 12, 28),
+                    new DateOnly(2023, 12, 29)]).Wait();
 
             }
 
