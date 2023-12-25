@@ -8,6 +8,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="logs\**" />
+	  <Content Remove="logs\**" />
+	  <EmbeddedResource Remove="logs\**" />
+	  <None Remove="logs\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="HotChocolate" Version="13.8.1" />
 		<PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.8.1" />
 		<PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.8.1" />

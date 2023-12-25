@@ -1,6 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using Repository.Database;
-using Services.AcutalTimetables;
+using Serilog;
 
 namespace WebApi
 {
@@ -9,6 +8,10 @@ namespace WebApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console()
+        .WriteTo.File($"./logs/log.log", rollingInterval: RollingInterval.Day)
+        .ReadFrom.Configuration(ctx.Configuration));
 
             builder.ConfigureIOptions();
             builder.ConfigureServices();
