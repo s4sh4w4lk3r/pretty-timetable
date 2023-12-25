@@ -31,7 +31,7 @@ namespace Services.AcutalTimetables
 
                 foreach (var date in dates)
                 {
-                    foreach (var card in timetable.Cards)
+                    foreach (var card in timetable.Cards.Where(e=>e.IsWeekEven == (checkDatesResult.Value % 2 == 0)))
                     {
                         newActualTimetable.Cards.Add(GetActualCard(card, date, timetable.Id));
                     }
@@ -83,7 +83,6 @@ namespace Services.AcutalTimetables
         }
         private static ActualCard GetActualCard(StableCard stableCard, DateOnly date, int relatedTimetableId)
         {
-#error что-то много записей в бд добавилось и где-то косяк
             return new ActualCard()
             {
                 IsCanceled = false,
