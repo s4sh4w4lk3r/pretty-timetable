@@ -1,3 +1,6 @@
+volumes:
+  postgres_vol:
+
 services:
 
   postgres:
@@ -6,7 +9,9 @@ services:
     environment:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloak
-      PGDATA: /data/postgres
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - postgres_vol:/var/lib/postgresql/data
     ports:
       - "54321:5432"
 

@@ -1,4 +1,8 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Repository.Database;
 using Services.AcutalTimetables;
 using System.Reflection;
@@ -15,6 +19,29 @@ namespace WebApi
         public static void ConfigureServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddControllers();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = BearerTokenDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer()
+            .AddOpenIdConnect(options =>
+            {
+                options.Authority = "http://localhost:9090/realms/timetable";
+                options.ClientId = "xaxaxa";
+                options.ClientSecret = "xaxa";
+                options.ResponseType = "code";
+                options.SaveTokens = true;
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = "preferred_username",
+                    RoleClaimType = "roles"
+                };
+            });
 
             builder.Services.AddSwaggerGen(options =>
             {
