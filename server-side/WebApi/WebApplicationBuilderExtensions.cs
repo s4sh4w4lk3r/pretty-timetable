@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -20,28 +21,15 @@ namespace WebApi
         {
             builder.Services.AddControllers();
 
-            builder.Services.AddAuthentication(options =>
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                options.DefaultScheme = BearerTokenDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer()
-            .AddOpenIdConnect(options =>
-            {
-                options.Authority = "http://localhost:9090/realms/timetable";
-                options.ClientId = "xaxaxa";
-                options.ClientSecret = "xaxa";
-                options.ResponseType = "code";
-                options.SaveTokens = true;
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
+                options.MetadataAddress = builder.Configuration.GetRequiredSection("IdentityConfiguration").GetRequiredSection("MetadataAddress").Value!;
+                options.Authority = builder.Configuration.GetRequiredSection("IdentityConfiguration").GetRequiredSection("Authority").Value!;
+                options.Audience = builder.Configuration.GetRequiredSection("IdentityConfiguration").GetRequiredSection("Audience").Value!;
                 options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    NameClaimType = "preferred_username",
-                    RoleClaimType = "roles"
-                };
             });
+            builder.Services.AddAuthorization();
 
             builder.Services.AddSwaggerGen(options =>
             {
