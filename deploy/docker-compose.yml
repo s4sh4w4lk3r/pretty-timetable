@@ -3,6 +3,10 @@ name: timetable
 volumes:
   timetable-postgres-vol:
   timetable-pgadmin-vol:
+  timetable-nginx-vol:
+  timetable-certbot-vol:
+  timetable-html-vol:
+
 
 services:
 
@@ -20,17 +24,17 @@ services:
       - timetable-postgres-vol:/var/lib/postgresql/data
 
 
-  pgadmin:
-    image: dpage/pgadmin4:8.1
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
-    ports:
-      - 82:80
-    volumes:
-      - timetable-pgadmin-vol:/var/lib/pgadmin
-    depends_on:
-      - postgres
+  # pgadmin:
+  #   image: dpage/pgadmin4:8.1
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+  #     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+  #   ports:
+  #     - 82:80
+  #   volumes:
+  #     - timetable-pgadmin-vol:/var/lib/pgadmin
+  #   depends_on:
+  #     - postgres
 
 
   keycloak:
@@ -48,28 +52,32 @@ services:
       - postgres
     command:
       - start-dev
+      - --proxy=edge
+      - --hostname-strict=false
+      - --hostname-strict-https=false
+      - --http-relative-path=auth/
 
 
+  nginx:
+    image: nginx:1.24.0
+    restart: always
+    volumes:
+      - "timetable-nginx-vol:/etc/nginx/conf.d/"
+      - "timetable-html-vol:/usr/share/nginx/html/"
+      - "timetable-certbot-vol:/var/www/certbot/"
+      - "timetable-certbot-vol:/etc/nginx/ssl/"
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - keycloak
 
 
-  # nginx:
-  #   image: nginx:latest
-  #   restart: always
-  #   volumes:
-  #     - "nginx_vol:/etc/nginx/conf.d/"
-  #     - "certbot_vol:/var/www/certbot/"
-  #     - "certbot_vol:/etc/nginx/ssl/"
-  #   container_name: nginx
-  #   depends_on:
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-
-  # certbot:
-  #   image: certbot/certbot:latest
-  #   depends_on:
-  #     - nginx
-  #   volumes:
-  #     - "certbot_vol:/var/www/certbot/"
-  #     - "certbot_vol:/etc/letsencrypt/"
-  #     - "certbot_vol:/var/lib/letsencrypt/"
+  certbot:
+    image: certbot/certbot:v2.8.0
+    depends_on:
+      - nginx
+    volumes:
+      - "timetable-certbot-vol:/var/www/certbot/"
+      - "timetable-certbot-vol:/etc/letsencrypt/"
+      - "timetable-certbot-vol:/var/lib/letsencrypt/"
