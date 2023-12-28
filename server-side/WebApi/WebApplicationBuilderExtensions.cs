@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.BearerToken;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
+﻿using Keycloak.AuthServices.Authentication;
+using Keycloak.AuthServices.Authorization;
 using Microsoft.OpenApi.Models;
 using Repository.Database;
 using Services.AcutalTimetables;
@@ -21,15 +18,7 @@ namespace WebApi
         {
             builder.Services.AddControllers();
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.MetadataAddress = builder.Configuration.GetRequiredSection("IdentityConfiguration").GetRequiredSection("MetadataAddress").Value!;
-                options.Authority = builder.Configuration.GetRequiredSection("IdentityConfiguration").GetRequiredSection("Authority").Value!;
-                options.Audience = builder.Configuration.GetRequiredSection("IdentityConfiguration").GetRequiredSection("Audience").Value!;
-                options.RequireHttpsMetadata = false;
-            });
-            builder.Services.AddAuthorization();
+            builder.ConfigureIAA();
 
             builder.Services.AddSwaggerGen(options =>
             {
@@ -52,6 +41,32 @@ namespace WebApi
             builder.Services.AddDbContext<TimetableContext>(contextLifetime: ServiceLifetime.Scoped, optionsLifetime: ServiceLifetime.Scoped);
             builder.Services.AddScoped<Services.Asc.AscService>();
             builder.Services.AddScoped<ActualTimetableService>();
+        }
+
+        /// <summary>
+        /// Конфигурация аутентификации и авториации.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        private static void ConfigureIAA(this WebApplicationBuilder builder)
+        {
+            const string OPTIONS_ERROR_MSG = "Настройки Keycloak не получены.";
+            var authenticationOptions = builder.Configuration.GetSection(KeycloakAuthenticationOptions.Section)
+                .Get<KeycloakAuthenticationOptions>() ?? throw new ArgumentNullException(OPTIONS_ERROR_MSG);
+
+            var authorizationIOptions = builder.Configuration.GetSection(KeycloakAuthenticationOptions.Section)
+                .Get<KeycloakProtectionClientOptions>() ?? throw new ArgumentNullException(OPTIONS_ERROR_MSG);
+
+            builder.Services.AddKeycloakAuthentication(authenticationOptions);
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireStudents", builder =>
+                {
+                    builder.RequireRealmRoles(["student", "teacher"]);
+                });
+            })
+            .AddKeycloakAuthorization(authorizationIOptions);
         }
     }
 }
