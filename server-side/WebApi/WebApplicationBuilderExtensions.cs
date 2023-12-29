@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using Repository.Database;
 using Services.AcutalTimetables;
 using System.Reflection;
+using WebApi.GraphQL;
 
 namespace WebApi
 {
@@ -19,6 +20,7 @@ namespace WebApi
             builder.Services.AddControllers();
 
             builder.ConfigureIAA();
+            builder.ConfigureGraphQL();
 
             builder.Services.AddSwaggerGen(options =>
             {
@@ -30,7 +32,7 @@ namespace WebApi
                 });
 
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                options.IncludeXmlComments(System.IO.Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
             builder.ConfigureDependencies();
@@ -67,6 +69,17 @@ namespace WebApi
                 });
             })
             .AddKeycloakAuthorization(authorizationIOptions);
+        }
+
+        private static void ConfigureGraphQL(this WebApplicationBuilder builder)
+        {
+            builder.Services
+            .AddGraphQLServer()
+            .AddQueryType<Query>()
+            .AddProjections()
+            .AddFiltering()
+            .AddSorting()
+            .AddAuthorization();
         }
     }
 }
