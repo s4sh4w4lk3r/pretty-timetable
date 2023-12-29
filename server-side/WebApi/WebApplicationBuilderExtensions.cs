@@ -4,7 +4,9 @@ using Microsoft.OpenApi.Models;
 using Repository.Database;
 using Services.AcutalTimetables;
 using System.Reflection;
-using WebApi.GraphQL;
+using WebApi.GraphQL.EnumTypes;
+using WebApi.GraphQL.ObjectTypes;
+using WebApi.GraphQL.OperationTypes;
 
 namespace WebApi
 {
@@ -75,7 +77,23 @@ namespace WebApi
         {
             builder.Services
             .AddGraphQLServer()
-            .AddQueryType<Query>()
+            .ModifyOptions(options => { options.DefaultBindingBehavior = BindingBehavior.Explicit; })
+
+            .AddQueryType<QueryType>()
+
+            .AddType<ActualTimetableType>()
+            .AddType<ActualCardType>()
+            .AddType<StableTimetableType>()
+            .AddType<StableCardType>()
+            .AddType<GroupType>()
+            .AddType<TeacherType>()
+            .AddType<SubjectType>()
+            .AddType<CabinetType>()
+            .AddType<LessonTimeType>()
+
+            .AddType<SubGroupType>()
+            .AddType<DayOfWeekType>()
+
             .AddProjections()
             .AddFiltering()
             .AddSorting()
