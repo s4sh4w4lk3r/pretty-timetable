@@ -1,3 +1,4 @@
+using HotChocolate.AspNetCore;
 using Repository.Database;
 using Serilog;
 
@@ -17,6 +18,14 @@ namespace WebApi
             builder.ConfigureServices();
 
             var app = builder.Build();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.MapGraphQL().WithOptions(new GraphQLServerOptions
+            {
+                Tool ={ Enable = app.Environment.IsDevelopment() }
+            });
 
             app.MapControllers();
 

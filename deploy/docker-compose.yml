@@ -1,0 +1,83 @@
+name: timetable
+
+volumes:
+  timetable-postgres-vol:
+  timetable-pgadmin-vol:
+  timetable-nginx-vol:
+  timetable-certbot-vol:
+  timetable-html-vol:
+
+
+services:
+
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - 5433:5432
+    volumes:
+      - timetable-postgres-vol:/var/lib/postgresql/data
+
+
+  # pgadmin:
+  #   image: dpage/pgadmin4:8.1
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+  #     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+  #   ports:
+  #     - 82:80
+  #   volumes:
+  #     - timetable-pgadmin-vol:/var/lib/pgadmin
+  #   depends_on:
+  #     - postgres
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_USERNAME}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+    ports:
+      - 9090:8080
+    depends_on:
+      - postgres
+    command:
+      - start-dev
+      - --proxy=edge
+      - --hostname-strict=false
+      - --hostname-strict-https=false
+      - --http-relative-path=auth/
+
+
+  nginx:
+    image: nginx:1.24.0
+    restart: always
+    volumes:
+      - "timetable-nginx-vol:/etc/nginx/conf.d/"
+      - "timetable-html-vol:/usr/share/nginx/html/"
+      - "timetable-certbot-vol:/var/www/certbot/"
+      - "timetable-certbot-vol:/etc/nginx/ssl/"
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - keycloak
+
+
+  certbot:
+    image: certbot/certbot:v2.8.0
+    depends_on:
+      - nginx
+    volumes:
+      - "timetable-certbot-vol:/var/www/certbot/"
+      - "timetable-certbot-vol:/etc/letsencrypt/"
+      - "timetable-certbot-vol:/var/lib/letsencrypt/"

@@ -1,7 +1,10 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Keycloak.AuthServices.Authentication;
+using Keycloak.AuthServices.Authorization;
+using Microsoft.OpenApi.Models;
 using Repository.Database;
 using Services.AcutalTimetables;
 using System.Reflection;
+using WebApi.GraphQL;
 
 namespace WebApi
 {
@@ -16,6 +19,9 @@ namespace WebApi
         {
             builder.Services.AddControllers();
 
+            builder.ConfigureIAA();
+            builder.ConfigureGraphQL();
+
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -26,7 +32,7 @@ namespace WebApi
                 });
 
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                options.IncludeXmlComments(System.IO.Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
             builder.ConfigureDependencies();
@@ -37,6 +43,43 @@ namespace WebApi
             builder.Services.AddDbContext<TimetableContext>(contextLifetime: ServiceLifetime.Scoped, optionsLifetime: ServiceLifetime.Scoped);
             builder.Services.AddScoped<Services.Asc.AscService>();
             builder.Services.AddScoped<ActualTimetableService>();
+        }
+
+        /// <summary>
+        /// Конфигурация аутентификации и авториации.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        private static void ConfigureIAA(this WebApplicationBuilder builder)
+        {
+            const string OPTIONS_ERROR_MSG = "Настройки Keycloak не получены.";
+            var authenticationOptions = builder.Configuration.GetSection(KeycloakAuthenticationOptions.Section)
+                .Get<KeycloakAuthenticationOptions>() ?? throw new ArgumentNullException(OPTIONS_ERROR_MSG);
+
+            var authorizationIOptions = builder.Configuration.GetSection(KeycloakAuthenticationOptions.Section)
+                .Get<KeycloakProtectionClientOptions>() ?? throw new ArgumentNullException(OPTIONS_ERROR_MSG);
+
+            builder.Services.AddKeycloakAuthentication(authenticationOptions);
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireStudents", builder =>
+                {
+                    builder.RequireRealmRoles(["student", "teacher"]);
+                });
+            })
+            .AddKeycloakAuthorization(authorizationIOptions);
+        }
+
+        private static void ConfigureGraphQL(this WebApplicationBuilder builder)
+        {
+            builder.Services
+            .AddGraphQLServer()
+            .AddQueryType<Query>()
+            .AddProjections()
+            .AddFiltering()
+            .AddSorting()
+            .AddAuthorization();
         }
     }
 }
