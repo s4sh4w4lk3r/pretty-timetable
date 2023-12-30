@@ -1,16 +1,12 @@
-import React from 'react'
+import { useQuery } from '@apollo/client'
+import { ALL_GROUPS } from '../../api/graphql/queries'
 
 export default function Table() {
-  return (
-    <table>
-        <thead>
+  const { data } = useQuery(ALL_GROUPS);
 
-        </thead>
+const items = data?.groups.map(e=> <li>{e.name}</li>) ;
 
-        <tbody>
-            
-        </tbody>
 
-    </table>
-  )
+
+  return (<ul>{ items}</ul>)
 }
