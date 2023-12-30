@@ -1,12 +1,12 @@
-import { useQuery } from '@apollo/client'
-import { ALL_GROUPS } from '../../api/graphql/queries'
+import dada from "../../api/graphql/methods/actualTimetableMethods"
 
 export default function Table() {
-  const { data } = useQuery(ALL_GROUPS);
 
-const items = data?.groups.map(e=> <li>{e.name}</li>) ;
+const timetable = dada.getActualTimetableByGroupId(12);
+
+const items = timetable?.cards?.map(e=> <li>{ `${e.teacher.lastname} ${e.subject.name} ${e.cabinet.fullName} ${e.subGroup} ${e.date}`}</li>)
 
 
 
-  return (<ul>{ items}</ul>)
+  return (<ul> {items}</ul>)
 }

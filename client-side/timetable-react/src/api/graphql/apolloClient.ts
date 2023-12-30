@@ -1,6 +1,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
+import env from "../../../envConfig"
 
 export default new ApolloClient({
-    uri: 'http://localhost:5012/graphql',
+    uri: `${env.apiAddress}/graphql`,
     cache: new InMemoryCache(),
 });
