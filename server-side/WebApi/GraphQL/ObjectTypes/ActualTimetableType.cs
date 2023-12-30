@@ -9,6 +9,7 @@ namespace WebApi.GraphQL.ObjectTypes
         protected override void Configure(IObjectTypeDescriptor<ActualTimetable> descriptor)
         {
             descriptor.BindFieldsImplicitly();
+            descriptor.Field(e => e.Group).Type<NonNullType<GroupType>>();
         }
     }
 }

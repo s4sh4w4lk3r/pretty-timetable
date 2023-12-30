@@ -12,6 +12,7 @@ namespace WebApi.GraphQL.ObjectTypes
             descriptor.Field(e => e.Teacher).Type<NonNullType<TeacherType>>();
             descriptor.Field(e => e.Subject).Type<NonNullType<SubjectType>>();
             descriptor.Field(e => e.LessonTime).Type<NonNullType<LessonTimeType>>();
+            descriptor.Ignore(e => e.RelatedTimetable);
         }
     }
 }
