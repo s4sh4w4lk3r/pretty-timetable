@@ -1,4 +1,6 @@
 using HotChocolate.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using Repository.Database;
 using Serilog;
 
 namespace WebApi
@@ -44,10 +46,14 @@ namespace WebApi
                 app.UseSwaggerUI();
             }
 
-            /*            using (var scope = app.Services.CreateScope())
-                        {
-                            var db = scope.ServiceProvider.GetRequiredService<TimetableContext>();
-                        }*/
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<TimetableContext>();
+                if (db.Database.GetPendingMigrations().Any())
+                {
+                    db.Database.Migrate();
+                }
+            }
 
             app.Run();
         }
