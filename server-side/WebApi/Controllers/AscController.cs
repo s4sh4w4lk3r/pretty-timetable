@@ -11,16 +11,16 @@ namespace WebApi.Controllers
         public async Task<IActionResult> AddTimetable(IFormFile timetable)
         {
             var stream = timetable.OpenReadStream();
-            await ascService.ImportTimetables(stream);
-            return Ok("Расписание добавлено.");
+            var result = await ascService.ImportTimetables(stream);
+            return Ok(result);
         }
 
         [HttpPost, Route("substitutions")]
         public async Task<IActionResult> AddSubstitutions(IFormFile substitutions)
         {
             var stream = substitutions.OpenReadStream();
-            await ascService.ImportSubstitations(stream);
-            return Ok("Замены внесены.");
+            var result = await ascService.ImportSubstitations(stream);
+            return Ok(result);
         }
     }
 }
