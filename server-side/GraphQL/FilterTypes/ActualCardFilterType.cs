@@ -3,7 +3,7 @@ using Repository.Entities.Timetable.Cards;
 
 namespace GraphQL.FilterTypes
 {
-    public class ActualCardFilterType : FilterInputType<ActualCard>
+    internal class ActualCardFilterType : FilterInputType<ActualCard>
     {
         protected override void Configure(IFilterInputTypeDescriptor<ActualCard> descriptor)
         {

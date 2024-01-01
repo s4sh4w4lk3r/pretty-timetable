@@ -14,7 +14,7 @@ namespace Services.AcutalTimetables
         public async Task<ServiceResult> Project(IEnumerable<DateOnly> dates)
         {
             var checkDatesResult = CheckDates(dates);
-            if ((checkDatesResult.Success is false) || (checkDatesResult.Value == -1))
+            if (checkDatesResult.Success is false || checkDatesResult.Value == -1)
             {
                 return ServiceResult.Fail("Невалидные даты были получены прожектором", checkDatesResult);
             }
@@ -55,7 +55,7 @@ namespace Services.AcutalTimetables
         {
             const int WEEK_NUMBER_IF_ERROR = -1;
 
-            if ((dates is null) || (dates.Any() is false))
+            if (dates is null || dates.Any() is false)
             {
                 return ServiceResult<int>.Fail("Массив с датами пустой или нулл.", WEEK_NUMBER_IF_ERROR);
             }

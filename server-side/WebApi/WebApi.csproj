@@ -15,7 +15,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentValidation" Version="11.9.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -32,12 +31,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Auth\Auth.csproj" />
 		<ProjectReference Include="..\GraphQL\GraphQL.csproj" />
+		<ProjectReference Include="..\Models\Models.csproj" />
 		<ProjectReference Include="..\Services\Services.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Models\Response\" />
-		<Folder Include="Validation\Models\" />
 	</ItemGroup>
 
 </Project>

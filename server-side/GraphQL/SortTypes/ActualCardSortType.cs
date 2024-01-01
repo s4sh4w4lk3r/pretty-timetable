@@ -3,7 +3,7 @@ using Repository.Entities.Timetable.Cards;
 
 namespace GraphQL.SortTypes
 {
-    public class ActualCardSortType : SortInputType<ActualCard>
+    internal class ActualCardSortType : SortInputType<ActualCard>
     {
         protected override void Configure(ISortInputTypeDescriptor<ActualCard> descriptor)
         {

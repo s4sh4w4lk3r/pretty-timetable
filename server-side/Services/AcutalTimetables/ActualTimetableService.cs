@@ -1,8 +1,9 @@
 ﻿using Repository.Database;
+using Services.Interfaces;
 
 namespace Services.AcutalTimetables
 {
-    public class ActualTimetableService(TimetableContext timetableContext)
+    public class ActualTimetableService(TimetableContext timetableContext) : IActualTimetableService
     {
         /// <summary>
         /// Проецирует расписание всех групп, на указанные даты в массиве.

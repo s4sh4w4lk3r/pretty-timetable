@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Services.Asc;
+using Services.Interfaces;
 
 namespace WebApi.Controllers
 {
     [ApiController, Route("timetable/asc")]
-    public class AscController(AscService ascService) : ControllerBase
+    public class AscController(IAscService ascService) : ControllerBase
     {
 #warning не забыть авторизацию
         [HttpPost, Route("timetable")]

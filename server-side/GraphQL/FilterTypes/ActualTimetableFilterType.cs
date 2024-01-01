@@ -3,7 +3,7 @@ using Repository.Entities.Timetable;
 
 namespace GraphQL.FilterTypes
 {
-    public class ActualTimetableFilterType : FilterInputType<ActualTimetable>
+    internal class ActualTimetableFilterType : FilterInputType<ActualTimetable>
     {
         protected override void Configure(IFilterInputTypeDescriptor<ActualTimetable> descriptor)
         {

@@ -3,7 +3,7 @@ using Repository.Entities.Timetable;
 
 namespace GraphQL.SortTypes
 {
-    public class StableTimetableSortType : SortInputType<StableTimetable>
+    internal class StableTimetableSortType : SortInputType<StableTimetable>
     {
         protected override void Configure(ISortInputTypeDescriptor<StableTimetable> descriptor)
         {

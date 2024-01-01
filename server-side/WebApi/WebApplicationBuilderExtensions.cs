@@ -7,6 +7,8 @@ using Keycloak.AuthServices.Authorization;
 using Microsoft.OpenApi.Models;
 using Repository.Database;
 using Services.AcutalTimetables;
+using Services.Asc.Changes;
+using Services.Interfaces;
 using System.Reflection;
 
 namespace WebApi
@@ -44,8 +46,8 @@ namespace WebApi
         private static void ConfigureDependencies(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<TimetableContext>(contextLifetime: ServiceLifetime.Scoped, optionsLifetime: ServiceLifetime.Scoped);
-            builder.Services.AddScoped<Services.Asc.AscService>();
-            builder.Services.AddScoped<ActualTimetableService>();
+            builder.Services.AddScoped<IAscService, AscService>();
+            builder.Services.AddScoped<IActualTimetableService, ActualTimetableService>();
         }
 
         /// <summary>

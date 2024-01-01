@@ -3,7 +3,7 @@ using Repository.Entities.Timetable.Cards;
 
 namespace GraphQL.FilterTypes
 {
-    public class StableCardFilterType : FilterInputType<StableCard>
+    internal class StableCardFilterType : FilterInputType<StableCard>
     {
         protected override void Configure(IFilterInputTypeDescriptor<StableCard> descriptor)
         {

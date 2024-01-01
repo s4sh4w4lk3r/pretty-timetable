@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Database;
+using Services.Asc.Timetable;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
@@ -47,11 +48,11 @@ namespace Services.Asc.Changes
             foreach (var subst in substs)
             {
                 var group = groupsFromRepo.Single(e => e.Name == subst.Forms);
-                var subgroup = Timetable.StaticDeterminers.DetermineSubgroup(subst.Groups);
+                var subgroup = StaticDeterminers.DetermineSubgroup(subst.Groups);
                 var subject = subjectsFromRepo.First(e => e.Name == subst.Subject);
                 var lessonTime = lessonTimesFromRepo.Single(e => e.Number == subst.Lesson);
-                var abusent = teachersFromRepo.Single(e => (e.Lastname + " " + e.Firstname) == subst.Absent); //отсутсвующий
-                var substituting = teachersFromRepo.Single(e => (e.Lastname + " " + e.Firstname) == subst.Absent);  // заменяющий
+                var abusent = teachersFromRepo.Single(e => e.Lastname + " " + e.Firstname == subst.Absent); //отсутсвующий
+                var substituting = teachersFromRepo.Single(e => e.Lastname + " " + e.Firstname == subst.Absent);  // заменяющий
                 var cabinet = cabinetsFromRepo.Single(e => e.FullName == subst.Room);
 
 #warning не проверил еще

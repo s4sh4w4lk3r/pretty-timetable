@@ -19,7 +19,7 @@ namespace Repository.Entities.Timetable.Cards
         public bool IsMoved { get; set; }
         public SubGroup SubGroup { get; init; }
         public DateTime CreatedAt { get; init; }
-        public DateTime UpdatedAt { get; init; }
+        public DateTime UpdatedAt { get; set; }
 
         public int RelatedTimetableId { get; init; }
         public ActualTimetable? RelatedTimetable { get; init; }

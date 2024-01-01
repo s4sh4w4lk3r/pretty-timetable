@@ -3,7 +3,7 @@ using Repository.Entities.Timetable;
 
 namespace GraphQL.FilterTypes
 {
-    public class StableTimetableFilterType : FilterInputType<StableTimetable>
+    internal class StableTimetableFilterType : FilterInputType<StableTimetable>
     {
         protected override void Configure(IFilterInputTypeDescriptor<StableTimetable> descriptor)
         {

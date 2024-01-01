@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Services.AcutalTimetables;
-using WebApi.Models.Request.Timetables;
+using Models.Request.Timetables;
+using Services.Interfaces;
 
 namespace WebApi.Controllers
 {
     [ApiController, Route("timetable/actual")]
-    public class ActualTimetableController(ActualTimetableService actualTimetableService) : ControllerBase
+    public class ActualTimetableController(IActualTimetableService actualTimetableService) : ControllerBase
     {
 #warning не забыть авторизацию
         [HttpPost, Route("convert-from-stable")]
