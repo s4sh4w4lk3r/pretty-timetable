@@ -1,10 +1,10 @@
 ﻿using Repository.Entities.Timetable.Cards;
 
-namespace WebApi.GraphQL.ObjectTypes
+namespace GraphQL.ObjectTypes
 {
-    public class ActualCardType : ObjectType<ActualCard>
+    public class StableCardType : ObjectType<StableCard>
     {
-        protected override void Configure(IObjectTypeDescriptor<ActualCard> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<StableCard> descriptor)
         {
             descriptor.BindFieldsImplicitly();
 

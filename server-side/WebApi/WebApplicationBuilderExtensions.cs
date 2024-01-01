@@ -1,12 +1,13 @@
-﻿using Keycloak.AuthServices.Authentication;
+﻿using GraphQL.EnumTypes;
+using GraphQL.ObjectTypes;
+using GraphQL.OperationTypes;
+using HotChocolate.Types;
+using Keycloak.AuthServices.Authentication;
 using Keycloak.AuthServices.Authorization;
 using Microsoft.OpenApi.Models;
 using Repository.Database;
 using Services.AcutalTimetables;
 using System.Reflection;
-using WebApi.GraphQL.EnumTypes;
-using WebApi.GraphQL.ObjectTypes;
-using WebApi.GraphQL.OperationTypes;
 
 namespace WebApi
 {

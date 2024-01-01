@@ -1,7 +1,7 @@
 ﻿using HotChocolate.Data.Sorting;
 using Repository.Entities.Timetable.Cards;
 
-namespace WebApi.GraphQL.SortTypes
+namespace GraphQL.SortTypes
 {
     public class StableCardSortType : SortInputType<StableCard>
     {

@@ -1,7 +1,7 @@
 ﻿using HotChocolate.Data.Filters;
 using Repository.Entities.Timetable.Cards;
 
-namespace WebApi.GraphQL.FilterTypes
+namespace GraphQL.FilterTypes
 {
     public class StableCardFilterType : FilterInputType<StableCard>
     {

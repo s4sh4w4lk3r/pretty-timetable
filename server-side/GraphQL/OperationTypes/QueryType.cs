@@ -2,10 +2,10 @@
 using Repository.Entities.Timetable.Cards.Parts;
 using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable;
-using WebApi.GraphQL.FilterTypes;
-using WebApi.GraphQL.SortTypes;
+using GraphQL.FilterTypes;
+using GraphQL.SortTypes;
 
-namespace WebApi.GraphQL.OperationTypes
+namespace GraphQL.OperationTypes
 {
     public class Query
     {
@@ -77,7 +77,7 @@ namespace WebApi.GraphQL.OperationTypes
                 })
                 .UseSorting<Group>(x =>
                 {
-                    x.BindFieldsImplicitly(); 
+                    x.BindFieldsImplicitly();
                 });
 
             descriptor.Field(e => e.GetActualCards(default!)).UseProjection().UseFiltering<ActualCardFilterType>().UseSorting<ActualCardSortType>();

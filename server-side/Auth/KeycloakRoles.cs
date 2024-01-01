@@ -1,4 +1,4 @@
-﻿namespace WebApi.Authorization
+﻿namespace Auth
 {
     public static class KeycloakRoles
     {

@@ -1,6 +1,6 @@
 ﻿using Repository.Entities.Timetable.Cards.Parts;
 
-namespace WebApi.GraphQL.EnumTypes
+namespace GraphQL.EnumTypes
 {
     public class SubGroupType : EnumType<SubGroup>
     {

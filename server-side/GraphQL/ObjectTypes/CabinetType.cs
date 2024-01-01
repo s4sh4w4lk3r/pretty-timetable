@@ -1,10 +1,10 @@
 ﻿using Repository.Entities.Timetable.Cards.Parts;
 
-namespace WebApi.GraphQL.ObjectTypes
+namespace GraphQL.ObjectTypes
 {
-    public class SubjectType : ObjectType<Subject>
+    public class CabinetType : ObjectType<Cabinet>
     {
-        protected override void Configure(IObjectTypeDescriptor<Subject> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<Cabinet> descriptor)
         {
             descriptor.BindFieldsImplicitly();
 

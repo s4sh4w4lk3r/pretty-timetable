@@ -1,6 +1,6 @@
 ﻿using Repository.Entities.Timetable.Cards.Parts;
 
-namespace WebApi.GraphQL.ObjectTypes
+namespace GraphQL.ObjectTypes
 {
     public class LessonTimeType : ObjectType<LessonTime>
     {
