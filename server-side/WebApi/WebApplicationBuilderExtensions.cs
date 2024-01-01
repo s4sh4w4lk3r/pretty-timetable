@@ -48,6 +48,7 @@ namespace WebApi
             builder.Services.AddDbContext<TimetableContext>(contextLifetime: ServiceLifetime.Scoped, optionsLifetime: ServiceLifetime.Scoped);
             builder.Services.AddScoped<IAscService, AscService>();
             builder.Services.AddScoped<IActualTimetableService, ActualTimetableService>();
+            builder.Services.AddScoped<ActualCardService>();
         }
 
         /// <summary>

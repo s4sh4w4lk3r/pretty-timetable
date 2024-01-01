@@ -7,6 +7,9 @@ namespace WebApi.Controllers
     public class AscController(IAscService ascService) : ControllerBase
     {
 #warning не забыть авторизацию
+
+        /// <response code="200">Успешное выполнение</response>
+        /// <response code="400">Ошибка API</response>
         [HttpPost, Route("timetable")]
         public async Task<IActionResult> AddTimetable(IFormFile timetable)
         {
@@ -15,6 +18,9 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
+
+        /// <response code="200">Успешное выполнение</response>
+        /// <response code="400">Ошибка API</response>
         [HttpPost, Route("substitutions")]
         public async Task<IActionResult> AddSubstitutions(IFormFile substitutions)
         {

@@ -31,6 +31,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Auth\Auth.csproj" />
 		<ProjectReference Include="..\GraphQL\GraphQL.csproj" />
+		<ProjectReference Include="..\Mappers\Mappers.csproj" />
 		<ProjectReference Include="..\Models\Models.csproj" />
 		<ProjectReference Include="..\Services\Services.csproj" />
 	</ItemGroup>
