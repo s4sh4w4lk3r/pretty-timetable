@@ -1,12 +1,12 @@
-import Table from "./table/Table"
+import Footer from "./footer/Footer"
 export default function App() {
     return (<>
         <header></header>
         <nav></nav>
         <main>
-            <Table/>
+            
         </main>
-        <footer></footer>
+        <Footer/>
     </>)
 
 }
