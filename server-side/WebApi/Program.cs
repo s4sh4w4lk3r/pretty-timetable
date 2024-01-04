@@ -34,10 +34,10 @@ namespace WebApi
             app.MapGraphQL().WithOptions(new GraphQLServerOptions
             {
                 Tool = { Enable = app.Environment.IsDevelopment() }
-            });
+            }).RequireAuthorization();
 
 
-            app.MapControllers();
+            app.MapControllers().RequireAuthorization();
 
 
             if (app.Environment.IsDevelopment())

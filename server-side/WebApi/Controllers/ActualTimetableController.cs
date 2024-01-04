@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Auth;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Models.Request.Timetables;
 using Services.Interfaces;
 
@@ -7,7 +9,6 @@ namespace WebApi.Controllers
     [ApiController, Route("timetable/actual")]
     public class ActualTimetableController(IActualTimetableService actualTimetableService) : ControllerBase
     {
-#warning не забыть авторизацию
 
         /// <summary>
         /// 
@@ -28,7 +29,7 @@ namespace WebApi.Controllers
         /// 
         /// <param name="stableToActualModel"></param>
         /// <returns></returns>
-        [HttpPost, Route("convert-from-stable")]
+        [HttpPost, Route("convert-from-stable"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> StableToActual(StableToActualModel stableToActualModel)
         {
             var dates = stableToActualModel.Dates.Select(DateOnly.Parse);

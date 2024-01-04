@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Auth;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
 namespace WebApi.Controllers
@@ -6,11 +8,7 @@ namespace WebApi.Controllers
     [ApiController, Route("timetable/asc")]
     public class AscController(IAscService ascService) : ControllerBase
     {
-#warning не забыть авторизацию
-
-        /// <response code="200">Успешное выполнение</response>
-        /// <response code="400">Ошибка API</response>
-        [HttpPost, Route("timetable")]
+        [HttpPost, Route("timetable"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> AddTimetable(IFormFile timetable)
         {
             var stream = timetable.OpenReadStream();
@@ -19,9 +17,7 @@ namespace WebApi.Controllers
         }
 
 
-        /// <response code="200">Успешное выполнение</response>
-        /// <response code="400">Ошибка API</response>
-        [HttpPost, Route("substitutions")]
+        [HttpPost, Route("substitutions"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> AddSubstitutions(IFormFile substitutions)
         {
             var stream = substitutions.OpenReadStream();

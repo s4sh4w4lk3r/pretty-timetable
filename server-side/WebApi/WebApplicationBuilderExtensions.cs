@@ -1,4 +1,5 @@
-﻿using GraphQL.EnumTypes;
+﻿using Auth;
+using GraphQL.EnumTypes;
 using GraphQL.ObjectTypes;
 using GraphQL.OperationTypes;
 using HotChocolate.Types;
@@ -59,6 +60,7 @@ namespace WebApi
         private static void ConfigureIAA(this WebApplicationBuilder builder)
         {
             const string OPTIONS_ERROR_MSG = "Настройки Keycloak не получены.";
+
             var authenticationOptions = builder.Configuration.GetSection(KeycloakAuthenticationOptions.Section)
                 .Get<KeycloakAuthenticationOptions>() ?? throw new ArgumentNullException(OPTIONS_ERROR_MSG);
 
@@ -69,10 +71,20 @@ namespace WebApi
 
             builder.Services.AddAuthorization(options =>
             {
-                options.AddPolicy("RequireStudents", builder =>
+                options.AddPolicy(KeycloakPolicies.TimetableR, builder =>
                 {
-                    builder.RequireRealmRoles(["student", "teacher"]);
+                    builder.RequireProtectedResource(resource: "timetable", "read");
                 });
+
+                options.AddPolicy(KeycloakPolicies.TimetableCRUD, builder =>
+                {
+                    builder.RequireProtectedResource(resource: "timetable", "read");
+                    builder.RequireProtectedResource(resource: "timetable", "create");
+                    builder.RequireProtectedResource(resource: "timetable", "update");
+                    builder.RequireProtectedResource(resource: "timetable", "delete");
+                });
+
+                options.DefaultPolicy = options.GetPolicy(KeycloakPolicies.TimetableR) ?? throw new ArgumentNullException(KeycloakPolicies.TimetableR, "Политика авторизации по умолчанию не зарегистрирована.");
             })
             .AddKeycloakAuthorization(authorizationIOptions);
         }
