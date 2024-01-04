@@ -1,16 +1,12 @@
-import React from 'react'
+import dada from "../../api/graphql/methods/actualTimetableMethods"
 
 export default function Table() {
-  return (
-    <table>
-        <thead>
 
-        </thead>
+const timetable = dada.getActualTimetableByGroupId(12);
 
-        <tbody>
-            
-        </tbody>
+const items = timetable?.cards?.map(e=> <li>{ `${e.teacher.lastname} ${e.subject.name} ${e.cabinet.fullName} ${e.subGroup} ${e.date}`}</li>)
 
-    </table>
-  )
+
+
+  return (<ul> {items}</ul>)
 }

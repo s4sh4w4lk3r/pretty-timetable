@@ -1,8 +1,11 @@
+import Table from "./table/Table"
 export default function App() {
     return (<>
         <header></header>
         <nav></nav>
-        <main></main>
+        <main>
+            <Table/>
+        </main>
         <footer></footer>
     </>)
 

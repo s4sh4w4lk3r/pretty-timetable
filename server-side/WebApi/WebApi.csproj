@@ -15,11 +15,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="HotChocolate.AspNetCore" Version="13.8.1" />
-		<PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.8.1" />
-		<PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.8.1" />
-		<PackageReference Include="Keycloak.AuthServices.Authentication" Version="1.6.0" />
-		<PackageReference Include="Keycloak.AuthServices.Authorization" Version="1.6.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -34,11 +29,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Auth\Auth.csproj" />
+		<ProjectReference Include="..\GraphQL\GraphQL.csproj" />
+		<ProjectReference Include="..\Mappers\Mappers.csproj" />
+		<ProjectReference Include="..\Models\Models.csproj" />
 		<ProjectReference Include="..\Services\Services.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Models\Response\" />
 	</ItemGroup>
 
 </Project>

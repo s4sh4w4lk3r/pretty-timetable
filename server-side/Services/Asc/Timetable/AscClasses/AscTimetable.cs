@@ -1,5 +1,6 @@
 ﻿using System.Xml.Serialization;
 
+
 #pragma warning disable 8618
 namespace Services.Asc.Timetable.AscClasses
 {

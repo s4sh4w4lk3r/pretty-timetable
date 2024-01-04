@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -8,8 +8,14 @@ namespace WebApi.Controllers
     [Route("test")]
     public class TestContoller : ControllerBase
     {
-        [HttpGet, Route(""), Authorize]
-        public IActionResult Do()
+        [HttpGet, Route("r")]
+        public IActionResult R()
+        {
+            return Ok();
+        }
+
+        [HttpGet, Route("crud"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        public IActionResult CRUD()
         {
             return Ok();
         }
