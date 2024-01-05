@@ -5,7 +5,7 @@ using Serilog;
 
 namespace WebApi
 {
-    public class Program
+    internal partial class Program
     {
         public static void Main(string[] args)
         {
@@ -15,8 +15,10 @@ namespace WebApi
             .WriteTo.File($"./logs/log.log", rollingInterval: RollingInterval.Day)
             .ReadFrom.Configuration(ctx.Configuration));
 
-            builder.ConfigureIOptions();
             builder.ConfigureServices();
+
+
+
 
 
             var app = builder.Build();
@@ -55,6 +57,8 @@ namespace WebApi
                     db.Database.Migrate();
                 }
             }
+
+
 
             app.Run();
         }
