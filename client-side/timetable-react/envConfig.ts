@@ -1,16 +1,26 @@
-type EnvType = {
-    /**
-     * Адрес до сервера API с указанем протокола. Пример: http://localhost:80.
-     */
-    readonly apiAddress: string;
-
-    /**
-     * Адрес до сервера безопасности с указанем протокола. Пример: http://localhost:8080.
-     */
-    readonly authAddress: string;
+type Api = {
+    readonly address: string
 }
 
-export default <EnvType>{
-    apiAddress: "http://localhost:5012",
-    authAddress: "http://localhost:9090"
+type Auth = {
+    readonly address: string,
+    readonly realm: string,
+    readonly clientId: string
+}
+
+type EnvConfig = {
+    readonly api: Api,
+    readonly auth: Auth
+}
+
+export default <EnvConfig>{
+    api: {
+        address: "http://localhost:5012"
+    },
+
+    auth: {
+        address: "http://localhost:8080",
+        clientId: "react",
+        realm: "timetable"
+    }
 }

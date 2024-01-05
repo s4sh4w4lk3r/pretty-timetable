@@ -5,6 +5,7 @@ using GraphQL.OperationTypes;
 using HotChocolate.Types;
 using Keycloak.AuthServices.Authentication;
 using Keycloak.AuthServices.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi.Models;
 using Repository.Database;
 using Services.AcutalTimetables;
@@ -23,6 +24,11 @@ namespace WebApi
 
         public static void ConfigureServices(this WebApplicationBuilder builder)
         {
+            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
             builder.Services.AddControllers();
 
             builder.ConfigureIAA();

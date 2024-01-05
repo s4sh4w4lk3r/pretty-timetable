@@ -21,6 +21,7 @@ namespace WebApi
 
             var app = builder.Build();
 
+            app.UseForwardedHeaders();
 
             app.UseAuthentication();
             app.UseAuthorization();
