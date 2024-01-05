@@ -1,5 +1,5 @@
 ﻿using Repository.Database;
-using Services.Interfaces;
+using Services.Interfaces.Stable;
 using System.Xml;
 
 namespace Services.Asc.Changes

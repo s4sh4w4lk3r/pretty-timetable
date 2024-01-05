@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Request.Timetables;
-using Services.Interfaces;
+using Services;
+using Services.Interfaces.Actual;
 
-namespace WebApi.Controllers
+namespace WebApi.Controllers.Actual
 {
     [ApiController, Route("timetable/actual")]
     public class ActualTimetableController(IActualTimetableService actualTimetableService) : ControllerBase
@@ -34,13 +35,37 @@ namespace WebApi.Controllers
         {
             var dates = stableToActualModel.Dates.Select(DateOnly.Parse);
 
-            var result = await actualTimetableService.StableToActual(dates);
+            var result = await actualTimetableService.ProjectStableToActualAsync(dates);
             if (result.Success is false)
             {
                 return BadRequest(result);
             }
 
             return Ok(result);
+        }
+
+
+        [HttpPatch, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        public async Task<IActionResult> Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        public async Task<IActionResult> Create()
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id == default)
+            {
+                return NotFound(ServiceResult.Fail("Id не должен быть равен нулю"));
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

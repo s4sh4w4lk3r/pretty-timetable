@@ -1,12 +1,13 @@
 ﻿using Repository.Database;
 using Repository.Entities.Timetable.Cards;
+using Services.Interfaces.Actual;
 using Validation.Entities;
 
 namespace Services.AcutalTimetables
 {
-    public class ActualCardService(TimetableContext timetableContext)
+    public class ActualCardService(TimetableContext timetableContext) : IActualCardService
     {
-        public async Task<ServiceResult> UpdateCard(ActualCard actualCard)
+        public async Task<ServiceResult> UpdateAsync(ActualCard actualCard)
         {
             var valResult = new ActualCardValidator().Validate(actualCard);
             if (valResult.IsValid is false)
@@ -26,7 +27,7 @@ namespace Services.AcutalTimetables
             timetableContext.Subjects.Any(e => e.Id == actualCard.CabinetId) &&
             timetableContext.Subjects.Any(e => e.Id == actualCard.SubjectId);
 
-            if (foreingIdsExist is false) 
+            if (foreingIdsExist is false)
             {
                 return ServiceResult.Fail("Указаны несуществующие внешние ключи.");
             }
@@ -45,6 +46,16 @@ namespace Services.AcutalTimetables
             await timetableContext.SaveChangesAsync();
 
             return ServiceResult.Ok("Актуальная карточка обновлена.");
+        }
+
+        public async Task<ServiceResult> CreateAsync(ActualCard actualCard)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResult> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

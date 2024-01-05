@@ -1,9 +1,9 @@
 ﻿using Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services.Interfaces;
+using Services.Interfaces.Stable;
 
-namespace WebApi.Controllers
+namespace WebApi.Controllers.Stable
 {
     [ApiController, Route("timetable/asc")]
     public class AscController(IAscService ascService) : ControllerBase
