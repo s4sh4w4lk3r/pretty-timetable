@@ -3,6 +3,7 @@ using Repository.Database;
 using Repository.Entities.Timetable.Cards;
 using Services.Interfaces.Actual;
 using Validation.Entities;
+using static Services.Other.CardServiceHelper;
 
 namespace Services.AcutalTimetables
 {
@@ -20,20 +21,20 @@ namespace Services.AcutalTimetables
             var cardFromRepo = await timetableContext.ActualCards.SingleOrDefaultAsync(e => e.Id == actualCard.Id, cancellationToken);
             if (cardFromRepo is null)
             {
-                return ServiceResult.Fail("Такой карточки актуального расписания нет в бд для обновления.");
+                return ServiceResult.Fail(CARD_NOT_FOUND_MSG);
             }
 
-            bool foreignIdsExist = await IsForeignKeysExists(actualCard, cancellationToken);
+            bool foreignIdsExist = await IsForeignKeysExistsAsync(timetableContext, actualCard, cancellationToken);
             if (foreignIdsExist is false)
             {
-                return ServiceResult.Fail("Указаны несуществующие внешние ключи.");
+                return ServiceResult.Fail(FOREIGN_KEYS_NOT_FOUND_MSG);
             }
 
             bool isOverlayingCard = await IsOverlaying(actualCard, cancellationToken);
 
             if (isOverlayingCard is true)
             {
-                return ServiceResult.Fail("Карточка расписания с такой датой, временем занятия, подгруппой и связанным расписанием уже есть в бд.");
+                return ServiceResult.Fail(CARD_OVERLAID_MSG);
             }
 
             cardFromRepo.SubjectId = actualCard.SubjectId;
@@ -57,7 +58,7 @@ namespace Services.AcutalTimetables
 #warning проверить
             if (actualCard.Id != 0)
             {
-                return ServiceResult.Fail("При добавлении карточки Id должен быть равен нулю.");
+                return ServiceResult.Fail(ID_MUST_BE_ZERO_MSG);
             }
 
             var valResult = new ActualCardValidator().Validate(actualCard);
@@ -69,14 +70,14 @@ namespace Services.AcutalTimetables
             bool isOverlayingCard = await IsOverlaying(actualCard, cancellationToken);
             if (isOverlayingCard is true)
             {
-                return ServiceResult.Fail("Карточка расписания с такой датой, временем занятия, подгруппой и связанным расписанием уже есть в бд.");
+                return ServiceResult.Fail(CARD_OVERLAID_MSG);
             }
 
 
-            bool foreingIdsExist = await IsForeignKeysExists(actualCard, cancellationToken);
-            if (foreingIdsExist == false)
+            bool foreignIdsExist = await IsForeignKeysExistsAsync(timetableContext, actualCard, cancellationToken);
+            if (foreignIdsExist == false)
             {
-                return ServiceResult.Fail("Некоторые внешние ключи указывают на несуществующие значения в бд");
+                return ServiceResult.Fail(FOREIGN_KEYS_NOT_FOUND_MSG);
             }
 
             actualCard.Subject = null;
@@ -96,7 +97,7 @@ namespace Services.AcutalTimetables
             int rows = await timetableContext.ActualCards.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
             if (rows == 0)
             {
-                return ServiceResult.Fail("Карточка на удаление не найдена в бд.");
+                return ServiceResult.Fail(CARD_NOT_FOUND_MSG);
             }
 
             else return ServiceResult.Ok("Карточка расписания удалена из бд.");
@@ -114,22 +115,6 @@ namespace Services.AcutalTimetables
             && e.LessonTimeId == actualCard.LessonTimeId
             && e.RelatedTimetableId == actualCard.RelatedTimetableId
             && e.SubGroup == actualCard.SubGroup, cancellationToken);
-        }
-
-        /// <summary>
-        /// Проверяет, есть ли в бд внешние ключи, относящиеся к карточке, полученной в параметрах этого метода.
-        /// </summary>
-        /// <param name="actualCard"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>Возвращает True, если все внешние ключи присутсвуют, если хоть один внешний ключ отсутсвует - False.</returns>
-        private async Task<bool> IsForeignKeysExists(ActualCard actualCard, CancellationToken cancellationToken = default)
-        {
-            return await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.SubjectId, cancellationToken) &&
-            await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.TeacherId, cancellationToken) &&
-            await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.LessonTimeId, cancellationToken) &&
-            await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.CabinetId, cancellationToken) &&
-            await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.SubjectId, cancellationToken) &&
-            await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.RelatedTimetableId, cancellationToken);
         }
     }
 }

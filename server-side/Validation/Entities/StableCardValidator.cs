@@ -3,9 +3,9 @@ using Repository.Entities.Timetable.Cards;
 
 namespace Validation.Entities
 {
-    public class ActualCardValidator : AbstractValidator<ActualCard>
+    public class StableCardValidator : AbstractValidator<StableCard>
     {
-        public ActualCardValidator()
+        public StableCardValidator()
         {
             RuleFor(e => e.CabinetId).NotEmpty();
             RuleFor(e => e.TeacherId).NotEmpty();
@@ -14,7 +14,7 @@ namespace Validation.Entities
             RuleFor(e => e.RelatedTimetableId).NotEmpty();
 
             RuleFor(e => e.SubGroup).IsInEnum();
-            RuleFor(e => e.Date).NotEmpty();
+            RuleFor(e => e.DayOfWeek).IsInEnum();
         }
     }
 }
