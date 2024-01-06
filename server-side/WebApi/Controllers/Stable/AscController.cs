@@ -18,11 +18,11 @@ namespace WebApi.Controllers.Stable
 
 
         [HttpPost, Route("substitutions"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> AddSubstitutions(IFormFile substitutions)
+        public IActionResult AddSubstitutions(IFormFile substitutions)
         {
-            var stream = substitutions.OpenReadStream();
-            var result = await ascService.ImportSubstitationsAsync(stream);
-            return Ok(result);
+            /*var stream = substitutions.OpenReadStream();
+            var result = await ascService.ImportSubstitationsAsync(stream);*/
+            return StatusCode(418);
         }
     }
 }

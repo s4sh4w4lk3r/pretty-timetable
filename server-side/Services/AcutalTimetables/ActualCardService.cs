@@ -13,7 +13,6 @@ namespace Services.AcutalTimetables
     {
         public async Task<ServiceResult> UpdateAsync(ActualCard actualCard, CancellationToken cancellationToken = default)
         {
-#warning проверить
             var valResult = new ActualCardValidator().Validate(actualCard);
             if (valResult.IsValid is false)
             {
@@ -32,8 +31,8 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(FOREIGN_KEYS_NOT_FOUND_MSG);
             }
 
-            bool isOverlayingCard = await IsOverlaying(actualCard, cancellationToken);
-
+            bool overlyingRequired = CheckOverlayingRequired(cardFromRepo: cardFromRepo, cardToUpdate: actualCard);
+            bool isOverlayingCard = await IsOverlaying(actualCard, overlyingCheckRequired: overlyingRequired, cancellationToken);
             if (isOverlayingCard is true)
             {
                 return ServiceResult.Fail(CARD_OVERLAID_MSG);
@@ -75,7 +74,7 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(valResult.ToString());
             }
 
-            bool isOverlayingCard = await IsOverlaying(actualCard, cancellationToken);
+            bool isOverlayingCard = await IsOverlaying(actualCard, overlyingCheckRequired: true, cancellationToken);
             if (isOverlayingCard is true)
             {
                 return ServiceResult.Fail(CARD_OVERLAID_MSG);
@@ -122,8 +121,13 @@ namespace Services.AcutalTimetables
         /// <param name="actualCard"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>Возвращает True, если есть заслонение, в противном случае - False</returns>
-        private async Task<bool> IsOverlaying(ActualCard actualCard, CancellationToken cancellationToken = default)
+        private async Task<bool> IsOverlaying(ActualCard actualCard, bool overlyingCheckRequired, CancellationToken cancellationToken = default)
         {
+            if (overlyingCheckRequired is false)
+            {
+                return false;
+            }
+
             return await timetableContext.ActualCards.AnyAsync(e => e.Date == actualCard.Date
             && e.LessonTimeId == actualCard.LessonTimeId
             && e.RelatedTimetableId == actualCard.RelatedTimetableId
@@ -138,6 +142,14 @@ namespace Services.AcutalTimetables
             int cardWeekNumber = ISOWeek.GetWeekOfYear(actualCard.Date.ToDateTime(default));
 
             return timetableWeekNumber == cardWeekNumber;
+        }
+
+        private static bool CheckOverlayingRequired(ActualCard cardFromRepo, ActualCard cardToUpdate)
+        {
+            return !(cardFromRepo.Date == cardToUpdate.Date &&
+                cardFromRepo.SubGroup == cardToUpdate.SubGroup &&
+                cardFromRepo.LessonTimeId == cardToUpdate.LessonTimeId &&
+                cardFromRepo.RelatedTimetableId == cardToUpdate.RelatedTimetableId);
         }
     }
 }

@@ -54,7 +54,6 @@ namespace Services.StableTimetables
 
         public async Task<ServiceResult> UpdateAsync(StableTimetable stableTimetable, CancellationToken cancellationToken = default)
         {
-#warning проверить
             var valResult = new StableTimetableValidator().Validate(stableTimetable); //
             if (valResult.IsValid is false)
             {
@@ -67,7 +66,7 @@ namespace Services.StableTimetables
                 return ServiceResult.Fail("Расписание в бд не найдено.");
             }
 
-            bool isGroupExists = await timetableContext.Groups.AnyAsync(g => g.Id == stableTimetable.Id, cancellationToken);
+            bool isGroupExists = await timetableContext.Groups.AnyAsync(g => g.Id == stableTimetable.GroupId, cancellationToken);
             if (isGroupExists is false)
             {
                 return ServiceResult.Fail("Группа не найдена в бд.");
