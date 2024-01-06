@@ -1,6 +1,8 @@
 ﻿using Auth;
+using Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Request;
 using Services.Interfaces.Stable;
 
 namespace WebApi.Controllers.Stable
@@ -9,15 +11,19 @@ namespace WebApi.Controllers.Stable
     public class StableCardController(IStableCardService stableCardService) : ControllerBase
     {
         [HttpPatch, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Update(StableCardModels.StableCardUpdate model)
         {
-            throw new NotImplementedException();
+            var result = await stableCardService.UpdateAsync(model.ToEntity());
+
+            return result.Success is true ? Ok(result) : BadRequest(result);
         }
 
         [HttpPost, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(StableCardModels.StableCardCreate model)
         {
-            throw new NotImplementedException();
+            var result = await stableCardService.CreateAsync(model.ToEntity());
+
+            return result.Success is true ? Ok(result) : BadRequest(result);
         }
 
         [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
