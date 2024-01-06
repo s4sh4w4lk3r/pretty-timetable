@@ -52,6 +52,7 @@ namespace Repository.Database
             entity.HasOne(e => e.Subject).WithMany(e => e.ActualCards).HasForeignKey(e => e.SubjectId).IsRequired();
             entity.HasOne(e => e.Teacher).WithMany(e => e.ActualCards).HasForeignKey(e => e.TeacherId).IsRequired();
             entity.HasOne(e => e.LessonTime).WithMany(e => e.ActualCards).HasForeignKey(e => e.LessonTimeId).IsRequired();
+            entity.HasIndex(e => new { e.Date, e.LessonTimeId, e.SubGroup, e.RelatedTimetableId }).IsUnique();
         }
 
         public static void ConfigureStableCard(EntityTypeBuilder<StableCard> entity)
@@ -62,6 +63,7 @@ namespace Repository.Database
             entity.HasOne(e => e.Subject).WithMany(e => e.StableCards).HasForeignKey(e => e.SubjectId).IsRequired();
             entity.HasOne(e => e.Teacher).WithMany(e => e.StableCards).HasForeignKey(e => e.TeacherId).IsRequired();
             entity.HasOne(e => e.LessonTime).WithMany(e => e.StableCards).HasForeignKey(e => e.LessonTimeId).IsRequired();
+            entity.HasIndex(e => new { e.DayOfWeek, e.IsWeekEven, e.SubGroup, e.LessonTimeId, e.RelatedTimetableId }).IsUnique();
         }
         public static void ConfigureActualTimetable(EntityTypeBuilder<ActualTimetable> entity)
         {

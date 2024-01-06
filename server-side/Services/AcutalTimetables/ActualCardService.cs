@@ -10,6 +10,7 @@ namespace Services.AcutalTimetables
     {
         public async Task<ServiceResult> UpdateAsync(ActualCard actualCard, CancellationToken cancellationToken = default)
         {
+#warning проверить
             var valResult = new ActualCardValidator().Validate(actualCard);
             if (valResult.IsValid is false)
             {
@@ -44,7 +45,7 @@ namespace Services.AcutalTimetables
             cardFromRepo.UpdatedAt = DateTime.UtcNow;
 
 
-            await timetableContext.SaveChangesAsync();
+            await timetableContext.SaveChangesAsync(cancellationToken);
 
             return ServiceResult.Ok("Актуальная карточка обновлена.");
         }
@@ -87,6 +88,7 @@ namespace Services.AcutalTimetables
             }
 
             await timetableContext.ActualCards.AddAsync(actualCard, cancellationToken);
+            await timetableContext.SaveChangesAsync(cancellationToken);
             return ServiceResult.Ok("Карточка добавлена");
         }
 

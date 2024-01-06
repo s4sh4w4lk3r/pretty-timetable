@@ -54,10 +54,10 @@ namespace WebApi
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<TimetableContext>();
-                if (db.Database.GetPendingMigrations().Any())
+                /*if (db.Database.GetPendingMigrations().Any())
                 {
                     db.Database.Migrate();
-                }
+                }*/
             }
 
 
