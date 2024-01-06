@@ -1,4 +1,5 @@
-﻿using Repository.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Database;
 using Repository.Entities.Timetable;
 using Services.Interfaces.Actual;
 
@@ -33,7 +34,15 @@ namespace Services.AcutalTimetables
 
         public async Task<ServiceResult> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+#warning проверить.
+            await timetableContext.ActualCards.Where(e => e.RelatedTimetableId == id).ExecuteDeleteAsync();
+            int rows = await timetableContext.ActualTimetables.Where(e => e.Id == id).ExecuteDeleteAsync();
+            if (rows == 0)
+            {
+                return ServiceResult.Fail("Расписание для удаления не найдено в бд.");
+            }
+
+            return ServiceResult.Ok("Расписание удалено из бд.");
         }
     }
 }
