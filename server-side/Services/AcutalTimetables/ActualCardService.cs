@@ -26,7 +26,7 @@ namespace Services.AcutalTimetables
             timetableContext.Subjects.Any(e => e.Id == actualCard.TeacherId) &&
             timetableContext.Subjects.Any(e => e.Id == actualCard.LessonTimeId) &&
             timetableContext.Subjects.Any(e => e.Id == actualCard.CabinetId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.SubjectId);
+            timetableContext.Subjects.Any(e => e.Id == actualCard.RelatedTimetableId);
 
             if (foreingIdsExist is false)
             {
@@ -51,7 +51,43 @@ namespace Services.AcutalTimetables
 
         public async Task<ServiceResult> CreateAsync(ActualCard actualCard, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+#warning проверить
+            if (actualCard.Id != 0)
+            {
+                return ServiceResult.Fail("При добавлении карточки Id должен быть равен нулю.");
+            }
+
+            var valResult = new ActualCardValidator().Validate(actualCard);
+            if (valResult.IsValid is false)
+            {
+                return ServiceResult.Fail(valResult.ToString());
+            }
+
+            bool isOverlayingCard = await timetableContext.ActualCards.AnyAsync(e => e.Date == actualCard.Date
+            && e.LessonTimeId == actualCard.LessonTimeId
+            && e.RelatedTimetableId == actualCard.RelatedTimetableId
+            && e.SubGroup == actualCard.SubGroup, cancellationToken);
+
+            if (isOverlayingCard is true)
+            {
+                return ServiceResult.Fail("Карточка расписания с такой датой, временем занятия, подгруппой и связанным расписанием уже есть в бд.");
+            }
+
+
+            bool foreingIdsExist = timetableContext.Subjects.Any(e => e.Id == actualCard.SubjectId) &&
+            timetableContext.Subjects.Any(e => e.Id == actualCard.TeacherId) &&
+            timetableContext.Subjects.Any(e => e.Id == actualCard.LessonTimeId) &&
+            timetableContext.Subjects.Any(e => e.Id == actualCard.CabinetId) &&
+            timetableContext.Subjects.Any(e => e.Id == actualCard.SubjectId) &&
+            timetableContext.Subjects.Any(e => e.Id == actualCard.RelatedTimetableId);
+
+            if (foreingIdsExist == false)
+            {
+                return ServiceResult.Fail("Некоторые внешние ключи указывают на несуществующие значения в бд");
+            }
+
+            await timetableContext.ActualCards.AddAsync(actualCard, cancellationToken);
+            return ServiceResult.Ok("Карточка добавлена");
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
