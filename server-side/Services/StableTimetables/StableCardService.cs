@@ -12,7 +12,6 @@ namespace Services.StableTimetables
     {
         public async Task<ServiceResult> CreateAsync(StableCard stableCard, CancellationToken cancellationToken = default)
         {
-#warning проверить
             if (stableCard.Id != 0)
             {
                 return ServiceResult.Fail(ID_MUST_BE_ZERO_MSG);
@@ -50,7 +49,6 @@ namespace Services.StableTimetables
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-#warning проверить
             int rows = await timetableContext.StableCards.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
             if (rows == 0)
             {

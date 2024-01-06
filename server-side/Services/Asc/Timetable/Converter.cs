@@ -8,7 +8,6 @@ namespace Services.Asc.Timetable
 {
     internal class Converter(TimetableContext timetableContext)
     {
-#warning проверить
         public List<Repository.Entities.Timetable.Cards.Parts.Cabinet> Cabinets { get; private set; } = [];
         public List<Repository.Entities.Timetable.Cards.Parts.Teacher> Teachers { get; private set; } = [];
         public List<Repository.Entities.Timetable.Cards.Parts.LessonTime> LessonTimes { get; private set; } = [];

@@ -2,6 +2,7 @@
 using Repository.Database;
 using Repository.Entities.Timetable.Cards;
 using Services.Interfaces.Actual;
+using System.Globalization;
 using Validation.Entities;
 using static Services.Other.CardServiceHelper;
 
@@ -37,6 +38,12 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(CARD_OVERLAID_MSG);
             }
 
+            bool dateAndWeekCorrect = await IsDateAndWeekMathes(actualCard, cancellationToken);
+            if (dateAndWeekCorrect is false)
+            {
+                return ServiceResult.Fail("Дата в карточке не попадает на номер недели, указанный в расписании.");
+            }
+
             cardFromRepo.SubjectId = actualCard.SubjectId;
             cardFromRepo.TeacherId = actualCard.TeacherId;
             cardFromRepo.LessonTimeId = actualCard.LessonTimeId;
@@ -56,7 +63,6 @@ namespace Services.AcutalTimetables
 
         public async Task<ServiceResult> CreateAsync(ActualCard actualCard, CancellationToken cancellationToken = default)
         {
-#warning проверить
             if (actualCard.Id != 0)
             {
                 return ServiceResult.Fail(ID_MUST_BE_ZERO_MSG);
@@ -81,6 +87,12 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(FOREIGN_KEYS_NOT_FOUND_MSG);
             }
 
+            bool dateAndWeekCorrect = await IsDateAndWeekMathes(actualCard, cancellationToken);
+            if (dateAndWeekCorrect is false)
+            {
+                return ServiceResult.Fail("Дата в карточке не попадает на номер недели, указанный в расписании.");
+            }
+
             actualCard.Subject = null;
             actualCard.Cabinet = null;
             actualCard.Teacher = null;
@@ -94,7 +106,6 @@ namespace Services.AcutalTimetables
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-#warning проверить
             int rows = await timetableContext.ActualCards.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
             if (rows == 0)
             {
@@ -116,6 +127,16 @@ namespace Services.AcutalTimetables
             && e.LessonTimeId == actualCard.LessonTimeId
             && e.RelatedTimetableId == actualCard.RelatedTimetableId
             && e.SubGroup == actualCard.SubGroup, cancellationToken);
+        }
+
+        private async Task<bool> IsDateAndWeekMathes(ActualCard actualCard, CancellationToken cancellationToken)
+        {
+            int timetableWeekNumber = await timetableContext.ActualTimetables.Where(e => e.Id == actualCard.RelatedTimetableId)
+                .Select(e => e.WeekNumber).SingleAsync(cancellationToken);
+
+            int cardWeekNumber = ISOWeek.GetWeekOfYear(actualCard.Date.ToDateTime(default));
+
+            return timetableWeekNumber == cardWeekNumber;
         }
     }
 }

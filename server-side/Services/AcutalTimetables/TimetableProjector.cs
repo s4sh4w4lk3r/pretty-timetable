@@ -24,12 +24,12 @@ namespace Services.AcutalTimetables
             {
                 var newActualTimetable = new ActualTimetable()
                 {
-                    CreatedAt = DateTime.UtcNow,
+                    Id = default,
                     GroupId = timetable.Id,
                     WeekNumber = checkDatesResult.Value,
                     Cards = [],
-                    Id = default,
-                    UpdatedAt = default
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 };
 
                 foreach (var date in dates)

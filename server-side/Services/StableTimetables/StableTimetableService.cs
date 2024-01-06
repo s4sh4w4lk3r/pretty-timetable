@@ -10,8 +10,7 @@ namespace Services.StableTimetables
     {
         public async Task<ServiceResult> CreateAsync(StableTimetable stableTimetable, CancellationToken cancellationToken = default)
         {
-#warning проверить
-            if (stableTimetable.Id == default)
+            if (stableTimetable.Id != default)
             {
                 return ServiceResult.Fail("Id должен быть равен нулю при добавлении.");
             }
@@ -21,7 +20,7 @@ namespace Services.StableTimetables
                 return ServiceResult.Fail(valResult.ToString());
             }
 
-            bool isGroupExists = await timetableContext.Groups.AnyAsync(g => g.Id == stableTimetable.Id, cancellationToken);
+            bool isGroupExists = await timetableContext.Groups.AnyAsync(g => g.Id == stableTimetable.GroupId, cancellationToken);
             if (isGroupExists is false)
             {
                 return ServiceResult.Fail("Группа не найдена в бд.");
@@ -43,7 +42,6 @@ namespace Services.StableTimetables
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-#warning проверить.
             await timetableContext.StableCards.Where(e => e.RelatedTimetableId == id).ExecuteDeleteAsync(cancellationToken);
             int rows = await timetableContext.StableTimetables.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
             if (rows == 0)
@@ -57,7 +55,7 @@ namespace Services.StableTimetables
         public async Task<ServiceResult> UpdateAsync(StableTimetable stableTimetable, CancellationToken cancellationToken = default)
         {
 #warning проверить
-            var valResult = new StableTimetableValidator().Validate(stableTimetable);
+            var valResult = new StableTimetableValidator().Validate(stableTimetable); //
             if (valResult.IsValid is false)
             {
                 return ServiceResult.Fail(valResult.ToString());

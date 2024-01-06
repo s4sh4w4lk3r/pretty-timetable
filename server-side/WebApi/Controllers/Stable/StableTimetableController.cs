@@ -13,7 +13,6 @@ namespace WebApi.Controllers.Stable
         [HttpPatch, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> Update(StableTimetableModels.StableTimetableUpdate models)
         {
-
             var result = await stableTimetableService.UpdateAsync(models.ToEntity());
 
             return result.Success is true ? Ok(result) : BadRequest(result);

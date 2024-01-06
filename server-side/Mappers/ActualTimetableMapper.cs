@@ -10,7 +10,7 @@ namespace Mappers
             {
                 Id = default,
                 GroupId = model.GroupId,
-                WeekNumber = model.GroupId,
+                WeekNumber = model.WeekNumber,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -22,7 +22,7 @@ namespace Mappers
             {
                 Id = model.Id,
                 GroupId = model.GroupId,
-                WeekNumber = model.GroupId,
+                WeekNumber = model.WeekNumber,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

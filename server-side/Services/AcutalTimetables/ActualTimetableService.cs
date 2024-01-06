@@ -26,7 +26,6 @@ namespace Services.AcutalTimetables
 
         public async Task<ServiceResult> UpdateAsync(ActualTimetable actualTimetable, CancellationToken cancellationToken = default)
         {
-#warning проверить
             var valResult = new ActualTimetableValidator().Validate(actualTimetable);
             if (valResult.IsValid is false)
             {
@@ -72,7 +71,7 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(valResult.ToString());
             }
 
-            bool isGroupExists = await timetableContext.Groups.AnyAsync(g => g.Id == actualTimetable.Id, cancellationToken);
+            bool isGroupExists = await timetableContext.Groups.AnyAsync(g => g.Id == actualTimetable.GroupId, cancellationToken);
             if (isGroupExists is false)
             {
                 return ServiceResult.Fail("Группа не найдена в бд.");
@@ -94,7 +93,6 @@ namespace Services.AcutalTimetables
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-#warning проверить.
             await timetableContext.ActualCards.Where(e => e.RelatedTimetableId == id).ExecuteDeleteAsync(cancellationToken);
             int rows = await timetableContext.ActualTimetables.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
             if (rows == 0)
