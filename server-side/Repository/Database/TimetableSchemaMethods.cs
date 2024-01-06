@@ -69,7 +69,8 @@ namespace Repository.Database
         {
             entity.ToTable("ActualTimetable", SchemaName);
             entity.HasKey(e => e.Id);
-            entity.HasMany(e => e.Cards).WithOne(e=>e.RelatedTimetable).HasForeignKey(e => e.RelatedTimetableId).IsRequired(); ;
+            entity.HasMany(e => e.Cards).WithOne(e=>e.RelatedTimetable).HasForeignKey(e => e.RelatedTimetableId).IsRequired();
+            entity.HasIndex(e => new { e.GroupId, e.WeekNumber }).IsUnique();
         }
 
         public static void ConfigureStableTimetable(EntityTypeBuilder<StableTimetable> entity)
@@ -77,6 +78,7 @@ namespace Repository.Database
             entity.ToTable("StableTimetable", SchemaName);
             entity.HasKey(e => e.Id);
             entity.HasMany(e => e.Cards).WithOne(e=>e.RelatedTimetable).HasForeignKey(e=>e.RelatedTimetableId).IsRequired();
+            entity.HasIndex(e => new { e.GroupId }).IsUnique();
         }
 
         public static void ConfigureGroup(EntityTypeBuilder<Group> entity)
