@@ -8,6 +8,7 @@ namespace Services.Asc.Timetable
 {
     internal class Converter(TimetableContext timetableContext)
     {
+#warning проверить
         public List<Repository.Entities.Timetable.Cards.Parts.Cabinet> Cabinets { get; private set; } = [];
         public List<Repository.Entities.Timetable.Cards.Parts.Teacher> Teachers { get; private set; } = [];
         public List<Repository.Entities.Timetable.Cards.Parts.LessonTime> LessonTimes { get; private set; } = [];
@@ -52,7 +53,7 @@ namespace Services.Asc.Timetable
             ArgumentNullException.ThrowIfNull(_ascTimetable);
 
             Groups = _ascTimetable.Classes.Class.Select(e => new Repository.Entities.Timetable.Group()
-            { AscId = e.Id, Name = e.Name, CreatedAt = DateTime.UtcNow }).ToList();
+            { Id = default, AscId = e.Id, Name = e.Name, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }).ToList();
 
             Teachers = _ascTimetable.Teachers.Teacher.Select(e => new Repository.Entities.Timetable.Cards.Parts.Teacher()
             {
@@ -60,20 +61,23 @@ namespace Services.Asc.Timetable
                 Lastname = e.Lastname,
                 Firstname = e.Firstname,
                 Middlename = string.Empty,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             }).ToList();
 
             Subjects = _ascTimetable.Subjects.Subject.Select(e => new Repository.Entities.Timetable.Cards.Parts.Subject()
-            { AscId = e.Id, Name = e.Name, CreatedAt = DateTime.UtcNow }).ToList();
+            { Id = default, AscId = e.Id, Name = e.Name, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }).ToList();
 
             LessonTimes = _ascTimetable.Periods.Period.Select(e => new Repository.Entities.Timetable.Cards.Parts.LessonTime()
-            { StartsAt = TimeOnly.Parse(e.Starttime), EndsAt = TimeOnly.Parse(e.Endtime), Number = int.Parse(e._period), CreatedAt = DateTime.UtcNow }).ToList();
+            { Id = default, StartsAt = TimeOnly.Parse(e.Starttime), EndsAt = TimeOnly.Parse(e.Endtime), Number = int.Parse(e._period), CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }).ToList();
 
             Cabinets = _ascTimetable.Classrooms.Classroom.Select(e => new Repository.Entities.Timetable.Cards.Parts.Cabinet()
             {
+                Id = default,
                 AscId = e.Id,
                 Number = e.Short,
                 CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
                 Address = _ascTimetable.Buildings.Building.Single(b => b.Id == e.Buildingid).Name,
                 FullName = e.Name
             }).ToList();
@@ -126,6 +130,7 @@ namespace Services.Asc.Timetable
                         case WeekEvenness.Both:
                             stableCardsOfCurrentGroup.Add(new Repository.Entities.Timetable.Cards.StableCard()
                             {
+                                Id = default,
                                 SubjectId = subject.Id,
                                 LessonTimeId = lessonTime.Id,
                                 TeacherId = teacher.Id,
@@ -133,11 +138,14 @@ namespace Services.Asc.Timetable
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
                                 IsWeekEven = true,
-                                CreatedAt = DateTime.UtcNow
+                                CreatedAt = DateTime.UtcNow,
+                                UpdatedAt = DateTime.UtcNow,
+                                RelatedTimetableId = default
                             });
 
                             stableCardsOfCurrentGroup.Add(new Repository.Entities.Timetable.Cards.StableCard()
                             {
+                                Id = default,
                                 SubjectId = subject.Id,
                                 LessonTimeId = lessonTime.Id,
                                 TeacherId = teacher.Id,
@@ -145,13 +153,16 @@ namespace Services.Asc.Timetable
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
                                 IsWeekEven = false,
-                                CreatedAt = DateTime.UtcNow
+                                CreatedAt = DateTime.UtcNow,
+                                UpdatedAt = DateTime.UtcNow,
+                                RelatedTimetableId = default
                             });
                             break;
 
                         case WeekEvenness.Even:
                             stableCardsOfCurrentGroup.Add(new Repository.Entities.Timetable.Cards.StableCard()
                             {
+                                Id = default,
                                 SubjectId = subject.Id,
                                 LessonTimeId = lessonTime.Id,
                                 TeacherId = teacher.Id,
@@ -159,13 +170,16 @@ namespace Services.Asc.Timetable
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
                                 IsWeekEven = true,
-                                CreatedAt = DateTime.UtcNow
+                                CreatedAt = DateTime.UtcNow,
+                                UpdatedAt = DateTime.UtcNow,
+                                RelatedTimetableId = default
                             });
                             break;
 
                         case WeekEvenness.Odd:
                             stableCardsOfCurrentGroup.Add(new Repository.Entities.Timetable.Cards.StableCard()
                             {
+                                Id = default,
                                 SubjectId = subject.Id,
                                 LessonTimeId = lessonTime.Id,
                                 TeacherId = teacher.Id,
@@ -173,7 +187,9 @@ namespace Services.Asc.Timetable
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
                                 IsWeekEven = false,
-                                CreatedAt = DateTime.UtcNow
+                                CreatedAt = DateTime.UtcNow,
+                                UpdatedAt = DateTime.UtcNow,
+                                RelatedTimetableId = default
                             });
                             break;
 
@@ -182,7 +198,7 @@ namespace Services.Asc.Timetable
                     }
 
                 }
-                var currentStableTimetable = new Repository.Entities.Timetable.StableTimetable() { Cards = stableCardsOfCurrentGroup, GroupId = group.Id, CreatedAt = DateTime.UtcNow };
+                var currentStableTimetable = new Repository.Entities.Timetable.StableTimetable() { Id = default, Cards = stableCardsOfCurrentGroup, GroupId = group.Id, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow };
                 await timetableContext.AddAsync(currentStableTimetable, cancellationToken);
             }
         }

@@ -2,7 +2,7 @@
 using Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.Request.Timetables.Cards;
+using Models.Request;
 using Services.Interfaces.Actual;
 
 namespace WebApi.Controllers.Actual
@@ -12,7 +12,7 @@ namespace WebApi.Controllers.Actual
     {
 
         [HttpPatch, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Update(ActualCardUpdateModel model)
+        public async Task<IActionResult> Update(ActualCardModels.ActualCardUpdate model)
         {
             var result = await actualCardService.UpdateAsync(model.ToEntity());
 
@@ -20,9 +20,11 @@ namespace WebApi.Controllers.Actual
         }
 
         [HttpPost, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(ActualCardModels.ActualCardCreate model)
         {
-            throw new NotImplementedException();
+            var result = await actualCardService.CreateAsync(model.ToEntity());
+
+            return result.Success ? Ok(result) : BadRequest(result);
         }
 
         [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]

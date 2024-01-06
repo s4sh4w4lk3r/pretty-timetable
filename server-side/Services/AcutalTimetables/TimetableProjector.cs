@@ -27,7 +27,9 @@ namespace Services.AcutalTimetables
                     CreatedAt = DateTime.UtcNow,
                     GroupId = timetable.Id,
                     WeekNumber = checkDatesResult.Value,
-                    Cards = []
+                    Cards = [],
+                    Id = default,
+                    UpdatedAt = default
                 };
 
                 foreach (var date in dates)
@@ -87,6 +89,7 @@ namespace Services.AcutalTimetables
         {
             return new ActualCard()
             {
+                Id = default,
                 IsCanceled = false,
                 IsModified = false,
                 IsMoved = false,
@@ -97,7 +100,8 @@ namespace Services.AcutalTimetables
                 TeacherId = stableCard.TeacherId,
                 RelatedTimetableId = relatedTimetableId,
                 Date = date,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
         }
     }

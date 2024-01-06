@@ -1,8 +1,8 @@
 ﻿using Auth;
+using Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.Request.Timetables;
-using Services;
+using Models.Request;
 using Services.Interfaces.Actual;
 
 namespace WebApi.Controllers.Actual
@@ -31,7 +31,7 @@ namespace WebApi.Controllers.Actual
         /// <param name="stableToActualModel"></param>
         /// <returns></returns>
         [HttpPost, Route("convert-from-stable"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> StableToActual(StableToActualModel stableToActualModel)
+        public async Task<IActionResult> StableToActual(ActualTimetableModels.StableToActual stableToActualModel)
         {
             var dates = stableToActualModel.Dates.Select(DateOnly.Parse);
 
@@ -46,15 +46,19 @@ namespace WebApi.Controllers.Actual
 
 
         [HttpPatch, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Update(ActualTimetableModels.ActualTimetableUpdate model)
         {
-            throw new NotImplementedException();
+            var result = await actualTimetableService.UpdateAsync(model.ToEntity());
+
+            return result.Success is true ? Ok(result) : BadRequest(result);
         }
 
         [HttpPost, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(ActualTimetableModels.ActualTimetableCreate model)
         {
-            throw new NotImplementedException();
+            var result = await actualTimetableService.CreateAsync(model.ToEntity());
+
+            return result.Success is true ? Ok(result) : BadRequest(result);
         }
 
         [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
