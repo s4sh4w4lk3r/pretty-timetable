@@ -1,5 +1,6 @@
 using HotChocolate.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Repository.Database;
 using Serilog;
 
@@ -15,10 +16,10 @@ namespace WebApi
             .WriteTo.File($"./logs/log.log", rollingInterval: RollingInterval.Day)
             .ReadFrom.Configuration(ctx.Configuration));
 
-            builder.ConfigureServices();
+            builder.ConfigureBuilder();
 
 
-
+            /*--------------------------------------------------------------------------------------------------------------------*/
 
 
             var app = builder.Build();
@@ -29,9 +30,10 @@ namespace WebApi
             app.UseAuthorization();
 
 
+            var origins = app.Services.GetRequiredService<IOptions<CorsConfiguration>>().Value.Origins;
             app.UseCors(o => o.AllowAnyMethod()
             .AllowAnyHeader()
-            .WithOrigins("http://localhost:5173"));
+            .WithOrigins(origins));
 
 
             app.MapGraphQL().WithOptions(new GraphQLServerOptions
@@ -58,6 +60,8 @@ namespace WebApi
                 }
             }
 
+
+            /*--------------------------------------------------------------------------------------------------------------------*/
 
 
             app.Run();
