@@ -17,21 +17,23 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(valResult.ToString());
             }
 
-            var cardFromRepo = timetableContext.ActualCards.SingleOrDefault(e => e.Id == actualCard.Id);
+            var cardFromRepo = await timetableContext.ActualCards.SingleOrDefaultAsync(e => e.Id == actualCard.Id, cancellationToken);
             if (cardFromRepo is null)
             {
                 return ServiceResult.Fail("Такой карточки актуального расписания нет в бд для обновления.");
             }
 
-            bool foreingIdsExist = timetableContext.Subjects.Any(e => e.Id == actualCard.SubjectId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.TeacherId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.LessonTimeId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.CabinetId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.RelatedTimetableId);
-
-            if (foreingIdsExist is false)
+            bool foreignIdsExist = await IsForeignKeysExists(actualCard, cancellationToken);
+            if (foreignIdsExist is false)
             {
                 return ServiceResult.Fail("Указаны несуществующие внешние ключи.");
+            }
+
+            bool isOverlayingCard = await IsOverlaying(actualCard, cancellationToken);
+
+            if (isOverlayingCard is true)
+            {
+                return ServiceResult.Fail("Карточка расписания с такой датой, временем занятия, подгруппой и связанным расписанием уже есть в бд.");
             }
 
             cardFromRepo.SubjectId = actualCard.SubjectId;
@@ -40,8 +42,8 @@ namespace Services.AcutalTimetables
             cardFromRepo.CabinetId = actualCard.CabinetId;
             cardFromRepo.SubGroup = actualCard.SubGroup;
             cardFromRepo.IsCanceled = actualCard.IsCanceled;
-            cardFromRepo.IsCanceled = actualCard.IsModified;
-            cardFromRepo.IsCanceled = actualCard.IsMoved;
+            cardFromRepo.IsModified = actualCard.IsModified;
+            cardFromRepo.IsMoved = actualCard.IsMoved;
             cardFromRepo.UpdatedAt = DateTime.UtcNow;
 
 
@@ -64,28 +66,24 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(valResult.ToString());
             }
 
-            bool isOverlayingCard = await timetableContext.ActualCards.AnyAsync(e => e.Date == actualCard.Date
-            && e.LessonTimeId == actualCard.LessonTimeId
-            && e.RelatedTimetableId == actualCard.RelatedTimetableId
-            && e.SubGroup == actualCard.SubGroup, cancellationToken);
-
+            bool isOverlayingCard = await IsOverlaying(actualCard, cancellationToken);
             if (isOverlayingCard is true)
             {
                 return ServiceResult.Fail("Карточка расписания с такой датой, временем занятия, подгруппой и связанным расписанием уже есть в бд.");
             }
 
 
-            bool foreingIdsExist = timetableContext.Subjects.Any(e => e.Id == actualCard.SubjectId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.TeacherId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.LessonTimeId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.CabinetId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.SubjectId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.RelatedTimetableId);
-
+            bool foreingIdsExist = await IsForeignKeysExists(actualCard, cancellationToken);
             if (foreingIdsExist == false)
             {
                 return ServiceResult.Fail("Некоторые внешние ключи указывают на несуществующие значения в бд");
             }
+
+            actualCard.Subject = null;
+            actualCard.Cabinet = null;
+            actualCard.Teacher = null;
+            actualCard.LessonTime = null;
+            actualCard.RelatedTimetable = null;
 
             await timetableContext.ActualCards.AddAsync(actualCard, cancellationToken);
             await timetableContext.SaveChangesAsync(cancellationToken);
@@ -102,6 +100,36 @@ namespace Services.AcutalTimetables
             }
 
             else return ServiceResult.Ok("Карточка расписания удалена из бд.");
+        }
+
+        /// <summary>
+        /// Проверяет, есть ли бд карточки, которые могут быть заслонены карточкой, полученной в параметрах этого метода.
+        /// </summary>
+        /// <param name="actualCard"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Возвращает True, если есть заслонение, в противном случае - False</returns>
+        private async Task<bool> IsOverlaying(ActualCard actualCard, CancellationToken cancellationToken = default)
+        {
+            return await timetableContext.ActualCards.AnyAsync(e => e.Date == actualCard.Date
+            && e.LessonTimeId == actualCard.LessonTimeId
+            && e.RelatedTimetableId == actualCard.RelatedTimetableId
+            && e.SubGroup == actualCard.SubGroup, cancellationToken);
+        }
+
+        /// <summary>
+        /// Проверяет, есть ли в бд внешние ключи, относящиеся к карточке, полученной в параметрах этого метода.
+        /// </summary>
+        /// <param name="actualCard"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Возвращает True, если все внешние ключи присутсвуют, если хоть один внешний ключ отсутсвует - False.</returns>
+        private async Task<bool> IsForeignKeysExists(ActualCard actualCard, CancellationToken cancellationToken = default)
+        {
+            return await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.SubjectId, cancellationToken) &&
+            await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.TeacherId, cancellationToken) &&
+            await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.LessonTimeId, cancellationToken) &&
+            await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.CabinetId, cancellationToken) &&
+            await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.SubjectId, cancellationToken) &&
+            await timetableContext.Subjects.AnyAsync(e => e.Id == actualCard.RelatedTimetableId, cancellationToken);
         }
     }
 }

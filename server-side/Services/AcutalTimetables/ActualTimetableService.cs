@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Repository.Database;
 using Repository.Entities.Timetable;
 using Services.Interfaces.Actual;
+using Validation.Entities;
 
 namespace Services.AcutalTimetables
 {
@@ -24,12 +26,64 @@ namespace Services.AcutalTimetables
 
         public async Task<ServiceResult> UpdateAsync(ActualTimetable actualTimetable, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+#warning проверить
+            var valResult = new ActualTimetableValidator().Validate(actualTimetable);
+            if (valResult.IsValid is false)
+            {
+                return ServiceResult.Fail(valResult.ToString());
+            }
+
+            var timetableFromRepo = await timetableContext.ActualTimetables.SingleOrDefaultAsync(e => e.Id == actualTimetable.Id, cancellationToken);
+            if (timetableFromRepo == null)
+            {
+                return ServiceResult.Fail("Расписание с таким ID не найдено в бд.");
+            }
+
+            bool groupExist = await timetableContext.Groups.AnyAsync(e => e.Id == actualTimetable.GroupId, cancellationToken);
+            if (groupExist == false)
+            {
+                return ServiceResult.Fail("Группа с таким ID не найдена в бд.");
+            }
+
+            bool isOverlaying = await IsOverlaying(actualTimetable, cancellationToken);
+            if (isOverlaying is true)
+            {
+                return ServiceResult.Fail("Расписание с таким номером недели и группой уже есть в бд.");
+            }
+
+            timetableFromRepo.WeekNumber = actualTimetable.WeekNumber;
+            timetableFromRepo.GroupId = actualTimetable.GroupId;
+            timetableFromRepo.UpdatedAt = DateTime.UtcNow;
+
+            await timetableContext.SaveChangesAsync(cancellationToken);
+            return ServiceResult.Ok("Расписание обновлено в бд.");
         }
 
         public async Task<ServiceResult> CreateAsync(ActualTimetable actualTimetable, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            if (actualTimetable.Id != 0)
+            {
+                return ServiceResult.Fail("При добавлении расписания, его Id должен быть равен нулю.");
+            }
+
+            var valResult = new ActualTimetableValidator().Validate(actualTimetable);
+            if (valResult.IsValid is false)
+            {
+                return ServiceResult.Fail(valResult.ToString());
+            }
+
+            bool isOverlaying = await IsOverlaying(actualTimetable, cancellationToken);
+            if (isOverlaying is true)
+            {
+                return ServiceResult.Fail("Расписание с таким номером недели и группой уже есть в бд.");
+            }
+
+            actualTimetable.Group = null;
+            actualTimetable.Cards = null;
+
+            await timetableContext.ActualTimetables.AddAsync(actualTimetable, cancellationToken);
+            await timetableContext.SaveChangesAsync(cancellationToken);
+            return ServiceResult.Ok("Расписание добавлено в бд.");
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
@@ -43,6 +97,19 @@ namespace Services.AcutalTimetables
             }
 
             return ServiceResult.Ok("Расписание удалено из бд.");
+        }
+
+
+        /// <summary>
+        /// Проверяет наличие расписания с таким же номером недели и GroupId, чтобы не случилось исключение по уникальному индексу в бд.
+        /// </summary>
+        /// <param name="actualTimetable"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns> Возвращает True, если расписание с такими данными уже есть в бд, в противном случае - False.</returns>
+        private async Task<bool> IsOverlaying(ActualTimetable actualTimetable, CancellationToken cancellationToken = default)
+        {
+            return await timetableContext.ActualTimetables.AnyAsync(e => e.WeekNumber == actualTimetable.WeekNumber
+            && e.GroupId == actualTimetable.GroupId, cancellationToken);
         }
     }
 }

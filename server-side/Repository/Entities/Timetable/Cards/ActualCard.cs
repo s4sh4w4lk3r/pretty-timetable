@@ -6,7 +6,7 @@ namespace Repository.Entities.Timetable.Cards
     {
         public int Id { get; init; }
         public Teacher? Teacher { get; set; }
-        public Subject? Subject { get; init; }
+        public Subject? Subject { get; set; }
         public Cabinet? Cabinet { get; set; }
         public LessonTime? LessonTime { get; set; }
         public int TeacherId { get; set; }
@@ -22,6 +22,6 @@ namespace Repository.Entities.Timetable.Cards
         public DateTime UpdatedAt { get; set; }
 
         public int RelatedTimetableId { get; init; }
-        public ActualTimetable? RelatedTimetable { get; init; }
+        public ActualTimetable? RelatedTimetable { get; set; }
     }
 }
