@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Repository.Database;
+using Repository.Entities.Timetable;
 using Repository.Entities.Timetable.Cards;
 using Services.Interfaces.Stable;
 using Validation.Entities;
@@ -23,13 +24,13 @@ namespace Services.StableTimetables
                 return ServiceResult.Fail(valResult.ToString());
             }
 
-            bool foreignIdsExist = await IsForeignKeysExistsAsync(timetableContext, stableCard, cancellationToken);
+            bool foreignIdsExist = await IsForeignKeysExistsAsync<StableTimetable>(timetableContext, stableCard, cancellationToken);
             if (foreignIdsExist == false)
             {
                 return ServiceResult.Fail(FOREIGN_KEYS_NOT_FOUND_MSG);
             }
 
-            bool isOverlaying = await IsOverlaying(stableCard, cancellationToken);
+            bool isOverlaying = await IsOverlaying(stableCard, overlayingCheckRequired: true, cancellationToken);
             if (isOverlaying is true)
             {
                 return ServiceResult.Fail(CARD_OVERLAID_MSG);
@@ -60,7 +61,6 @@ namespace Services.StableTimetables
 
         public async Task<ServiceResult> UpdateAsync(StableCard stableCard, CancellationToken cancellationToken = default)
         {
-#warning проверить
             var valResult = new StableCardValidator().Validate(stableCard);
             if (valResult.IsValid is false)
             {
@@ -73,13 +73,14 @@ namespace Services.StableTimetables
                 return ServiceResult.Fail(CARD_NOT_FOUND_MSG);
             }
 
-            bool foreignIdsExist = await IsForeignKeysExistsAsync(timetableContext, stableCard, cancellationToken);
+            bool foreignIdsExist = await IsForeignKeysExistsAsync<StableTimetable>(timetableContext, stableCard, cancellationToken);
             if (foreignIdsExist == false)
             {
                 return ServiceResult.Fail(FOREIGN_KEYS_NOT_FOUND_MSG);
             }
 
-            bool isOverlaying = await IsOverlaying(stableCard, cancellationToken);
+            bool overlayingCheckRequired = CheckOverlayingRequired(cardFromRepo: cardFromRepo, cardToUpdate: stableCard);
+            bool isOverlaying = await IsOverlaying(stableCard, overlayingCheckRequired, cancellationToken);
             if (isOverlaying is true)
             {
                 return ServiceResult.Fail(CARD_OVERLAID_MSG);
@@ -99,13 +100,24 @@ namespace Services.StableTimetables
             return ServiceResult.Ok("Карточка обновлена");
         }
 
-        private async Task<bool> IsOverlaying(StableCard stableCard, CancellationToken cancellationToken)
+        private async Task<bool> IsOverlaying(StableCard stableCard, bool overlayingCheckRequired, CancellationToken cancellationToken = default)
         {
+            if (overlayingCheckRequired is false) return false;
+
             return await timetableContext.StableCards.AnyAsync(e => e.IsWeekEven == stableCard.IsWeekEven, cancellationToken)
                 && await timetableContext.StableCards.AnyAsync(e => e.DayOfWeek == stableCard.DayOfWeek, cancellationToken)
                 && await timetableContext.StableCards.AnyAsync(e => e.SubGroup == stableCard.SubGroup, cancellationToken)
                 && await timetableContext.StableCards.AnyAsync(e => e.LessonTimeId== stableCard.LessonTimeId, cancellationToken)
                 && await timetableContext.StableCards.AnyAsync(e => e.RelatedTimetableId == stableCard.RelatedTimetableId, cancellationToken);
+        }
+
+        private static bool CheckOverlayingRequired(StableCard cardFromRepo, StableCard cardToUpdate)
+        {
+            return !(cardFromRepo.DayOfWeek == cardToUpdate.DayOfWeek &&
+                cardFromRepo.IsWeekEven == cardToUpdate.IsWeekEven &&
+                cardFromRepo.SubGroup == cardToUpdate.SubGroup &&
+                cardFromRepo.LessonTimeId == cardToUpdate.LessonTimeId &&
+                cardFromRepo.RelatedTimetableId == cardToUpdate.RelatedTimetableId);
         }
     }
 }

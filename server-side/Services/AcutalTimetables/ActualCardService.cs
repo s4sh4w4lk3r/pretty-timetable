@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Database;
+using Repository.Entities.Timetable;
 using Repository.Entities.Timetable.Cards;
 using Services.Interfaces.Actual;
 using System.Globalization;
@@ -25,7 +26,7 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(CARD_NOT_FOUND_MSG);
             }
 
-            bool foreignIdsExist = await IsForeignKeysExistsAsync(timetableContext, actualCard, cancellationToken);
+            bool foreignIdsExist = await IsForeignKeysExistsAsync<ActualTimetable>(timetableContext, actualCard, cancellationToken);
             if (foreignIdsExist is false)
             {
                 return ServiceResult.Fail(FOREIGN_KEYS_NOT_FOUND_MSG);
@@ -81,7 +82,7 @@ namespace Services.AcutalTimetables
             }
 
 
-            bool foreignIdsExist = await IsForeignKeysExistsAsync(timetableContext, actualCard, cancellationToken);
+            bool foreignIdsExist = await IsForeignKeysExistsAsync<ActualTimetable>(timetableContext, actualCard, cancellationToken);
             if (foreignIdsExist == false)
             {
                 return ServiceResult.Fail(FOREIGN_KEYS_NOT_FOUND_MSG);
