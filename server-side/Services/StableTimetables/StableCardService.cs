@@ -100,6 +100,15 @@ namespace Services.StableTimetables
             return ServiceResult.Ok("Карточка обновлена");
         }
 
+
+
+        /// <summary>
+        /// Метод проверяет, подходит номер недели и дата друг другу.
+        /// </summary>
+        /// <param name="stableCard"></param>
+        /// <param name="cancellationToken"></param>
+        /// <param name="overlayingCheckRequired"></param>
+        /// <returns>Если подходит, то возвращается True, иначе False.</returns>
         private async Task<bool> IsOverlaying(StableCard stableCard, bool overlayingCheckRequired, CancellationToken cancellationToken = default)
         {
             if (overlayingCheckRequired is false) return false;
@@ -111,6 +120,15 @@ namespace Services.StableTimetables
                 && await timetableContext.StableCards.AnyAsync(e => e.RelatedTimetableId == stableCard.RelatedTimetableId, cancellationToken);
         }
 
+
+
+        /// <summary>
+        /// Сравнивает карточку из бд и полученную пользователем.
+        /// </summary>
+        /// <param name="cardFromRepo"></param>
+        /// <param name="cardToUpdate"></param>
+        /// <returns>Если данные карточки о ее положении в расписании изменены, то метод вернет True, 
+        /// что будет значить, что нужна проверка на наложение. Если проверка не требуется - False.</returns>
         private static bool CheckOverlayingRequired(StableCard cardFromRepo, StableCard cardToUpdate)
         {
             return !(cardFromRepo.DayOfWeek == cardToUpdate.DayOfWeek &&

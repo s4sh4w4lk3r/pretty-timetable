@@ -32,13 +32,13 @@ namespace Services.AcutalTimetables
             }
 
             bool overlyingRequired = CheckOverlayingRequired(cardFromRepo: cardFromRepo, cardToUpdate: actualCard);
-            bool isOverlayingCard = await IsOverlaying(actualCard, overlyingCheckRequired: overlyingRequired, cancellationToken);
+            bool isOverlayingCard = await IsOverlaying(actualCard, overlayingCheckRequired: overlyingRequired, cancellationToken);
             if (isOverlayingCard is true)
             {
                 return ServiceResult.Fail(CARD_OVERLAID_MSG);
             }
 
-            bool dateAndWeekCorrect = await IsDateAndWeekMathes(actualCard, cancellationToken);
+            bool dateAndWeekCorrect = await IsDateAndWeekMatсhes(actualCard, cancellationToken);
             if (dateAndWeekCorrect is false)
             {
                 return ServiceResult.Fail("Дата в карточке не попадает на номер недели, указанный в расписании.");
@@ -74,7 +74,7 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(valResult.ToString());
             }
 
-            bool isOverlayingCard = await IsOverlaying(actualCard, overlyingCheckRequired: true, cancellationToken);
+            bool isOverlayingCard = await IsOverlaying(actualCard, overlayingCheckRequired: true, cancellationToken);
             if (isOverlayingCard is true)
             {
                 return ServiceResult.Fail(CARD_OVERLAID_MSG);
@@ -87,7 +87,7 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(FOREIGN_KEYS_NOT_FOUND_MSG);
             }
 
-            bool dateAndWeekCorrect = await IsDateAndWeekMathes(actualCard, cancellationToken);
+            bool dateAndWeekCorrect = await IsDateAndWeekMatсhes(actualCard, cancellationToken);
             if (dateAndWeekCorrect is false)
             {
                 return ServiceResult.Fail("Дата в карточке не попадает на номер недели, указанный в расписании.");
@@ -120,10 +120,11 @@ namespace Services.AcutalTimetables
         /// </summary>
         /// <param name="actualCard"></param>
         /// <param name="cancellationToken"></param>
+        /// <param name="overlayingCheckRequired"></param>
         /// <returns>Возвращает True, если есть заслонение, в противном случае - False</returns>
-        private async Task<bool> IsOverlaying(ActualCard actualCard, bool overlyingCheckRequired, CancellationToken cancellationToken = default)
+        private async Task<bool> IsOverlaying(ActualCard actualCard, bool overlayingCheckRequired, CancellationToken cancellationToken = default)
         {
-            if (overlyingCheckRequired is false)
+            if (overlayingCheckRequired is false)
             {
                 return false;
             }
@@ -134,7 +135,13 @@ namespace Services.AcutalTimetables
             && e.SubGroup == actualCard.SubGroup, cancellationToken);
         }
 
-        private async Task<bool> IsDateAndWeekMathes(ActualCard actualCard, CancellationToken cancellationToken)
+        /// <summary>
+        /// Метод проверяет, подходит номер недели и дата друг другу.
+        /// </summary>
+        /// <param name="actualCard"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Если подходит, то возвращается True, иначе False.</returns>
+        private async Task<bool> IsDateAndWeekMatсhes(ActualCard actualCard, CancellationToken cancellationToken)
         {
             int timetableWeekNumber = await timetableContext.ActualTimetables.Where(e => e.Id == actualCard.RelatedTimetableId)
                 .Select(e => e.WeekNumber).SingleAsync(cancellationToken);
@@ -144,6 +151,13 @@ namespace Services.AcutalTimetables
             return timetableWeekNumber == cardWeekNumber;
         }
 
+        /// <summary>
+        /// Сравнивает карточку из бд и полученную пользователем.
+        /// </summary>
+        /// <param name="cardFromRepo"></param>
+        /// <param name="cardToUpdate"></param>
+        /// <returns>Если данные карточки о ее положении в расписании изменены, то метод вернет True, 
+        /// что будет значить, что нужна проверка на наложение. Если проверка не требуется - False.</returns>
         private static bool CheckOverlayingRequired(ActualCard cardFromRepo, ActualCard cardToUpdate)
         {
             return !(cardFromRepo.Date == cardToUpdate.Date &&
