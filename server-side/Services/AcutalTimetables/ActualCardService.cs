@@ -45,12 +45,13 @@ namespace Services.AcutalTimetables
             cardFromRepo.IsCanceled = actualCard.IsCanceled;
             cardFromRepo.IsModified = actualCard.IsModified;
             cardFromRepo.IsMoved = actualCard.IsMoved;
+            cardFromRepo.Date = actualCard.Date;
             cardFromRepo.UpdatedAt = DateTime.UtcNow;
 
 
             await timetableContext.SaveChangesAsync(cancellationToken);
 
-            return ServiceResult.Ok("Актуальная карточка обновлена.");
+            return ServiceResult.Ok("Карточка обновлена.");
         }
 
         public async Task<ServiceResult> CreateAsync(ActualCard actualCard, CancellationToken cancellationToken = default)

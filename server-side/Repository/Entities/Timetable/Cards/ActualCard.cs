@@ -13,7 +13,7 @@ namespace Repository.Entities.Timetable.Cards
         public int SubjectId { get; set; }
         public int CabinetId { get; set; }
         public int LessonTimeId { get; set; }
-        public DateOnly Date { get; init; }
+        public DateOnly Date { get; set; }
         public bool IsModified { get; set; }
         public bool IsCanceled { get; set; }
         public bool IsMoved { get; set; }
