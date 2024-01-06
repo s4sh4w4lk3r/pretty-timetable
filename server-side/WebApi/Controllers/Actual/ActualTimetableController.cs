@@ -60,12 +60,9 @@ namespace WebApi.Controllers.Actual
         [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == default)
-            {
-                return NotFound(ServiceResult.Fail("Id не должен быть равен нулю"));
-            }
+            var result = await actualTimetableService.DeleteAsync(id);
 
-            throw new NotImplementedException();
+            return result.Success is true ? Ok(result) : BadRequest(result);
         }
     }
 }

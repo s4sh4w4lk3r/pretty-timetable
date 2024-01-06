@@ -12,7 +12,7 @@ namespace WebApi.Controllers.Stable
         public async Task<IActionResult> AddTimetable(IFormFile timetable)
         {
             var stream = timetable.OpenReadStream();
-            var result = await ascService.ImportTimetables(stream);
+            var result = await ascService.ImportTimetablesAsync(stream);
             return Ok(result);
         }
 
@@ -21,7 +21,7 @@ namespace WebApi.Controllers.Stable
         public async Task<IActionResult> AddSubstitutions(IFormFile substitutions)
         {
             var stream = substitutions.OpenReadStream();
-            var result = await ascService.ImportSubstitations(stream);
+            var result = await ascService.ImportSubstitationsAsync(stream);
             return Ok(result);
         }
     }

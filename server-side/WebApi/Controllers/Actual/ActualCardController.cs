@@ -3,7 +3,6 @@ using Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Request.Timetables.Cards;
-using Services;
 using Services.Interfaces.Actual;
 
 namespace WebApi.Controllers.Actual
@@ -29,12 +28,9 @@ namespace WebApi.Controllers.Actual
         [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == default)
-            {
-                return NotFound(ServiceResult.Fail("Id не должен быть равен нулю"));
-            }
+            var result = await actualCardService.DeleteAsync(id);
 
-            throw new NotImplementedException();
+            return result.Success is true ? Ok(result) : BadRequest(result);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Services.AcutalTimetables
         private readonly List<ActualTimetable> actualTimetables = [];
         private readonly List<StableTimetable> stableTimetables = timetableContext.StableTimetables.Include(e => e.Cards).ToList();
 
-        public async Task<ServiceResult> Project(IEnumerable<DateOnly> dates)
+        public async Task<ServiceResult> Project(IEnumerable<DateOnly> dates, CancellationToken cancellationToken = default)
         {
             var checkDatesResult = CheckDates(dates);
             if (checkDatesResult.Success is false || checkDatesResult.Value == -1)
@@ -41,8 +41,8 @@ namespace Services.AcutalTimetables
                 actualTimetables.Add(newActualTimetable);
             }
 
-            await timetableContext.ActualTimetables.AddRangeAsync(actualTimetables);
-            await timetableContext.SaveChangesAsync();
+            await timetableContext.ActualTimetables.AddRangeAsync(actualTimetables,cancellationToken);
+            await timetableContext.SaveChangesAsync(cancellationToken);
             return ServiceResult.Ok("Расписание для всех групп добавлено.");
         }
 

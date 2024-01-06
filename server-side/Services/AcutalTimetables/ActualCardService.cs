@@ -1,4 +1,5 @@
-﻿using Repository.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Database;
 using Repository.Entities.Timetable.Cards;
 using Services.Interfaces.Actual;
 using Validation.Entities;
@@ -7,7 +8,7 @@ namespace Services.AcutalTimetables
 {
     public class ActualCardService(TimetableContext timetableContext) : IActualCardService
     {
-        public async Task<ServiceResult> UpdateAsync(ActualCard actualCard)
+        public async Task<ServiceResult> UpdateAsync(ActualCard actualCard, CancellationToken cancellationToken = default)
         {
             var valResult = new ActualCardValidator().Validate(actualCard);
             if (valResult.IsValid is false)
@@ -48,14 +49,21 @@ namespace Services.AcutalTimetables
             return ServiceResult.Ok("Актуальная карточка обновлена.");
         }
 
-        public async Task<ServiceResult> CreateAsync(ActualCard actualCard)
+        public async Task<ServiceResult> CreateAsync(ActualCard actualCard, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceResult> DeleteAsync(int id)
+        public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+#warning проверить
+            int rows = await timetableContext.ActualCards.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
+            if (rows == 0)
+            {
+                return ServiceResult.Fail("Карточка на удаление не найдена в бд.");
+            }
+
+            else return ServiceResult.Ok("Карточка расписания удалена из бд.");
         }
     }
 }

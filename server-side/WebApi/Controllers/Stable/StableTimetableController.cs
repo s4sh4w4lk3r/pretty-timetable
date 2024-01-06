@@ -1,12 +1,12 @@
 ﻿using Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services;
+using Services.Interfaces.Stable;
 
 namespace WebApi.Controllers.Stable
 {
     [ApiController, Route("timetable/stable")]
-    public class StableTimetableController : ControllerBase
+    public class StableTimetableController(IStableTimetableService stableTimetableService) : ControllerBase
     {
         [HttpPatch, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> Update()
@@ -23,11 +23,9 @@ namespace WebApi.Controllers.Stable
         [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == default)
-            {
-                return NotFound(ServiceResult.Fail("Id не должен быть равен нулю"));
-            }
-            throw new NotImplementedException();
+            var result = await stableTimetableService.DeleteAsync(id);
+
+            return result.Success is true ? Ok(result) : BadRequest(result);
         }
     }
 }

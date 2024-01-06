@@ -4,8 +4,8 @@ namespace Services.Interfaces.Stable
 {
     public interface IStableTimetableService
     {
-        Task<ServiceResult> CreateAsync(StableTimetable stableTimetable);
-        Task<ServiceResult> UpdateAsync(StableTimetable stableTimetable);
-        Task<ServiceResult> DeleteAsync(int id);
+        Task<ServiceResult> CreateAsync(StableTimetable stableTimetable, CancellationToken cancellationToken = default);
+        Task<ServiceResult> UpdateAsync(StableTimetable stableTimetable, CancellationToken cancellationToken = default);
+        Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default);
     }
 }
