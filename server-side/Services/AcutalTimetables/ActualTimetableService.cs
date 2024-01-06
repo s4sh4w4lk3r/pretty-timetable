@@ -72,6 +72,12 @@ namespace Services.AcutalTimetables
                 return ServiceResult.Fail(valResult.ToString());
             }
 
+            bool isGroupExists = await timetableContext.Groups.AnyAsync(g => g.Id == actualTimetable.Id, cancellationToken);
+            if (isGroupExists is false)
+            {
+                return ServiceResult.Fail("Группа не найдена в бд.");
+            }
+
             bool isOverlaying = await IsOverlaying(actualTimetable, cancellationToken);
             if (isOverlaying is true)
             {

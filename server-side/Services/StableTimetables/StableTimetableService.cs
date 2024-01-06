@@ -2,6 +2,7 @@
 using Repository.Database;
 using Repository.Entities.Timetable;
 using Services.Interfaces.Stable;
+using Validation.Entities;
 
 namespace Services.StableTimetables
 {
@@ -9,7 +10,35 @@ namespace Services.StableTimetables
     {
         public async Task<ServiceResult> CreateAsync(StableTimetable stableTimetable, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+#warning проверить
+            if (stableTimetable.Id == default)
+            {
+                return ServiceResult.Fail("Id должен быть равен нулю при добавлении.");
+            }
+            var valResult = new StableTimetableValidator().Validate(stableTimetable);
+            if (valResult.IsValid is false) 
+            {
+                return ServiceResult.Fail(valResult.ToString());
+            }
+
+            bool isGroupExists = await timetableContext.Groups.AnyAsync(g => g.Id == stableTimetable.Id, cancellationToken);
+            if (isGroupExists is false)
+            {
+                return ServiceResult.Fail("Группа не найдена в бд.");
+            }
+
+            bool isOverlaying = await IsOverlaying(stableTimetable, cancellationToken);
+            if (isOverlaying is true) 
+            {
+                return ServiceResult.Fail("Расписание с такой группой уже есть.");
+            }
+
+            stableTimetable.Cards = null;
+            stableTimetable.Group = null;
+
+            await timetableContext.StableTimetables.AddAsync(stableTimetable, cancellationToken);
+            await timetableContext.SaveChangesAsync(cancellationToken);
+            return ServiceResult.Ok("Расписание добавлено.");
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
@@ -27,7 +56,42 @@ namespace Services.StableTimetables
 
         public async Task<ServiceResult> UpdateAsync(StableTimetable stableTimetable, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+#warning проверить
+            var valResult = new StableTimetableValidator().Validate(stableTimetable);
+            if (valResult.IsValid is false)
+            {
+                return ServiceResult.Fail(valResult.ToString());
+            }
+
+            var timetableFromRepo = await timetableContext.StableTimetables.SingleOrDefaultAsync(e => e.Id == stableTimetable.Id, cancellationToken);
+            if (timetableFromRepo is null)
+            {
+                return ServiceResult.Fail("Расписание в бд не найдено.");
+            }
+
+            bool isGroupExists = await timetableContext.Groups.AnyAsync(g => g.Id == stableTimetable.Id, cancellationToken);
+            if (isGroupExists is false)
+            {
+                return ServiceResult.Fail("Группа не найдена в бд.");
+            }
+
+            bool isOverlaying = await IsOverlaying(stableTimetable, cancellationToken);
+            if (isOverlaying is true)
+            {
+                return ServiceResult.Fail("Расписание с такой группой уже есть.");
+            }
+
+            timetableFromRepo.GroupId = stableTimetable.GroupId;
+            timetableFromRepo.UpdatedAt = DateTime.UtcNow;
+
+
+            await timetableContext.SaveChangesAsync(cancellationToken);
+            return ServiceResult.Ok("Расписание обновлено.");
+        }
+
+        private async Task<bool> IsOverlaying(StableTimetable stableTimetable, CancellationToken cancellationToken)
+        {
+            return await timetableContext.StableTimetables.AnyAsync(e => e.GroupId == stableTimetable.GroupId, cancellationToken);
         }
     }
 }
