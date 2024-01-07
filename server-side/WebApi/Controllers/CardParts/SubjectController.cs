@@ -5,7 +5,7 @@ using Services.Interfaces.CardParts;
 
 namespace WebApi.Controllers.CardParts
 {
-    [ApiController, Route("cardparts/subject")]
+    [ApiController, Route("subject")]
     public class SubjectController(ISubjectService subjectService) : ControllerBase
     {
         [HttpPut, Route("")]

@@ -5,7 +5,7 @@ using Mappers.CardParts;
 
 namespace WebApi.Controllers.CardParts
 {
-    [ApiController, Route("cardparts/lessontime")]
+    [ApiController, Route("lessontime")]
     public class LessonTimeController(ILessonTimeService lessonTimeService) : ControllerBase
     {
         [HttpPut, Route("")]

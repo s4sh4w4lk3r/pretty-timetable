@@ -7,7 +7,7 @@ using Services.Interfaces.Stable;
 
 namespace WebApi.Controllers.Stable
 {
-    [ApiController, Route("timetable/stable/card")]
+    [ApiController, Route("stable/card")]
     public class StableCardController(IStableCardService stableCardService) : ControllerBase
     {
         [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]

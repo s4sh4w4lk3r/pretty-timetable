@@ -5,7 +5,7 @@ using Services.Interfaces.CardParts;
 
 namespace WebApi.Controllers.CardParts
 {
-    [ApiController, Route("cardparts/cabinet")]
+    [ApiController, Route("cabinet")]
     public class CabinetController(ICabinetService cabinetService) : ControllerBase
     {
         [HttpPut, Route("")]

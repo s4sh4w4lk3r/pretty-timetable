@@ -5,7 +5,7 @@ using Services.Interfaces.Stable;
 
 namespace WebApi.Controllers.Stable
 {
-    [ApiController, Route("timetable/asc")]
+    [ApiController, Route("stable/asc")]
     public class AscController(IAscService ascService) : ControllerBase
     {
         [HttpPost, Route("timetable"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]

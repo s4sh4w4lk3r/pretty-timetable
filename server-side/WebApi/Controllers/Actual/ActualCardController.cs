@@ -7,7 +7,7 @@ using Services.Interfaces.Actual;
 
 namespace WebApi.Controllers.Actual
 {
-    [ApiController, Route("timetable/actual/card")]
+    [ApiController, Route("actual/card")]
     public class ActualCardController(IActualCardService actualCardService) : ControllerBase
     {
 

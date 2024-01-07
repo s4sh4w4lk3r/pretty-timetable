@@ -7,7 +7,7 @@ using Services.Interfaces.Actual;
 
 namespace WebApi.Controllers.Actual
 {
-    [ApiController, Route("timetable/actual")]
+    [ApiController, Route("actual")]
     public class ActualTimetableController(IActualTimetableService actualTimetableService) : ControllerBase
     {
 
