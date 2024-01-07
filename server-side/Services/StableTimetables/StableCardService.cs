@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Repository.Database;
 using Repository.Entities.Timetable.Cards;
 using Services.Interfaces.Stable;
@@ -14,23 +13,29 @@ namespace Services.StableTimetables
             var valResult = new StableCardValidator().Validate(stableCard);
             if (valResult.IsValid is false)
             {
-                return ServiceResult.Fail<int>(valResult.ToString(), default);
+                return ServiceResult.Fail(valResult.ToString(), default(int));
             }
 
-            timetableContext.Update(stableCard);
-            await timetableContext.SaveChangesAsync(cancellationToken);
-            return ServiceResult.Ok("Карточка добавлена или обновлена", stableCard.Id);
+            timetableContext.StableCards.Update(stableCard);
+
+            var queryResult = await timetableContext.SaveChangesAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
+            {
+                return ServiceResult.Fail(ResultMessages.PutError, default(int)).AddInnerResult(queryResult);
+            }
+
+            return ServiceResult.Ok(ResultMessages.Putted, stableCard.Id);
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            int rows = await timetableContext.StableCards.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
-            if (rows == 0)
+            var queryResult = await timetableContext.StableCards.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
             {
-                return ServiceResult.Fail("Карточка для удаления не найдена в бд.");
+                return ServiceResult.Fail(ResultMessages.DeleteError).AddInnerResult(queryResult);
             }
 
-            else return ServiceResult.Ok("Карточка расписания удалена из бд.");
+            return ServiceResult.Ok(ResultMessages.Deleted);
         }
     }
 }

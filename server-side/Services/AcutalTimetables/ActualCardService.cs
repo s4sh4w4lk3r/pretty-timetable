@@ -11,13 +11,13 @@ namespace Services.AcutalTimetables
     {
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            int rows = await timetableContext.ActualCards.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
-            if (rows == 0)
+            var queryResult = await timetableContext.ActualCards.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
             {
-                return ServiceResult.Fail("Карточка не найдена.");
+                return ServiceResult.Fail(ResultMessages.DeleteError).AddInnerResult(queryResult);
             }
 
-            else return ServiceResult.Ok("Карточка расписания удалена из бд.");
+            return ServiceResult.Ok(ResultMessages.Deleted);
         }
 
         public async Task<ServiceResult<int>> PutAsync(ActualCard actualCard, CancellationToken cancellationToken = default)
@@ -35,8 +35,16 @@ namespace Services.AcutalTimetables
             }
 
             timetableContext.ActualCards.Update(actualCard);
-            await timetableContext.SaveChangesAsync(cancellationToken);
-            return ServiceResult.Ok("Карточка добавлена или обновлена успешно", actualCard.Id);
+
+            var queryResult = await timetableContext.SaveChangesAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
+            {
+                return ServiceResult.Fail(ResultMessages.PutError, default(int)).AddInnerResult(queryResult);
+            }
+
+            return ServiceResult.Ok(ResultMessages.Putted, actualCard.Id);
+
+
         }
 
         /// <summary>

@@ -10,14 +10,13 @@ namespace Services.StableTimetables
     {
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            await timetableContext.StableCards.Where(e => e.RelatedTimetableId == id).ExecuteDeleteAsync(cancellationToken);
-            int rows = await timetableContext.StableTimetables.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
-            if (rows == 0)
+            var queryResult = await timetableContext.StableTimetables.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
             {
-                return ServiceResult.Fail("Расписание для удаления не найдено в бд.");
+                return ServiceResult.Fail(ResultMessages.DeleteError).AddInnerResult(queryResult);
             }
 
-            return ServiceResult.Ok("Расписание удалено из бд.");
+            return ServiceResult.Ok(ResultMessages.Deleted);
         }
 
         public async Task<ServiceResult<int>> PutAsync(StableTimetable stableTimetable, CancellationToken cancellationToken = default)
@@ -29,8 +28,14 @@ namespace Services.StableTimetables
             }
 
             timetableContext.StableTimetables.Update(stableTimetable);
-            await timetableContext.SaveChangesAsync(cancellationToken);
-            return ServiceResult.Ok("Расписание добавлено", stableTimetable.Id);
+
+            var queryResult = await timetableContext.SaveChangesAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
+            {
+                return ServiceResult.Fail(ResultMessages.PutError, default(int)).AddInnerResult(queryResult);
+            }
+
+            return ServiceResult.Ok(ResultMessages.Putted, stableTimetable.Id);
         }
     }
 }
