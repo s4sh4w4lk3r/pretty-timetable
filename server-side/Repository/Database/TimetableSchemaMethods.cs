@@ -24,6 +24,7 @@ namespace Repository.Database
         {
             entity.ToTable("LessonTime", SchemaName);
             entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.Number, e.StartsAt, e.EndsAt }).IsUnique();
         }
 
         public static void ConfigureSubject(EntityTypeBuilder<Subject> entity)

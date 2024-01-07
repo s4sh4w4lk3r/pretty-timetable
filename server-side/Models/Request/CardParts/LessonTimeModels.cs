@@ -7,8 +7,8 @@
         {
             public required int Id { get; init; }
             public required int Number { get; init; }
-            public required TimeOnly StartsAt { get; init; }
-            public required TimeOnly EndsAt { get; init; }
+            public required string StartsAt { get; init; }
+            public required string EndsAt { get; init; }
         }
     }
 }
