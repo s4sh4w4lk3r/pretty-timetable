@@ -9,6 +9,9 @@ namespace Validation.Entities
         {
             RuleFor(e=>e.GroupId).NotEmpty();
             RuleFor(e=>e.WeekNumber).NotEmpty().LessThanOrEqualTo(53);
+
+            RuleFor(e => e.Cards).Null();
+            RuleFor(e => e.Group).Null();
         }
     }
 }

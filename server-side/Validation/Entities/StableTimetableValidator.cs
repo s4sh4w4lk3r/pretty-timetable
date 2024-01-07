@@ -8,6 +8,10 @@ namespace Validation.Entities
         public StableTimetableValidator()
         {
             RuleFor(e=> e.GroupId).NotEmpty();
+
+            RuleFor(e => e.Cards).Null();
+            RuleFor(e => e.Group).Null();
+            
         }
     }
 }
