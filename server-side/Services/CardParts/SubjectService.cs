@@ -1,29 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Npgsql;
 using Repository.Database;
 using Repository.Entities.Timetable.Cards.Parts;
 using Services.Interfaces.CardParts;
+using Validation.Entities.CardParts;
 
 namespace Services.CardParts
 {
-    public class SubjectService(TimetableContext timetableContext, ILoggerFactory logger) : ISubjectService
+    public class SubjectService(TimetableContext timetableContext) : ISubjectService
     {
-        public async Task<ServiceResult> CreateAsync(Subject subject, CancellationToken cancellationToken = default)
+        public async Task<ServiceResult<int>> PutAsync(Subject subject, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrWhiteSpace(subject.Name))
+#warning проверить
+            var valResult = new SubjectValidator().Validate(subject);
+            if (valResult.IsValid is false)
             {
-                return ServiceResult.Fail("Имя предмета не должно быть пустым.");
+                return ServiceResult<int>.Fail(valResult.ToString(), default);
             }
 
-            if (subject.Id != 0)
-            {
-                return ServiceResult.Fail("Id при добавлении должен быть равен нулю.");
-            }
-
-            await timetableContext.Subjects.AddAsync(subject, cancellationToken);
+            timetableContext.Subjects.Update(subject);
             await timetableContext.SaveChangesAsync(cancellationToken);
-            return ServiceResult.Ok("Премдет добавился в бд.");
+            return ServiceResult<int>.Ok("Запись добавлена или обновлена", subject.Id);
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
@@ -37,11 +34,6 @@ namespace Services.CardParts
             {
                 return ServiceResult.Fail("Предмет не удален, поскольку на него ссылается какая-то сущность.");
             }
-        }
-
-        public async Task<ServiceResult> UpdateAsync(Subject subject, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
         }
     }
 }

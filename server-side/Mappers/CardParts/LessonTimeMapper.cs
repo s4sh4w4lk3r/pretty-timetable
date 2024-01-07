@@ -5,20 +5,7 @@ namespace Mappers.CardParts
 {
     public static class LessonTimeMapper
     {
-        public static LessonTime ToEntity(this LessonTimeModels.LessonTimeCreate model)
-        {
-            return new()
-            {
-                Id = default,
-                Number = model.Number,
-                StartsAt = model.StartsAt,
-                EndsAt = model.EndsAt,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-        }
-
-        public static LessonTime ToEntity(this LessonTimeModels.LessonTimeUpdate model)
+        public static LessonTime ToEntity(this LessonTimeModels.LessonTimePut model)
         {
             return new()
             {

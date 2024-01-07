@@ -3,18 +3,29 @@ using Npgsql;
 using Repository.Database;
 using Repository.Entities.Timetable.Cards.Parts;
 using Services.Interfaces.CardParts;
+using Validation.Entities.CardParts;
 
 namespace Services.CardParts
 {
     public class LessonTimeService(TimetableContext timetableContext) : ILessonTimeService
     {
-        public async Task<ServiceResult> CreateAsync(LessonTime lessonTime, CancellationToken cancellationToken = default)
+        public async Task<ServiceResult<int>> PutAsync(LessonTime lessonTime, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+#warning проверить
+            var valResult = new LessonTimeValidator().Validate(lessonTime);
+            if (valResult.IsValid is false)
+            {
+                return ServiceResult<int>.Fail(valResult.ToString(), default);
+            }
+
+            timetableContext.LessonTimes.Update(lessonTime);
+            await timetableContext.SaveChangesAsync(cancellationToken);
+            return ServiceResult<int>.Ok("Запись добавлена или обновлена", lessonTime.Id);
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
+#warning проверить
             try
             {
                 await timetableContext.LessonTimes.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
@@ -24,11 +35,6 @@ namespace Services.CardParts
             {
                 return ServiceResult.Fail("Урок не удален, поскольку на него ссылается какая-то сущность.");
             }
-        }
-
-        public async Task<ServiceResult> UpdateAsync(LessonTime lessonTime, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
         }
     }
 }

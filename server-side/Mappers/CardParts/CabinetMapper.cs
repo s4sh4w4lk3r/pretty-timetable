@@ -5,20 +5,8 @@ namespace Mappers.CardParts
 {
     public static class CabinetMapper
     {
-        public static Cabinet ToEntity(this CabinetModels.CabinetCreate model)
-        {
-            return new()
-            {
-                Id = default,
-                Address = model.Address,
-                Number = model.Number,
-                FullName = model.FullName,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-        }
 
-        public static Cabinet ToEntity(this CabinetModels.CabinetUpdate model)
+        public static Cabinet ToEntity(this CabinetModels.CabinetPut model)
         {
             return new()
             {

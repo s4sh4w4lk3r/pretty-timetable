@@ -5,18 +5,7 @@ namespace Mappers.CardParts
 {
     public static class SubjectMapper
     {
-        public static Subject ToEntity(this SubjectModels.SubjectCreate model)
-        {
-            return new()
-            {
-                Id = default,
-                Name = model.Name,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-            };
-        }
-
-        public static Subject ToEntity(this SubjectModels.SubjectUpdate model)
+        public static Subject ToEntity(this SubjectModels.SubjectPut model)
         {
             return new()
             {

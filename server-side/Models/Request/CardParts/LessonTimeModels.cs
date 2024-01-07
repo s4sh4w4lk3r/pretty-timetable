@@ -2,14 +2,8 @@
 {
     public static class LessonTimeModels
     {
-        public class LessonTimeCreate
-        {
-            public required int Number { get; init; }
-            public required TimeOnly StartsAt { get; init; }
-            public required TimeOnly EndsAt { get; init; }
-        }
 
-        public class LessonTimeUpdate
+        public class LessonTimePut
         {
             public required int Id { get; init; }
             public required int Number { get; init; }
