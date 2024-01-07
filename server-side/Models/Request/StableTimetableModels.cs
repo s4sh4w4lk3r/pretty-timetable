@@ -2,13 +2,9 @@
 {
     public class StableTimetableModels
     {
-        public class StableTimetableUpdate
+        public class StableTimetablePut
         {
             public int Id { get; init; }
-            public int GroupId { get; set; }
-        }
-        public class StableTimetableCreate
-        {
             public int GroupId { get; set; }
         }
     }

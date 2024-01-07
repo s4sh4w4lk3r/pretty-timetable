@@ -59,7 +59,7 @@ namespace Services.StableTimetables
             else return ServiceResult.Ok("Карточка расписания удалена из бд.");
         }
 
-        public async Task<ServiceResult> UpdateAsync(StableCard stableCard, CancellationToken cancellationToken = default)
+        public async Task<ServiceResult> PutAsync(StableCard stableCard, CancellationToken cancellationToken = default)
         {
             var valResult = new StableCardValidator().Validate(stableCard);
             if (valResult.IsValid is false)

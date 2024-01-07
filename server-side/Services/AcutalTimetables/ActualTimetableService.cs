@@ -24,7 +24,7 @@ namespace Services.AcutalTimetables
             return ServiceResult.Ok("Расписание спроецировалось успешно.");
         }
 
-        public async Task<ServiceResult> UpdateAsync(ActualTimetable actualTimetable, CancellationToken cancellationToken = default)
+        public async Task<ServiceResult> PutAsync(ActualTimetable actualTimetable, CancellationToken cancellationToken = default)
         {
             var valResult = new ActualTimetableValidator().Validate(actualTimetable);
             if (valResult.IsValid is false)

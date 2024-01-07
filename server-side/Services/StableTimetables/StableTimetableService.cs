@@ -52,7 +52,7 @@ namespace Services.StableTimetables
             return ServiceResult.Ok("Расписание удалено из бд.");
         }
 
-        public async Task<ServiceResult> UpdateAsync(StableTimetable stableTimetable, CancellationToken cancellationToken = default)
+        public async Task<ServiceResult> PutAsync(StableTimetable stableTimetable, CancellationToken cancellationToken = default)
         {
             var valResult = new StableTimetableValidator().Validate(stableTimetable); //
             if (valResult.IsValid is false)

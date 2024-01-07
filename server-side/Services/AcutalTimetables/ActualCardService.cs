@@ -61,7 +61,7 @@ namespace Services.AcutalTimetables
             return ServiceResult.Ok("Карточка обновлена.");
         }
 
-        public async Task<ServiceResult> CreateAsync(ActualCard actualCard, CancellationToken cancellationToken = default)
+        public async Task<ServiceResult> PutAsync(ActualCard actualCard, CancellationToken cancellationToken = default)
         {
             if (actualCard.Id != 0)
             {

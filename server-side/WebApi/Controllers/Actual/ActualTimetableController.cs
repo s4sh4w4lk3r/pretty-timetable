@@ -45,18 +45,10 @@ namespace WebApi.Controllers.Actual
         }
 
 
-        [HttpPatch, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Update(ActualTimetableModels.ActualTimetableUpdate model)
+        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        public async Task<IActionResult> Update(ActualTimetableModels.ActualTimetablePut model)
         {
-            var result = await actualTimetableService.UpdateAsync(model.ToEntity());
-
-            return result.Success is true ? Ok(result) : BadRequest(result);
-        }
-
-        [HttpPost, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Create(ActualTimetableModels.ActualTimetableCreate model)
-        {
-            var result = await actualTimetableService.CreateAsync(model.ToEntity());
+            var result = await actualTimetableService.PutAsync(model.ToEntity());
 
             return result.Success is true ? Ok(result) : BadRequest(result);
         }

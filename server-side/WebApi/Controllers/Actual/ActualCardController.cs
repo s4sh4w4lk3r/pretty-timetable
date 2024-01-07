@@ -11,18 +11,10 @@ namespace WebApi.Controllers.Actual
     public class ActualCardController(IActualCardService actualCardService) : ControllerBase
     {
 
-        [HttpPatch, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Update(ActualCardModels.ActualCardUpdate model)
+        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        public async Task<IActionResult> Update(ActualCardModels.ActualCardPut model)
         {
-            var result = await actualCardService.UpdateAsync(model.ToEntity());
-
-            return result.Success ? Ok(result) : BadRequest(result);
-        }
-
-        [HttpPost, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Create(ActualCardModels.ActualCardCreate model)
-        {
-            var result = await actualCardService.CreateAsync(model.ToEntity());
+            var result = await actualCardService.PutAsync(model.ToEntity());
 
             return result.Success ? Ok(result) : BadRequest(result);
         }

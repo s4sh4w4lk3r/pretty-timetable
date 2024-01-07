@@ -5,18 +5,8 @@ namespace Mappers
 {
     public static class StableTimetableMapper
     {
-        public static StableTimetable ToEntity(this StableTimetableModels.StableTimetableCreate model)
-        {
-            return new()
-            {
-                Id = default,
-                GroupId = model.GroupId,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-        }
 
-        public static StableTimetable ToEntity(this StableTimetableModels.StableTimetableUpdate model)
+        public static StableTimetable ToEntity(this StableTimetableModels.StableTimetablePut model)
         {
             return new()
             {

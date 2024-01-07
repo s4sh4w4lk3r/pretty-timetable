@@ -10,19 +10,10 @@ namespace WebApi.Controllers.Stable
     [ApiController, Route("timetable/stable")]
     public class StableTimetableController(IStableTimetableService stableTimetableService) : ControllerBase
     {
-        [HttpPatch, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Update(StableTimetableModels.StableTimetableUpdate models)
+        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        public async Task<IActionResult> Update(StableTimetableModels.StableTimetablePut models)
         {
-            var result = await stableTimetableService.UpdateAsync(models.ToEntity());
-
-            return result.Success is true ? Ok(result) : BadRequest(result);
-        }
-
-        [HttpPost, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Create(StableTimetableModels.StableTimetableCreate models)
-        {
-
-            var result = await stableTimetableService.CreateAsync(models.ToEntity());
+            var result = await stableTimetableService.PutAsync(models.ToEntity());
 
             return result.Success is true ? Ok(result) : BadRequest(result);
         }

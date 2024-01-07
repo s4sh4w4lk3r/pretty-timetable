@@ -10,21 +10,14 @@ namespace WebApi.Controllers.Stable
     [ApiController, Route("timetable/stable/card")]
     public class StableCardController(IStableCardService stableCardService) : ControllerBase
     {
-        [HttpPatch, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Update(StableCardModels.StableCardUpdate model)
+        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        public async Task<IActionResult> Update(StableCardModels.StableCardPut model)
         {
-            var result = await stableCardService.UpdateAsync(model.ToEntity());
+            var result = await stableCardService.PutAsync(model.ToEntity());
 
             return result.Success is true ? Ok(result) : BadRequest(result);
         }
 
-        [HttpPost, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Create(StableCardModels.StableCardCreate model)
-        {
-            var result = await stableCardService.CreateAsync(model.ToEntity());
-
-            return result.Success is true ? Ok(result) : BadRequest(result);
-        }
 
         [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> Delete(int id)
