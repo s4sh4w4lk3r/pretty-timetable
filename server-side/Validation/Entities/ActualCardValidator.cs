@@ -19,7 +19,7 @@ namespace Validation.Entities
             RuleFor(e=>e.Teacher).Null();
             RuleFor(e=>e.Cabinet).Null();
             RuleFor(e=>e.LessonTime).Null();
-            RuleFor(e=>e.SubGroup).Null();
+            RuleFor(e=>e.Subject).Null();
             RuleFor(e=>e.RelatedTimetable).Null();
         }
     }

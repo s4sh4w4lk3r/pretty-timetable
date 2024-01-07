@@ -19,9 +19,9 @@ namespace Services
                 return ServiceResult.Fail(NotFound);
             }
 
-            catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.ForeignKeyViolation)
+            catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx && pgEx.SqlState == PostgresErrorCodes.ForeignKeyViolation)
             {
-                return ServiceResult.Fail($"{ForeignKeyError} Имя ограничения: {ex.ConstraintName}");
+                return ServiceResult.Fail($"{ForeignKeyError} Имя ограничения: {pgEx.ConstraintName}");
             }
             
 

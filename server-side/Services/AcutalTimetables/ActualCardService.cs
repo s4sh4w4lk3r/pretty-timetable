@@ -31,7 +31,7 @@ namespace Services.AcutalTimetables
             bool dateAndWeekMatches = await IsDateAndWeekMatсhes(actualCard, cancellationToken);
             if (dateAndWeekMatches is false)
             {
-                return ServiceResult.Fail("Дата в карточке не попадает на номер недели, указанный в расписании.", default(int));
+                return ServiceResult.Fail("Дата в карточке не попадает на номер недели, указанный в расписании, либо расписания не существует.", default(int));
             }
 
             timetableContext.ActualCards.Update(actualCard);
@@ -56,7 +56,7 @@ namespace Services.AcutalTimetables
         private async Task<bool> IsDateAndWeekMatсhes(ActualCard actualCard, CancellationToken cancellationToken)
         {
             int timetableWeekNumber = await timetableContext.ActualTimetables.Where(e => e.Id == actualCard.RelatedTimetableId)
-                .Select(e => e.WeekNumber).SingleAsync(cancellationToken);
+                .Select(e => e.WeekNumber).SingleOrDefaultAsync(cancellationToken);
 
             int cardWeekNumber = ISOWeek.GetWeekOfYear(actualCard.Date.ToDateTime(default));
 
