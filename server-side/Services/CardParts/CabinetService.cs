@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using Repository.Database;
 using Repository.Entities.Timetable.Cards.Parts;
 using Services.Interfaces.CardParts;
@@ -11,7 +10,6 @@ namespace Services.CardParts
     {
         public async Task<ServiceResult<int>> PutAsync(Cabinet cabinet, CancellationToken cancellationToken = default)
         {
-#warning проверить
             var valResult = new CabinetValidator().Validate(cabinet);
             if (valResult.IsValid is false)
             {
@@ -19,22 +17,25 @@ namespace Services.CardParts
             }
 
             timetableContext.Cabinets.Update(cabinet);
-            await timetableContext.SaveChangesAsync(cancellationToken);
-            return ServiceResult.Ok("Запись добавлена или обновлена", cabinet.Id);
+
+            var queryResult = await timetableContext.SaveChangesAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
+            {
+                return ServiceResult.Fail(ResultMessages.PutError, default(int)).AddInnerResult(queryResult);
+            }
+
+            return ServiceResult.Ok(ResultMessages.Putted, cabinet.Id);
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-#warning проверить
-            try
+            var queryResult = await timetableContext.Cabinets.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
             {
-                await timetableContext.Cabinets.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
-                return ServiceResult.Ok("Кабинет удален.");
+                return ServiceResult.Fail(ResultMessages.DeleteError).AddInnerResult(queryResult);
             }
-            catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.ForeignKeyViolation)
-            {
-                return ServiceResult.Fail("Кабинет не удален, поскольку на него ссылается какая-то сущность.");
-            }
+
+            return ServiceResult.Ok(ResultMessages.Deleted);
         }
     }
 }

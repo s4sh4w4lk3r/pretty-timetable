@@ -11,7 +11,6 @@ namespace Services.CardParts
     {
         public async Task<ServiceResult<int>> PutAsync(LessonTime lessonTime, CancellationToken cancellationToken = default)
         {
-#warning проверить
             var valResult = new LessonTimeValidator().Validate(lessonTime);
             if (valResult.IsValid is false)
             {
@@ -19,22 +18,25 @@ namespace Services.CardParts
             }
 
             timetableContext.LessonTimes.Update(lessonTime);
-            await timetableContext.SaveChangesAsync(cancellationToken);
-            return ServiceResult.Ok("Запись добавлена или обновлена", lessonTime.Id);
+
+            var queryResult = await timetableContext.SaveChangesAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
+            {
+                return ServiceResult.Fail(ResultMessages.PutError, default(int)).AddInnerResult(queryResult);
+            }
+
+            return ServiceResult.Ok(ResultMessages.Putted, lessonTime.Id).AddInnerResult(queryResult);
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-#warning проверить
-            try
+            var queryResult = await timetableContext.LessonTimes.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
             {
-                await timetableContext.LessonTimes.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
-                return ServiceResult.Ok("Урок удален.");
+                return ServiceResult.Fail(ResultMessages.DeleteError).AddInnerResult(queryResult);
             }
-            catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.ForeignKeyViolation)
-            {
-                return ServiceResult.Fail("Урок не удален, поскольку на него ссылается какая-то сущность.");
-            }
+
+            return ServiceResult.Ok(ResultMessages.Deleted).AddInnerResult(queryResult);
         }
     }
 }
