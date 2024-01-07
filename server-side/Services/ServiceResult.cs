@@ -8,7 +8,7 @@ public class ServiceResult(bool success, string description)
 {
     public bool Success { get; init; } = success;
     public string Description { get; init; } = description;
-    public ServiceResult? InnerServiceResult { get; private set; }
+    public ServiceResult? InnerServiceResult { get; private protected set; }
 
 
     public ServiceResult(bool success, string description, ServiceResult innerServiceResult) : this(success, description)
@@ -58,9 +58,20 @@ public class ServiceResult<T> : ServiceResult
         Value = value;
     }
 
+    public new ServiceResult<T> AddInnerResult(ServiceResult innerServiceResult)
+    {
+        InnerServiceResult = innerServiceResult;
+        return this;
+    }
+
     public override string ToString()
     {
         return $"{base.ToString()}, Value: {Value}";
     }
 }
+
+
+
+
+
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
