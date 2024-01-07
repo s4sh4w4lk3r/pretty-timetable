@@ -2,7 +2,7 @@
 
 public class Teacher : IEntity
 {
-    public int Id { get; init; }
+    public required int Id { get; init; }
     public required string Lastname { get; init; }
     public required string Firstname { get; init; }
     public required string Middlename { get; init; }
