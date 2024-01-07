@@ -11,29 +11,32 @@ namespace Services.CardParts
     {
         public async Task<ServiceResult<int>> PutAsync(Subject subject, CancellationToken cancellationToken = default)
         {
-#warning проверить
             var valResult = new SubjectValidator().Validate(subject);
             if (valResult.IsValid is false)
             {
-                return ServiceResult.Fail<int>(valResult.ToString(), default);
+                return ServiceResult.Fail(valResult.ToString(), default(int));
             }
 
             timetableContext.Subjects.Update(subject);
-            await timetableContext.SaveChangesAsync(cancellationToken);
-            return ServiceResult.Ok("Запись добавлена или обновлена", subject.Id);
+
+            var queryResult = await timetableContext.SaveChangesAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
+            {
+                return ServiceResult.Fail(ResultMessages.PutError, default(int)).AddInnerResult(queryResult);
+            }
+
+            return ServiceResult.Ok(ResultMessages.Putted, subject.Id).AddInnerResult(queryResult);
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            try
+            var queryResult = await timetableContext.Subjects.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
             {
-                await timetableContext.Subjects.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken);
-                return ServiceResult.Ok("Предмет удален.");
+                return ServiceResult.Fail(ResultMessages.DeleteError).AddInnerResult(queryResult);
             }
-            catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.ForeignKeyViolation)
-            {
-                return ServiceResult.Fail("Предмет не удален, поскольку на него ссылается какая-то сущность.");
-            }
+
+            return ServiceResult.Ok(ResultMessages.Deleted).AddInnerResult(queryResult);
         }
     }
 }

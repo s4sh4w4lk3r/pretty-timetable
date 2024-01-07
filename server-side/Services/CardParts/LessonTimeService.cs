@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using Repository.Database;
 using Repository.Entities.Timetable.Cards.Parts;
 using Services.Interfaces.CardParts;
