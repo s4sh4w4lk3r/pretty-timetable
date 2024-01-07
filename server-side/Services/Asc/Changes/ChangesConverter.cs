@@ -55,7 +55,7 @@ namespace Services.Asc.Changes
                 var substituting = teachersFromRepo.Single(e => e.Lastname + " " + e.Firstname == subst.Absent);  // заменяющий
                 var cabinet = cabinetsFromRepo.Single(e => e.FullName == subst.Room);
 
-#warning не проверил еще
+                // Возможно, здесь какая-то проблема.
                 var actualCard = actualCards.Single(e => e.Date == date && e.LessonTime!.Number == lessonTime.Number && e.RelatedTimetable!.GroupId == group.Id);
                 actualCard.IsModified = true;
                 actualCard.TeacherId = substituting.Id;

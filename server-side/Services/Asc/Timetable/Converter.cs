@@ -56,6 +56,7 @@ namespace Services.Asc.Timetable
 
             Teachers = _ascTimetable.Teachers.Teacher.Select(e => new Repository.Entities.Timetable.Cards.Parts.Teacher()
             {
+                Id = default,
                 AscId = e.Id,
                 Lastname = e.Lastname,
                 Firstname = e.Firstname,

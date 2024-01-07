@@ -48,10 +48,10 @@ namespace Repository.Database
         {
             entity.ToTable("ActualCard", SchemaName);
             entity.HasKey(e => e.Id);
-            entity.HasOne(e => e.Cabinet).WithMany(e => e.ActualCards).HasForeignKey(e=>e.CabinetId).IsRequired();
-            entity.HasOne(e => e.Subject).WithMany(e => e.ActualCards).HasForeignKey(e => e.SubjectId).IsRequired();
-            entity.HasOne(e => e.Teacher).WithMany(e => e.ActualCards).HasForeignKey(e => e.TeacherId).IsRequired();
-            entity.HasOne(e => e.LessonTime).WithMany(e => e.ActualCards).HasForeignKey(e => e.LessonTimeId).IsRequired();
+            entity.HasOne(e => e.Cabinet).WithMany(e => e.ActualCards).HasForeignKey(e=>e.CabinetId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.Subject).WithMany(e => e.ActualCards).HasForeignKey(e => e.SubjectId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.Teacher).WithMany(e => e.ActualCards).HasForeignKey(e => e.TeacherId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.LessonTime).WithMany(e => e.ActualCards).HasForeignKey(e => e.LessonTimeId).OnDelete(DeleteBehavior.NoAction).IsRequired();
             entity.HasIndex(e => new { e.Date, e.LessonTimeId, e.SubGroup, e.RelatedTimetableId }).IsUnique();
         }
 
@@ -59,10 +59,10 @@ namespace Repository.Database
         {
             entity.ToTable("StableCard", SchemaName);
             entity.HasKey(e => e.Id);
-            entity.HasOne(e => e.Cabinet).WithMany(e => e.StableCards).HasForeignKey(e => e.CabinetId).IsRequired();
-            entity.HasOne(e => e.Subject).WithMany(e => e.StableCards).HasForeignKey(e => e.SubjectId).IsRequired();
-            entity.HasOne(e => e.Teacher).WithMany(e => e.StableCards).HasForeignKey(e => e.TeacherId).IsRequired();
-            entity.HasOne(e => e.LessonTime).WithMany(e => e.StableCards).HasForeignKey(e => e.LessonTimeId).IsRequired();
+            entity.HasOne(e => e.Cabinet).WithMany(e => e.StableCards).HasForeignKey(e => e.CabinetId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.Subject).WithMany(e => e.StableCards).HasForeignKey(e => e.SubjectId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.Teacher).WithMany(e => e.StableCards).HasForeignKey(e => e.TeacherId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.LessonTime).WithMany(e => e.StableCards).HasForeignKey(e => e.LessonTimeId).OnDelete(DeleteBehavior.NoAction).IsRequired();
             entity.HasIndex(e => new { e.DayOfWeek, e.IsWeekEven, e.SubGroup, e.LessonTimeId, e.RelatedTimetableId }).IsUnique();
         }
         public static void ConfigureActualTimetable(EntityTypeBuilder<ActualTimetable> entity)
