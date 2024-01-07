@@ -15,12 +15,12 @@ namespace Services.CardParts
             var valResult = new SubjectValidator().Validate(subject);
             if (valResult.IsValid is false)
             {
-                return ServiceResult<int>.Fail(valResult.ToString(), default);
+                return ServiceResult.Fail<int>(valResult.ToString(), default);
             }
 
             timetableContext.Subjects.Update(subject);
             await timetableContext.SaveChangesAsync(cancellationToken);
-            return ServiceResult<int>.Ok("Запись добавлена или обновлена", subject.Id);
+            return ServiceResult.Ok("Запись добавлена или обновлена", subject.Id);
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)

@@ -15,12 +15,12 @@ namespace Services.CardParts
             var valResult = new LessonTimeValidator().Validate(lessonTime);
             if (valResult.IsValid is false)
             {
-                return ServiceResult<int>.Fail(valResult.ToString(), default);
+                return ServiceResult.Fail(valResult.ToString(), default(int));
             }
 
             timetableContext.LessonTimes.Update(lessonTime);
             await timetableContext.SaveChangesAsync(cancellationToken);
-            return ServiceResult<int>.Ok("Запись добавлена или обновлена", lessonTime.Id);
+            return ServiceResult.Ok("Запись добавлена или обновлена", lessonTime.Id);
         }
 
         public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)

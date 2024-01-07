@@ -8,32 +8,31 @@ public class ServiceResult(bool success, string description)
 {
     public bool Success { get; init; } = success;
     public string Description { get; init; } = description;
-    public ServiceResult? InnerServiceResult { get; init; }
+    public ServiceResult? InnerServiceResult { get; private set; }
+
 
     public ServiceResult(bool success, string description, ServiceResult innerServiceResult) : this(success, description)
     {
         InnerServiceResult = innerServiceResult;
     }
 
-    #region Статические методы.
-    public static ServiceResult Fail(string description)
+
+    public static ServiceResult Fail(string description) => new(false, description);
+    public static ServiceResult Ok(string description) => new(true, description);
+
+
+    public static ServiceResult<T> Fail<T>(string description, T? value) => new(false, description, value);
+    public static ServiceResult<T> Ok<T>(string description, T? value) => new(true, description, value);
+
+
+
+    public ServiceResult AddInnerResult(ServiceResult innerServiceResult)
     {
-        return new ServiceResult(false, description);
-    }
-    public static ServiceResult Ok(string description)
-    {
-        return new ServiceResult(true, description);
+        InnerServiceResult = innerServiceResult;
+        return this;
     }
 
-    public static ServiceResult Fail(string description, ServiceResult innerServiceResult)
-    {
-        return new ServiceResult(false, description, innerServiceResult);
-    }
-    public static ServiceResult Ok(string description, ServiceResult innerServiceResult)
-    {
-        return new ServiceResult(true, description, innerServiceResult);
-    }
-    #endregion
+
 
     public override string ToString()
     {
@@ -58,26 +57,6 @@ public class ServiceResult<T> : ServiceResult
     {
         Value = value;
     }
-
-    #region Статические методы.
-    public static ServiceResult<T> Fail(string description, T? value)
-    {
-        return new ServiceResult<T>(false, description, value);
-    }
-    public static ServiceResult<T> Ok(string description, T? value)
-    {
-        return new ServiceResult<T>(true, description, value);
-    }
-
-    public static ServiceResult<T> Fail(string description, ServiceResult innerServiceResult, T? value)
-    {
-        return new ServiceResult<T>(false, description, innerServiceResult, value);
-    }
-    public static ServiceResult<T> Ok(string description, ServiceResult innerServiceResult, T? value)
-    {
-        return new ServiceResult<T>(true, description, innerServiceResult, value);
-    }
-    #endregion
 
     public override string ToString()
     {
