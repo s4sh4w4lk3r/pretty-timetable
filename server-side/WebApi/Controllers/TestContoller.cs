@@ -1,6 +1,9 @@
 ﻿using Auth;
+using Mappers;
+using Mappers.CardParts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Models.Request.ActualTimetableModels;
 
 namespace WebApi.Controllers
 {
@@ -14,10 +17,11 @@ namespace WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet, Route("crud"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public IActionResult CRUD()
+        [HttpPost, Route("crud"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        public IActionResult CRUD(ActualTimetablePut model)
         {
-            return Ok();
+            return Ok(model.ToEntity());
         }
     }
+
 }

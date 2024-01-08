@@ -1,4 +1,4 @@
-﻿using Services.Asc.Changes;
+﻿using System.Globalization;
 
 namespace TestConsoleApp
 {
@@ -6,7 +6,7 @@ namespace TestConsoleApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(DateTime.UtcNow);
+            Console.WriteLine(ISOWeek.GetWeeksInYear(DateTime.UtcNow.Year));
         }
     }
 }

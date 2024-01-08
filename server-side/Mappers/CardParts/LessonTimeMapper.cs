@@ -13,7 +13,6 @@ namespace Mappers.CardParts
                 Number = model.Number,
                 StartsAt = TimeOnly.Parse(model.StartsAt),
                 EndsAt = TimeOnly.Parse(model.EndsAt),
-#warning сделать на вход контроллерах regex для успешного парсинга времени
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

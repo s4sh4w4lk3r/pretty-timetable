@@ -1,13 +1,15 @@
-﻿namespace Models.Request.CardParts
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Models.Request.CardParts
 {
     public static class TeacherModels
     {
         public class TeacherPut
         {
             public int Id { get; init; }
-            public required string Lastname { get; init; }
-            public required string Firstname { get; init; }
-            public required string Middlename { get; init; }
+            [Required] public required string Lastname { get; init; }
+            [Required] public required string Firstname { get; init; }
+            [Required] public required string Middlename { get; init; }
 
         }
     }
