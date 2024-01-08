@@ -9,9 +9,11 @@ query Groups {
 }
 `);
 
-export const ACTUAL_TIMETABLE_BY_GROUP_ID = gql( `
-query ActualTimetables($groupId: Int!) {
-    actualTimetables(where: { groupId: { eq: $groupId } }) {
+export const ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER = gql( `
+query ActualTimetables($groupId: Int!, $weekNumber: Int!) {
+    actualTimetables(
+        where: { groupId: { eq: $groupId }, weekNumber: { eq: $weekNumber } }
+    ) {
         group {
             id
             name
@@ -38,6 +40,12 @@ query ActualTimetables($groupId: Int!) {
             isMoved
             subGroup
         }
+    }
+    lessonTimes {
+        id
+        number
+        startsAt
+        endsAt
     }
 }
 `)
