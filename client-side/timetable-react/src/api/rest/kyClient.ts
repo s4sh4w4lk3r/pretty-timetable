@@ -3,7 +3,7 @@ import env from "../../../envConfig"
 
 
 const kyOptions: Options = {
-    prefixUrl: env.apiAddress
+    prefixUrl: env.api.address
 }
 
 export default ky.create(kyOptions);

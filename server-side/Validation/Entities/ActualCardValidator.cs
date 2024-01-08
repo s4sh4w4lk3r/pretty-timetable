@@ -12,7 +12,15 @@ namespace Validation.Entities
             RuleFor(e => e.LessonTimeId).NotEmpty();
             RuleFor(e => e.SubjectId).NotEmpty();
             RuleFor(e => e.RelatedTimetableId).NotEmpty();
+
             RuleFor(e => e.SubGroup).IsInEnum();
+            RuleFor(e => e.Date).NotEmpty();
+
+            RuleFor(e=>e.Teacher).Null();
+            RuleFor(e=>e.Cabinet).Null();
+            RuleFor(e=>e.LessonTime).Null();
+            RuleFor(e=>e.Subject).Null();
+            RuleFor(e=>e.RelatedTimetable).Null();
         }
     }
 }

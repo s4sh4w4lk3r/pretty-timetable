@@ -24,6 +24,7 @@ namespace Repository.Database
         {
             entity.ToTable("LessonTime", SchemaName);
             entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.Number, e.StartsAt, e.EndsAt }).IsUnique();
         }
 
         public static void ConfigureSubject(EntityTypeBuilder<Subject> entity)
@@ -48,26 +49,29 @@ namespace Repository.Database
         {
             entity.ToTable("ActualCard", SchemaName);
             entity.HasKey(e => e.Id);
-            entity.HasOne(e => e.Cabinet).WithMany(e => e.ActualCards).HasForeignKey(e=>e.CabinetId).IsRequired();
-            entity.HasOne(e => e.Subject).WithMany(e => e.ActualCards).HasForeignKey(e => e.SubjectId).IsRequired();
-            entity.HasOne(e => e.Teacher).WithMany(e => e.ActualCards).HasForeignKey(e => e.TeacherId).IsRequired();
-            entity.HasOne(e => e.LessonTime).WithMany(e => e.ActualCards).HasForeignKey(e => e.LessonTimeId).IsRequired();
+            entity.HasOne(e => e.Cabinet).WithMany(e => e.ActualCards).HasForeignKey(e=>e.CabinetId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.Subject).WithMany(e => e.ActualCards).HasForeignKey(e => e.SubjectId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.Teacher).WithMany(e => e.ActualCards).HasForeignKey(e => e.TeacherId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.LessonTime).WithMany(e => e.ActualCards).HasForeignKey(e => e.LessonTimeId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasIndex(e => new { e.Date, e.LessonTimeId, e.SubGroup, e.RelatedTimetableId }).IsUnique();
         }
 
         public static void ConfigureStableCard(EntityTypeBuilder<StableCard> entity)
         {
             entity.ToTable("StableCard", SchemaName);
             entity.HasKey(e => e.Id);
-            entity.HasOne(e => e.Cabinet).WithMany(e => e.StableCards).HasForeignKey(e => e.CabinetId).IsRequired();
-            entity.HasOne(e => e.Subject).WithMany(e => e.StableCards).HasForeignKey(e => e.SubjectId).IsRequired();
-            entity.HasOne(e => e.Teacher).WithMany(e => e.StableCards).HasForeignKey(e => e.TeacherId).IsRequired();
-            entity.HasOne(e => e.LessonTime).WithMany(e => e.StableCards).HasForeignKey(e => e.LessonTimeId).IsRequired();
+            entity.HasOne(e => e.Cabinet).WithMany(e => e.StableCards).HasForeignKey(e => e.CabinetId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.Subject).WithMany(e => e.StableCards).HasForeignKey(e => e.SubjectId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.Teacher).WithMany(e => e.StableCards).HasForeignKey(e => e.TeacherId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.LessonTime).WithMany(e => e.StableCards).HasForeignKey(e => e.LessonTimeId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasIndex(e => new { e.DayOfWeek, e.IsWeekEven, e.SubGroup, e.LessonTimeId, e.RelatedTimetableId }).IsUnique();
         }
         public static void ConfigureActualTimetable(EntityTypeBuilder<ActualTimetable> entity)
         {
             entity.ToTable("ActualTimetable", SchemaName);
             entity.HasKey(e => e.Id);
-            entity.HasMany(e => e.Cards).WithOne(e=>e.RelatedTimetable).HasForeignKey(e => e.RelatedTimetableId).IsRequired(); ;
+            entity.HasMany(e => e.Cards).WithOne(e=>e.RelatedTimetable).HasForeignKey(e => e.RelatedTimetableId).IsRequired();
+            entity.HasIndex(e => new { e.GroupId, e.WeekNumber }).IsUnique();
         }
 
         public static void ConfigureStableTimetable(EntityTypeBuilder<StableTimetable> entity)
@@ -75,6 +79,7 @@ namespace Repository.Database
             entity.ToTable("StableTimetable", SchemaName);
             entity.HasKey(e => e.Id);
             entity.HasMany(e => e.Cards).WithOne(e=>e.RelatedTimetable).HasForeignKey(e=>e.RelatedTimetableId).IsRequired();
+            entity.HasIndex(e => new { e.GroupId }).IsUnique();
         }
 
         public static void ConfigureGroup(EntityTypeBuilder<Group> entity)

@@ -5,12 +5,12 @@ namespace Repository.Entities.Timetable
 {
     public class ActualTimetable : ITimetable
     {
-        public int Id { get; init; }
-        public Group? Group { get; init; }
-        public int GroupId { get; init; }
-        public int WeekNumber { get; init; }
-        public DateTime CreatedAt { get; init; }
-        public DateTime UpdatedAt { get; init; }
-        public ICollection<ActualCard>? Cards { get; init; } 
+        public required int Id { get; init; }
+        public Group? Group { get; set; }
+        public required int GroupId { get; set; }
+        public required int WeekNumber { get; set; }
+        public required DateTime CreatedAt { get; init; }
+        public required DateTime UpdatedAt { get; set; }
+        public ICollection<ActualCard>? Cards { get; set; }
     }
 }

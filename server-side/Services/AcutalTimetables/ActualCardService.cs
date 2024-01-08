@@ -1,50 +1,66 @@
-﻿using Repository.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Database;
 using Repository.Entities.Timetable.Cards;
+using Services.Interfaces.Actual;
+using System.Globalization;
 using Validation.Entities;
 
 namespace Services.AcutalTimetables
 {
-    public class ActualCardService(TimetableContext timetableContext)
+    public class ActualCardService(TimetableContext timetableContext) : IActualCardService
     {
-        public async Task<ServiceResult> UpdateCard(ActualCard actualCard)
+        public async Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var queryResult = await timetableContext.ActualCards.Where(e => e.Id == id).ExecuteDeleteAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
+            {
+                return ServiceResult.Fail(ResultMessages.DeleteError).AddInnerResult(queryResult);
+            }
+
+            return ServiceResult.Ok(ResultMessages.Deleted);
+        }
+
+        public async Task<ServiceResult<int>> PutAsync(ActualCard actualCard, CancellationToken cancellationToken = default)
         {
             var valResult = new ActualCardValidator().Validate(actualCard);
             if (valResult.IsValid is false)
             {
-                return ServiceResult.Fail(valResult.ToString());
+                return ServiceResult.Fail(valResult.ToString(), default(int));
             }
 
-            var cardFromRepo = timetableContext.ActualCards.SingleOrDefault(e => e.Id == actualCard.Id);
-            if (cardFromRepo is null)
+            bool dateAndWeekMatches = await IsDateAndWeekMatсhes(actualCard, cancellationToken);
+            if (dateAndWeekMatches is false)
             {
-                return ServiceResult.Fail("Такой карточки актуального расписания нет в бд для обновления.");
+                return ServiceResult.Fail("Дата в карточке не попадает на номер недели, указанный в расписании, либо расписания не существует.", default(int));
             }
 
-            bool foreingIdsExist = timetableContext.Subjects.Any(e => e.Id == actualCard.SubjectId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.TeacherId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.LessonTimeId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.CabinetId) &&
-            timetableContext.Subjects.Any(e => e.Id == actualCard.SubjectId);
+            timetableContext.ActualCards.Update(actualCard);
 
-            if (foreingIdsExist is false) 
+            var queryResult = await timetableContext.SaveChangesAsync(cancellationToken).HandleQuery();
+            if (queryResult.Success is false)
             {
-                return ServiceResult.Fail("Указаны несуществующие внешние ключи.");
+                return ServiceResult.Fail(ResultMessages.PutError, default(int)).AddInnerResult(queryResult);
             }
 
-            cardFromRepo.SubjectId = actualCard.SubjectId;
-            cardFromRepo.TeacherId = actualCard.TeacherId;
-            cardFromRepo.LessonTimeId = actualCard.LessonTimeId;
-            cardFromRepo.CabinetId = actualCard.CabinetId;
-            cardFromRepo.SubGroup = actualCard.SubGroup;
-            cardFromRepo.IsCanceled = actualCard.IsCanceled;
-            cardFromRepo.IsCanceled = actualCard.IsModified;
-            cardFromRepo.IsCanceled = actualCard.IsMoved;
-            cardFromRepo.UpdatedAt = DateTime.UtcNow;
+            return ServiceResult.Ok(ResultMessages.Putted, actualCard.Id);
 
 
-            await timetableContext.SaveChangesAsync();
+        }
 
-            return ServiceResult.Ok("Актуальная карточка обновлена.");
+        /// <summary>
+        /// Метод проверяет, подходит номер недели и дата друг другу.
+        /// </summary>
+        /// <param name="actualCard"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Если подходит, то возвращается True, иначе False.</returns>
+        private async Task<bool> IsDateAndWeekMatсhes(ActualCard actualCard, CancellationToken cancellationToken)
+        {
+            int timetableWeekNumber = await timetableContext.ActualTimetables.Where(e => e.Id == actualCard.RelatedTimetableId)
+                .Select(e => e.WeekNumber).SingleOrDefaultAsync(cancellationToken);
+
+            int cardWeekNumber = ISOWeek.GetWeekOfYear(actualCard.Date.ToDateTime(default));
+
+            return timetableWeekNumber == cardWeekNumber;
         }
     }
 }

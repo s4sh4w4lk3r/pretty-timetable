@@ -25,7 +25,7 @@
 
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<NoWarn>$(NoWarn);1591</NoWarn>
+		<NoWarn>$(NoWarn);1591;AD0001</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

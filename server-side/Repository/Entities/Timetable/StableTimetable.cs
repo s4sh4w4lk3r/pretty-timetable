@@ -4,11 +4,11 @@ namespace Repository.Entities.Timetable
 {
     public class StableTimetable : ITimetable
     {
-        public int Id { get; init; }
-        public Group? Group { get; init; }
-        public int GroupId { get; init; }
-        public DateTime CreatedAt { get; init; }
-        public DateTime UpdatedAt { get; init; }
-        public ICollection<StableCard>? Cards { get; init; }
+        required public int Id { get; init; }
+        public Group? Group { get; set; }
+        required public int GroupId { get; set; }
+        required public DateTime CreatedAt { get; init; }
+        required public DateTime UpdatedAt { get; set; }
+        public ICollection<StableCard>? Cards { get; set; }
     }
 }

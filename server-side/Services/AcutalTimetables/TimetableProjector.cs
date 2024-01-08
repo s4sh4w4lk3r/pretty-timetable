@@ -11,7 +11,7 @@ namespace Services.AcutalTimetables
         private readonly List<ActualTimetable> actualTimetables = [];
         private readonly List<StableTimetable> stableTimetables = timetableContext.StableTimetables.Include(e => e.Cards).ToList();
 
-        public async Task<ServiceResult> Project(IEnumerable<DateOnly> dates)
+        public async Task<ServiceResult> Project(IEnumerable<DateOnly> dates, CancellationToken cancellationToken = default)
         {
             var checkDatesResult = CheckDates(dates);
             if (checkDatesResult.Success is false || checkDatesResult.Value == -1)
@@ -24,10 +24,12 @@ namespace Services.AcutalTimetables
             {
                 var newActualTimetable = new ActualTimetable()
                 {
-                    CreatedAt = DateTime.UtcNow,
+                    Id = default,
                     GroupId = timetable.Id,
                     WeekNumber = checkDatesResult.Value,
-                    Cards = []
+                    Cards = [],
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 };
 
                 foreach (var date in dates)
@@ -41,8 +43,8 @@ namespace Services.AcutalTimetables
                 actualTimetables.Add(newActualTimetable);
             }
 
-            await timetableContext.ActualTimetables.AddRangeAsync(actualTimetables);
-            await timetableContext.SaveChangesAsync();
+            await timetableContext.ActualTimetables.AddRangeAsync(actualTimetables,cancellationToken);
+            await timetableContext.SaveChangesAsync(cancellationToken);
             return ServiceResult.Ok("Расписание для всех групп добавлено.");
         }
 
@@ -87,6 +89,7 @@ namespace Services.AcutalTimetables
         {
             return new ActualCard()
             {
+                Id = default,
                 IsCanceled = false,
                 IsModified = false,
                 IsMoved = false,
@@ -97,7 +100,8 @@ namespace Services.AcutalTimetables
                 TeacherId = stableCard.TeacherId,
                 RelatedTimetableId = relatedTimetableId,
                 Date = date,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
         }
     }

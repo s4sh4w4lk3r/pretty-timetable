@@ -4,24 +4,24 @@ namespace Repository.Entities.Timetable.Cards
 {
     public class ActualCard : ICard
     {
-        public int Id { get; init; }
+        public required int Id { get; init; }
         public Teacher? Teacher { get; set; }
-        public Subject? Subject { get; init; }
+        public Subject? Subject { get; set; }
         public Cabinet? Cabinet { get; set; }
         public LessonTime? LessonTime { get; set; }
-        public int TeacherId { get; set; }
-        public int SubjectId { get; set; }
-        public int CabinetId { get; set; }
-        public int LessonTimeId { get; set; }
-        public DateOnly Date { get; init; }
-        public bool IsModified { get; set; }
-        public bool IsCanceled { get; set; }
-        public bool IsMoved { get; set; }
-        public SubGroup SubGroup { get; set; }
-        public DateTime CreatedAt { get; init; }
-        public DateTime UpdatedAt { get; set; }
+        public required int TeacherId { get; set; }
+        public required int SubjectId { get; set; }
+        public required int CabinetId { get; set; }
+        public required int LessonTimeId { get; set; }
+        public required DateOnly Date { get; set; }
+        public required bool IsModified { get; set; }
+        public required bool IsCanceled { get; set; }
+        public required bool IsMoved { get; set; }
+        public required SubGroup SubGroup { get; set; }
+        public required DateTime CreatedAt { get; init; }
+        public required DateTime UpdatedAt { get; set; }
 
-        public int RelatedTimetableId { get; init; }
-        public ActualTimetable? RelatedTimetable { get; init; }
+        public required int RelatedTimetableId { get; init; }
+        public ActualTimetable? RelatedTimetable { get; set; }
     }
 }

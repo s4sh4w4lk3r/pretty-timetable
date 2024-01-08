@@ -44,7 +44,8 @@ namespace WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("GroupId", "WeekNumber")
+                        .IsUnique();
 
                     b.ToTable("ActualTimetable", "timetable");
                 });
@@ -104,6 +105,9 @@ namespace WebApi.Migrations
                     b.HasIndex("SubjectId");
 
                     b.HasIndex("TeacherId");
+
+                    b.HasIndex("Date", "LessonTimeId", "SubGroup", "RelatedTimetableId")
+                        .IsUnique();
 
                     b.ToTable("ActualCard", "timetable");
                 });
@@ -171,6 +175,9 @@ namespace WebApi.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Number", "StartsAt", "EndsAt")
+                        .IsUnique();
 
                     b.ToTable("LessonTime", "timetable");
                 });
@@ -295,6 +302,9 @@ namespace WebApi.Migrations
 
                     b.HasIndex("TeacherId");
 
+                    b.HasIndex("DayOfWeek", "IsWeekEven", "SubGroup", "LessonTimeId", "RelatedTimetableId")
+                        .IsUnique();
+
                     b.ToTable("StableCard", "timetable");
                 });
 
@@ -348,7 +358,8 @@ namespace WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("GroupId")
+                        .IsUnique();
 
                     b.ToTable("StableTimetable", "timetable");
                 });
@@ -369,13 +380,13 @@ namespace WebApi.Migrations
                     b.HasOne("Repository.Entities.Timetable.Cards.Parts.Cabinet", "Cabinet")
                         .WithMany("ActualCards")
                         .HasForeignKey("CabinetId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Repository.Entities.Timetable.Cards.Parts.LessonTime", "LessonTime")
                         .WithMany("ActualCards")
                         .HasForeignKey("LessonTimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Repository.Entities.Timetable.ActualTimetable", "RelatedTimetable")
@@ -387,13 +398,13 @@ namespace WebApi.Migrations
                     b.HasOne("Repository.Entities.Timetable.Cards.Parts.Subject", "Subject")
                         .WithMany("ActualCards")
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Repository.Entities.Timetable.Cards.Parts.Teacher", "Teacher")
                         .WithMany("ActualCards")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Cabinet");
@@ -412,13 +423,13 @@ namespace WebApi.Migrations
                     b.HasOne("Repository.Entities.Timetable.Cards.Parts.Cabinet", "Cabinet")
                         .WithMany("StableCards")
                         .HasForeignKey("CabinetId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Repository.Entities.Timetable.Cards.Parts.LessonTime", "LessonTime")
                         .WithMany("StableCards")
                         .HasForeignKey("LessonTimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Repository.Entities.Timetable.StableTimetable", "RelatedTimetable")
@@ -430,13 +441,13 @@ namespace WebApi.Migrations
                     b.HasOne("Repository.Entities.Timetable.Cards.Parts.Subject", "Subject")
                         .WithMany("StableCards")
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Repository.Entities.Timetable.Cards.Parts.Teacher", "Teacher")
                         .WithMany("StableCards")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Cabinet");

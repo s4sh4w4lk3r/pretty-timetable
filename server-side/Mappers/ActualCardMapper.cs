@@ -1,4 +1,5 @@
 ﻿
+using Models.Request;
 using Repository.Entities.Timetable.Cards.Parts;
 
 
@@ -6,7 +7,7 @@ namespace Mappers
 {
     public static class ActualCardMapper
     {
-        public static Repository.Entities.Timetable.Cards.ActualCard ToEntity(this Models.Request.Timetables.Cards.ActualCardUpdateModel model)
+        public static Repository.Entities.Timetable.Cards.ActualCard ToEntity(this ActualCardModels.ActualCardPut model)
         {
             return new()
             {
@@ -19,6 +20,10 @@ namespace Mappers
                 IsCanceled = model.IsCanceled,
                 IsModified = model.IsModified,
                 IsMoved = model.IsMoved,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                RelatedTimetableId = model.RelatedTimetableId,
+                Date = model.Date
             };
         }
     }

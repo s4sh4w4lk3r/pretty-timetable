@@ -1,0 +1,7 @@
+.header {
+    background-color: black;
+    color: white;
+    height: 50px;
+    display: flex;
+    border: 1px solid deeppink;
+}
