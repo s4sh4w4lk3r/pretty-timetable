@@ -23,7 +23,7 @@ namespace Mappers
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 RelatedTimetableId = model.RelatedTimetableId,
-                Date = model.Date
+                Date = DateOnly.Parse(model.Date)
             };
         }
     }
