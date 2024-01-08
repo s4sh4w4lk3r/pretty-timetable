@@ -1,4 +1,6 @@
-﻿using Mappers.CardParts;
+﻿using Auth;
+using Mappers.CardParts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Request.CardParts;
 using Services.Interfaces.CardParts;
@@ -8,7 +10,7 @@ namespace WebApi.Controllers.CardParts
     [ApiController, Route("teacher")]
     public class TeacherController(ITeacherService teacherService) : ControllerBase
     {
-        [HttpPut, Route("")]
+        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> Put(TeacherModels.TeacherPut model)
         {
             var result = await teacherService.PutAsync(model.ToEntity());
@@ -17,7 +19,7 @@ namespace WebApi.Controllers.CardParts
         }
 
 
-        [HttpDelete, Route("")]
+        [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await teacherService.DeleteAsync(id);

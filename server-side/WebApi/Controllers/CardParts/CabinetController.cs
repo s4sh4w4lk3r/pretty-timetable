@@ -1,4 +1,6 @@
-﻿using Mappers.CardParts;
+﻿using Auth;
+using Mappers.CardParts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Request.CardParts;
 using Services.Interfaces.CardParts;
@@ -8,7 +10,7 @@ namespace WebApi.Controllers.CardParts
     [ApiController, Route("cabinet")]
     public class CabinetController(ICabinetService cabinetService) : ControllerBase
     {
-        [HttpPut, Route("")]
+        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> Put(CabinetModels.CabinetPut model)
         {
             var result = await cabinetService.PutAsync(model.ToEntity());
@@ -17,7 +19,7 @@ namespace WebApi.Controllers.CardParts
         }
 
 
-        [HttpDelete, Route("")]
+        [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await cabinetService.DeleteAsync(id);
