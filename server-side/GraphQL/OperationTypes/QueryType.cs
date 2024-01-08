@@ -4,7 +4,6 @@ using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable;
 using GraphQL.FilterTypes;
 using GraphQL.SortTypes;
-using Auth;
 
 namespace GraphQL.OperationTypes
 {

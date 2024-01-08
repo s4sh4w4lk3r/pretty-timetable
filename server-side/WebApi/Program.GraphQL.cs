@@ -13,6 +13,8 @@ namespace WebApi
             .AddGraphQLServer()
             .ModifyOptions(options => { options.DefaultBindingBehavior = BindingBehavior.Explicit; })
 
+            .AllowIntrospection(builder.Environment.IsDevelopment())
+
             .AddQueryType<QueryType>()
 
             .AddType<ActualTimetableType>()

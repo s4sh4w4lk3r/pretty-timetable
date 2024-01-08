@@ -35,11 +35,7 @@ namespace WebApi
             .WithOrigins(origins));
 
 
-            app.MapGraphQL().WithOptions(new GraphQLServerOptions
-            {
-                Tool = { Enable = app.Environment.IsDevelopment() }
-            }).RequireAuthorization();
-
+            app.MapGraphQL().RequireAuthorization();
 
             app.MapControllers().RequireAuthorization();
 
@@ -48,6 +44,7 @@ namespace WebApi
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.MapBananaCakePop().AllowAnonymous();
             }
 
             using (var scope = app.Services.CreateScope())
