@@ -22,7 +22,7 @@ namespace Repository.Database
 
             optionsBuilder.UseLoggerFactory(_loggerFactory);
             optionsBuilder.UseNpgsql(_configuration.ConnectionString, options => 
-            { options.MigrationsAssembly(Assembly.GetEntryAssembly()!.GetName().Name); });
+            { options.MigrationsAssembly("WebApi"); });
         }
 
         public DbSet<Cabinet> Cabinets => Set<Cabinet>();
