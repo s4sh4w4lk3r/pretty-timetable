@@ -1,7 +1,9 @@
 ﻿using Repository.Database;
+using Services;
 using Services.AcutalTimetables;
 using Services.Asc.Changes;
 using Services.CardParts;
+using Services.Interfaces;
 using Services.Interfaces.Actual;
 using Services.Interfaces.CardParts;
 using Services.Interfaces.Stable;
@@ -26,6 +28,7 @@ namespace WebApi
             builder.Services.AddScoped<ICabinetService, CabinetService>();
             builder.Services.AddScoped<ISubjectService, SubjectService>();
             builder.Services.AddScoped<ILessonTimeService, LessonTimeService>();
+            builder.Services.AddScoped<IGroupService, GroupService>();
         }
     }
 }
