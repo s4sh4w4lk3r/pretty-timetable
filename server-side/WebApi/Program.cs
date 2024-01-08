@@ -1,5 +1,4 @@
 using HotChocolate.AspNetCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Repository.Database;
 using Serilog;

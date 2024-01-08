@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Repository.Entities.Timetable;
 using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable.Cards.Parts;
+using System.Reflection;
 using static Repository.Database.TimetableSchemaMethods;
 
 namespace Repository.Database
@@ -17,14 +18,11 @@ namespace Repository.Database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(_configuration.ConnectionString);
-            ArgumentException.ThrowIfNullOrWhiteSpace(_configuration.AdminDbName);
             ArgumentNullException.ThrowIfNull(loggerFactory);
 
             optionsBuilder.UseLoggerFactory(_loggerFactory);
             optionsBuilder.UseNpgsql(_configuration.ConnectionString, options => 
-            { options.UseAdminDatabase(_configuration.AdminDbName); 
-                options.MigrationsAssembly("WebApi"); 
-            });
+            { options.MigrationsAssembly(Assembly.GetEntryAssembly()!.GetName().Name); });
         }
 
         public DbSet<Cabinet> Cabinets => Set<Cabinet>();
