@@ -1,4 +1,4 @@
-import style from './lessontTime.module.css'
+import style from './LessonTime.module.css'
 
 type LessonTimeType = {
     number: number,
@@ -7,10 +7,12 @@ type LessonTimeType = {
 }
 export default function lessonTime({ number, startsAt, endsAt }: LessonTimeType) {
     return (
-        <div>
-            <div className={style.number}>{number}</div>
-            <div className={style.startsAt}>{startsAt}</div>
-            <div className={style.endsAt}>{endsAt}</div>
+        <div className={style.lessonTime}>
+            <p className={style.number}>{number} пара</p>
+            <div className={style.time}>
+                <p className={style.startsAt}>{startsAt}</p>
+                <p className={style.endsAt}>{endsAt}</p>
+            </div>
         </div>
     )
 }

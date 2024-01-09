@@ -1,0 +1,8 @@
+.lessonTimes{
+    display: flex;
+}
+
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+}
