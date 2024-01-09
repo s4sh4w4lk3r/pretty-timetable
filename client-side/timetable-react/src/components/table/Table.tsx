@@ -3,6 +3,7 @@ import Card from "./card/Card";
 import data from "../../api/test.json"
 import styles from "./Table.module.css"
 
+
 function getCurrentWeekNumber() {
   var date = new Date();
   date.setHours(0, 0, 0, 0);
@@ -15,16 +16,51 @@ function getCurrentWeekNumber() {
     - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 
+class TimetableDate {
+
+  public dayOfWeek: string
+  constructor(public unixEpoch: number) {
+    new Date(unixEpoch).getDayofWeek
+  }
+}
+
 export default function Table() {
 
-  const lessonTimesEl = data.lessonTimes.map(e => <LessonTime key={e.id} number={e.number} startsAt={e.startsAt} endsAt={e.endsAt}></LessonTime>);
-  const cardsEl = data.actualTimetables[0].cards.map(e=> <Card cabinet={"1237"} teacher={e.teacher.lastname} subject={e.subject.name} key={e.id}></Card>);
+  const timetable = data.actualTimetables[0];
+  const cards = timetable.cards;
+
+  const requiredLessonTimeIds = [...new Set(cards.map(card => card.lessonTimeId))];
+  // надо сделать чтобы оставались только те лессонтаймы, айдишники которых находятся в массиве requiredLessonTimeIds
+  const lessonTimes = data.lessonTimes.map(lt => requiredLessonTimeIds.an)
+
+
+  const dates = [...new Set(timetable.cards.map(e => new TimetableDate(Date.parse(e.date)), ))];
+  // использовать объект типа TimetableDate
+
+  debugger;
+
+  const cardsElement = lessonTimes
+    .sort((ltA, ltB) => ltA.number > ltB.number ? 1 : -1).map(lt => {
+
+      const lessonTimeElement = <LessonTime key={lt.id} startsAt={lt.startsAt} endsAt={lt.endsAt} number={lt.number}></LessonTime>;
+
+      const cardElements = cards.filter(c => c.lessonTimeId === lt.id)
+
+        .sort((cardA, cardB) => Date.parse(cardA.date) > Date.parse(cardB.date) ? 1 : -1)
+
+        .map(card => card.lessonTimeId === lt.id ? <Card cabinet="1237" subject={card.subject.name} teacher={card.teacher.lastname} key={card.id}></Card> : <Card cabinet="" subject="" teacher="" key={card.id}></Card>);
+
+      let column: JSX.Element[] = [];
+      column.push(lessonTimeElement);
+      column = column.concat(cardElements);
+
+      return <div>{column}</div>
+    });
 
   return (
     <>
       <h3>{data.actualTimetables[0].group.name}</h3>
-      <div className={styles.lessonTimes}>{lessonTimesEl}</div>
-      <div className={styles.cards}>{cardsEl}</div>
+      <div className={styles.cards}>{cardsElement}</div>
     </>
   )
 }
