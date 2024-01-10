@@ -1,0 +1,19 @@
+.card {
+    display: flex;
+    max-width: 300px;
+    min-height: 70px;
+    border: 1px solid green;
+    border-radius: 10px;
+    box-sizing: border-box;
+
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

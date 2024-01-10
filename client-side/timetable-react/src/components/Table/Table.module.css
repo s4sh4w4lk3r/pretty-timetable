@@ -1,0 +1,14 @@
+.table{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cardContainers{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.groupName{
+    
+}
