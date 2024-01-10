@@ -1,7 +1,8 @@
-import LessonTime from "./lessonTime/lessonTime"
+import LessonTime from "./lessonTime/LessonTime"
 import Card from "./card/Card";
 import data from "../../api/test.json"
 import styles from "./Table.module.css"
+import DayOfWeek from "./dayOfWeek/DayOfWeek";
 
 
 function getCurrentWeekNumber() {
@@ -18,9 +19,17 @@ function getCurrentWeekNumber() {
 
 class TimetableDate {
 
-  public dayOfWeek: string
-  constructor(public unixEpoch: number) {
-    new Date(unixEpoch).getDayofWeek
+  public readonly dayOfWeek: string
+  public readonly unixEpoch: number
+  constructor(public readonly date: string) {
+    this.unixEpoch = Date.parse(date);
+    this.dayOfWeek = new Date(date).toLocaleDateString("ru-RU", { weekday: "short" })
+  }
+}
+
+class CardPoint {
+  constructor(public readonly column: number, public readonly row: number) {
+
   }
 }
 
@@ -30,14 +39,16 @@ export default function Table() {
   const cards = timetable.cards;
 
   const requiredLessonTimeIds = [...new Set(cards.map(card => card.lessonTimeId))];
-  // надо сделать чтобы оставались только те лессонтаймы, айдишники которых находятся в массиве requiredLessonTimeIds
-  const lessonTimes = data.lessonTimes.map(lt => requiredLessonTimeIds.an)
+  const lessonTimes = data.lessonTimes.filter(lt => requiredLessonTimeIds.includes(lt.id))
+    .sort((ltA, ltB) => ltA.number > ltB.number ? 1 : -1);
+
+  const dates = timetable.cards.map(e => new TimetableDate(e.date))
+    .sort((dateA, dateB) => dateA.unixEpoch > dateB.unixEpoch ? 1 : -1);
+  const datesDistinct = [...new Map(dates.map(item => [item["unixEpoch"], item])).values()];
 
 
-  const dates = [...new Set(timetable.cards.map(e => new TimetableDate(Date.parse(e.date)), ))];
-  // использовать объект типа TimetableDate
-
-  debugger;
+  const rows = datesDistinct.length + 1;
+  const columns = datesDistinct.length + 1;
 
   const cardsElement = lessonTimes
     .sort((ltA, ltB) => ltA.number > ltB.number ? 1 : -1).map(lt => {
@@ -59,9 +70,13 @@ export default function Table() {
 
   return (
     <>
-      <h3>{data.actualTimetables[0].group.name}</h3>
-      <div className={styles.cards}>{cardsElement}</div>
-    </>
+      <p className={styles.groupName}>{data.actualTimetables[0].group.name}</p>
+      <div className={styles.table} 
+      style={{gridTemplateColumns: `repeat(${columns}, auto)`, gridTemplateRows: `repeat(${rows}, auto)`}}>
+
+        {cardsElement}
+      </div>
+      </>
   )
 }
 // сделать не в виде таблицы хтмл, а в виде грида в ксс

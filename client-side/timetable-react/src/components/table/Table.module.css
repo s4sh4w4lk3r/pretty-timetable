@@ -1,8 +1,12 @@
-.lessonTimes{
-    display: flex;
+.table{
+    display: grid;
+    grid-row-gap: 5px;
+    grid-column-gap: 5px;
 }
 
-.cards{
+.groupName{
     display: flex;
-    flex-wrap: wrap;
+    justify-content: center;
+    margin: 5px;
+    font-size: x-large;
 }
