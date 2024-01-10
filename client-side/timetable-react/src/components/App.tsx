@@ -1,7 +1,7 @@
 import { useState } from "react"
 import data from "./../api/test.json"
-import Card from "./Card/Card";
 import Table from "./Table/Table";
+import styles from "./App.module.css"
 
 
 function getWeekNumber(date: Date) {
@@ -28,9 +28,9 @@ export default function App() {
     const timetable = data.actualTimetables[0];
 
     return (
-        <>
+        <div className={styles.appGrid}>
             <Table timetable={timetable}></Table>
-        </>
+        </div>
     )
 
 }
