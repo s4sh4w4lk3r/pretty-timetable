@@ -1,7 +1,9 @@
 import { useState } from "react"
-import data from "./../api/test.json"
 import Table from "./Table/Table";
 import styles from "./App.module.css"
+import { useQuery } from "@apollo/client";
+import { ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER } from "../api/graphql/queries";
+import { ActualTimetable } from "../api/graphql/__generated__/graphql";
 
 
 function getWeekNumber(date: Date) {
@@ -15,22 +17,33 @@ function getWeekNumber(date: Date) {
         - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 
-export type TimetableType = typeof data.actualTimetables[0];
-
-const card = data.actualTimetables[0].cards[5];
-export type CardType = typeof card;
 
 export default function App() {
     const testDate = new Date(2024, 8, 2);
 
     const currentWeekNumber = getWeekNumber(testDate);
     const [groupId, setGroupId] = useState<number>(0);
-    const timetable = data.actualTimetables[0];
+    // сделать так чтобы фетча при нуле не было
+    const { loading, error, data } = useQuery(ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER, { variables: { weekNumber: currentWeekNumber, groupId: groupId } });
+    const timetable = data?.actualTimetables[0] as ActualTimetable;
+    if (data?.actualTimetables[0] === undefined || data?.actualTimetables[0].cards?.length === 0) {
+        return <>
+        Ошибочка
+        <input type="text" id="da" onChange={(c) => setGroupId(Number.parseInt(c.target.value))} />
+        </>
+    }
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error : {error.message}</p>;
+    debugger;
 
     return (
-        <div className={styles.appGrid}>
-            <Table timetable={timetable}></Table>
-        </div>
+        <>
+            <div className={styles.appGrid}>
+                <Table timetable={timetable}></Table>
+            </div>
+            <input type="text" id="da" onChange={(c) => setGroupId(Number.parseInt(c.target.value))} />
+        </>
     )
 
 }

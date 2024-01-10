@@ -35,7 +35,7 @@ namespace WebApi
             .WithOrigins(origins));
 
 
-            app.MapGraphQL().RequireAuthorization();
+            app.MapGraphQL();
 
             app.MapControllers().RequireAuthorization();
 

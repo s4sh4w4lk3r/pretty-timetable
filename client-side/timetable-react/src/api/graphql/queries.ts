@@ -22,7 +22,8 @@ query ActualTimetables($groupId: Int!, $weekNumber: Int!) {
         cards {
             cabinet {
                 id
-                fullName
+                number
+                address
             }
             teacher {
                 id
@@ -33,19 +34,19 @@ query ActualTimetables($groupId: Int!, $weekNumber: Int!) {
                 name
                 id
             }
-            lessonTimeId
             date
             isModified
             isCanceled
             isMoved
             subGroup
+            id
+            lessonTime {
+                endsAt
+                startsAt
+                id
+                number
+            }
         }
-    }
-    lessonTimes {
-        id
-        number
-        startsAt
-        endsAt
     }
 }
 `)

@@ -1,8 +1,8 @@
-import { CardType } from '../App'
+import { ActualCard } from '../../api/graphql/__generated__/graphql';
 import Card from '../Card/Card'
 import styles from './CardContainer.module.css'
 
-type CardContainerProps = { cards: CardType[], dayOfWeek: string }
+type CardContainerProps = { cards: ActualCard[], dayOfWeek: string }
 
 export default function CardContainer(props: CardContainerProps) {
 

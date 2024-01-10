@@ -1,7 +1,7 @@
-import { CardType } from "../App"
+import { ActualCard } from "../../api/graphql/__generated__/graphql";
 import styles from "./Card.module.css"
 
-type Props = { card: CardType }
+type Props = { card: ActualCard }
 
 export default function Card(props: Props) {
   const cardData = props.card;

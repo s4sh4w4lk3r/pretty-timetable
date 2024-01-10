@@ -1,11 +1,11 @@
-import { type TimetableType } from "../App"
+import { ActualCard, ActualTimetable } from "../../api/graphql/__generated__/graphql";
 import CardContainer from "../CardContainer/CardContainer";
 import styles from "./Table.module.css"
 
-type Props = { timetable: TimetableType }
+type Props = { timetable: ActualTimetable }
 export default function Table(props: Props) {
 
-    const cards = props.timetable.cards;
+    const cards = props.timetable.cards as ActualCard[];
     const dates = [... new Set(cards.map(c => c.date))]
         .map(d => new Date(d))
         .sort((date1, date2) => date1.getTime() > date2.getTime() ? 1 : -1);

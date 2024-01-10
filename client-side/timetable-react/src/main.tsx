@@ -1,26 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './components/App'
-
-// import Keycloak from 'keycloak-js'
-// import envConfig from '../envConfig'
-
-// const kc = new Keycloak({
-//   url: envConfig.auth.address,
-//   clientId: envConfig.auth.clientId,
-//   realm: envConfig.auth.realm
-// });
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import envConfig from '../envConfig';
 
 
-// try {
-//   const authenticated = await kc.init({onLoad: 'login-required'});
-//   console.log(`User is ${authenticated ? 'authenticated' : 'not authenticated'}`);
-// } catch (error) {
-//   console.error('Failed to initialize adapter:', error);
-// }
+const apolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: `${envConfig.api.address}/graphql`
+});
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <ApolloProvider client={apolloClient}>
+    <React.StrictMode>
       <App />
-  </React.StrictMode>,
+    </React.StrictMode>
+  </ApolloProvider>
+
 )
