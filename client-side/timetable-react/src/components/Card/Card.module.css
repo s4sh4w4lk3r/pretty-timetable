@@ -2,7 +2,7 @@
     display: flex;
     max-width: 300px;
     min-height: 70px;
-    border: 1px solid green;
+    /* border: 1px solid rgba(240, 44, 152, 0.616); */
     border-radius: 10px;
     box-sizing: border-box;
 
@@ -10,10 +10,21 @@
     gap: 5px;
     padding: 5px;
     margin: 5px;
+    color: white;
+    background-color: rgba(23, 134, 238, 0.418);
+    /* background-color: rgba(28, 150, 59, 0.589); */
 }
 
 .info {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.pending{
+    background-color: aqua;
+}
+
+.progress{
+    background-color: green;
 }

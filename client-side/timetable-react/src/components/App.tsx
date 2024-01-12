@@ -16,7 +16,7 @@ export default function App() {
     const date = new Date(2024, 8, 2);
 
     const currentWeekNumber = getWeekNumber(date);
-    const [groupId, setGroupId] = useState<number>(1);
+    const [groupId, setGroupId] = useState<number>(56);
     const [subGroup, setSubGroup] = useState<SubGroup>(SubGroup.All);
 
 

@@ -1,4 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&display=swap');
+
 .appGrid{
     display: grid;
     grid-template-areas: "header" "main" "footer";
+}
+
+body {
+    background-color: #121214;
+    font-family: 'Nunito Sans', sans-serif;
 }
