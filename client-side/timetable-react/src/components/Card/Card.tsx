@@ -4,7 +4,7 @@ import styles from "./Card.module.css"
 
 type Props = { card: ActualCard }
 
-function determineHintsRequired(lessonStartsAt: string, lessonEndsAt: string, dateFromCard: any): { isProgress: boolean, isPending: boolean } {
+function determineHintsRequired(lessonStartsAt: string, lessonEndsAt: string, dateFromCard: string): { isProgress: boolean, isPending: boolean } {
 
   const startDate = new Date(new Date().setHours(Number.parseInt(lessonStartsAt.split(":")[0]), Number.parseInt(lessonStartsAt.split(":")[1]), 0));
   const endDate = new Date(new Date().setHours(Number.parseInt(lessonEndsAt.split(":")[0]), Number.parseInt(lessonEndsAt.split(":")[1]), 0));
@@ -16,7 +16,7 @@ function determineHintsRequired(lessonStartsAt: string, lessonEndsAt: string, da
   const isPending = dateOk && timeFromNowToLessonStart.includes("minutes") && Number.parseInt(timeFromNowToLessonStart) <= 30;
 
 
-  return { isProgress: isProgress, isPending }
+  return { isProgress, isPending }
 }
 export default function Card(props: Props) {
   const cardData = props.card;
@@ -26,7 +26,7 @@ export default function Card(props: Props) {
   const subject = cardData.subject.name;
   // const {isCanceled, isModified, isMoved} = cardData;
 
-  const {startsAt, endsAt, number}  = cardData.lessonTime;
+  const { startsAt, endsAt, number } = cardData.lessonTime;
 
   const { isPending, isProgress } = determineHintsRequired(startsAt, endsAt, props.card.date)
   const cardClasses = `${styles.card} ${isProgress ? styles.progress : ""} ${isPending ? styles.pending : ""}`;
