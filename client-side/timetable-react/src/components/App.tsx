@@ -2,6 +2,7 @@ import { useState } from "react"
 import Table from "./Table/Table";
 import styles from "./App.module.css"
 import { SubGroup } from "../api/graphql/__generated__/graphql";
+import GroupSelector from "./GroupSelector/GroupSelector";
 
 function getWeekNumber(date: Date) {
     date.setHours(0, 0, 0, 0);
@@ -16,15 +17,16 @@ export default function App() {
     const date = new Date(2024, 8, 2);
 
     const currentWeekNumber = getWeekNumber(date);
-    const [groupId, setGroupId] = useState<number>(56);
-    const [subGroup, setSubGroup] = useState<SubGroup>(SubGroup.All);
-
+    const [groupId, setGroupId] = useState(7);
+    const [subGroup, setSubGroup] = useState(SubGroup.FirstGroup);
 
     return (
         <>
+            {<GroupSelector groupHandler={setGroupId} subGroupHandler={setSubGroup}></GroupSelector>}
             <div className={styles.appGrid}>
                 <Table groupId={groupId} weekNumber={currentWeekNumber} subGroup={subGroup}></Table>
             </div>
+
         </>
     )
 
