@@ -25,7 +25,7 @@ export type ActualCard = {
   cabinet: Cabinet;
   cabinetId: Scalars['Int']['output'];
   createdAt: Scalars['DateTime']['output'];
-  date: Scalars['String']['output'];
+  date: Scalars['Date']['output'];
   id: Scalars['Int']['output'];
   isCanceled: Scalars['Boolean']['output'];
   isModified: Scalars['Boolean']['output'];
@@ -541,7 +541,7 @@ export type ActualTimetablesQueryVariables = Exact<{
 }>;
 
 
-export type ActualTimetablesQuery = { __typename?: 'Query', actualTimetables: Array<{ __typename?: 'ActualTimetable', weekNumber: number, group: { __typename?: 'Group', id: number, name: string }, cards?: Array<{ __typename?: 'ActualCard', date: string, isModified: boolean, isCanceled: boolean, isMoved: boolean, subGroup: SubGroup, id: number, cabinet: { __typename?: 'Cabinet', id: number, number: string, address: string }, teacher: { __typename?: 'Teacher', id: number, firstname: string, lastname: string }, subject: { __typename?: 'Subject', name: string, id: number }, lessonTime: { __typename?: 'LessonTime', endsAt: string, startsAt: string, id: number, number: number } }> | null }> };
+export type ActualTimetablesQuery = { __typename?: 'Query', actualTimetables: Array<{ __typename?: 'ActualTimetable', weekNumber: number, group: { __typename?: 'Group', id: number, name: string }, cards?: Array<{ __typename?: 'ActualCard', date: any, isModified: boolean, isCanceled: boolean, isMoved: boolean, subGroup: SubGroup, id: number, cabinet: { __typename?: 'Cabinet', id: number, number: string, address: string }, teacher: { __typename?: 'Teacher', id: number, firstname: string, lastname: string }, subject: { __typename?: 'Subject', name: string, id: number }, lessonTime: { __typename?: 'LessonTime', endsAt: string, startsAt: string, id: number, number: number } }> | null }> };
 
 
 export const GroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Groups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"groups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GroupsQuery, GroupsQueryVariables>;
