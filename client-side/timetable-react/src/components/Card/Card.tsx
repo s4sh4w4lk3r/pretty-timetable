@@ -29,7 +29,8 @@ export default function Card(props: Props) {
   const { startsAt, endsAt, number } = cardData.lessonTime;
 
   const { isPending, isProgress } = determineHintsRequired(startsAt, endsAt, props.card.date)
-  const cardClasses = `${styles.card} ${isProgress ? styles.progress : ""} ${isPending ? styles.pending : ""}`;
+  // TODO Убрать здесь
+  const cardClasses = `${styles.card} ${true ? styles.progress : ""} ${isPending ? styles.pending : ""}`;
 
   return (
     <div className={cardClasses}>
