@@ -2,12 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './components/App'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import envConfig from '../envConfig';
+import envConfig from '../env';
 
 
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: `${envConfig.api.address}/graphql`
+  uri: envConfig.api.graphqlUrl
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
