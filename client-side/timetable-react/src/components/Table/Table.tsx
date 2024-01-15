@@ -1,16 +1,17 @@
 import { useQuery } from "@apollo/client";
-import { ActualCard, ActualTimetable, SubGroup } from "../../api/graphql/__generated__/graphql";
+import { ActualCard, ActualTimetable} from "../../api/graphql/__generated__/graphql";
 import { ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER } from "../../api/graphql/queries";
 import CardContainer from "../CardContainer/CardContainer";
 import styles from "./Table.module.css"
+import { Group } from "../App";
 
-type Props = { groupId: number, subGroup: SubGroup, weekNumber: number }
+type Props = { group: Group, weekNumber: number }
 
 export default function Table(props: Props) {
 
     const { loading, error, data } = useQuery(ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER, {
         variables: {
-            weekNumber: props.weekNumber, groupId: props.groupId
+            weekNumber: props.weekNumber, groupId: props.group.id
         }
     });
 
@@ -28,7 +29,7 @@ export default function Table(props: Props) {
 
     const cardContainersElement = dates.map(date => {
         const cardsProp = cards.filter(c => new Date(c.date).getTime() === date.getTime())
-            .filter(c => c.subGroup === "ALL" || c.subGroup === props.subGroup);
+            .filter(c => c.subGroup === "ALL" || c.subGroup === props.group.subgroup);
         const dayOfWeekProp = date.toLocaleString("RU-ru", { weekday: "short" }).toUpperCase();
 
         return <CardContainer key={dayOfWeekProp} cards={cardsProp} dayOfWeek={dayOfWeekProp}></CardContainer>

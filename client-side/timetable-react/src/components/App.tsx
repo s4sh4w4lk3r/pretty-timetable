@@ -1,8 +1,8 @@
-import { useState } from "react"
 import Table from "./Table/Table";
 import styles from "./App.module.css"
 import { SubGroup } from "../api/graphql/__generated__/graphql";
 import GroupSelector from "./GroupSelector/GroupSelector";
+import {useImmer} from "use-immer";
 
 function getWeekNumber(date: Date) {
     date.setHours(0, 0, 0, 0);
@@ -12,19 +12,23 @@ function getWeekNumber(date: Date) {
         - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 
+export type Group = {
+    id: number,
+    subgroup: SubGroup
+}
 
 export default function App() {
     const date = new Date(2024, 8, 2);
 
     const currentWeekNumber = getWeekNumber(date);
-    const [groupId, setGroupId] = useState(7);
-    const [subGroup, setSubGroup] = useState(SubGroup.FirstGroup);
+    const groupState = useImmer<Group>({ id: 1, subgroup: SubGroup.FirstGroup });
+    const [group] = groupState;
 
     return (
         <>
-            {<GroupSelector groupHandler={setGroupId} subGroupHandler={setSubGroup}></GroupSelector>}
+            <GroupSelector groupState={groupState}></GroupSelector>
             <div className={styles.appGrid}>
-                <Table groupId={groupId} weekNumber={currentWeekNumber} subGroup={subGroup}></Table>
+                <Table group={group} weekNumber={currentWeekNumber}></Table>
             </div>
 
         </>
