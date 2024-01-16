@@ -12,10 +12,7 @@
 }
 
 .groupName{
-    color: white;
     align-self: center;
-}
-
-p{
-    color: white
+    cursor: pointer;
+    padding: 5px;
 }

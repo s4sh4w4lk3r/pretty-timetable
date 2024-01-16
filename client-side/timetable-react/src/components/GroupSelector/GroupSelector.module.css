@@ -1,5 +1,9 @@
 .groupSelector{
     width: 500px;
     height: 500px;
-    background-color: cornflowerblue;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(100, 148, 237, 0.199);
 }
+
+
