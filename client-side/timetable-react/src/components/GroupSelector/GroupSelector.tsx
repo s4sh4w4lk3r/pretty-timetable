@@ -2,10 +2,11 @@ import { useQuery } from '@apollo/client'
 import { ALL_GROUPS } from '../../api/graphql/queries'
 import { SubGroup } from '../../api/graphql/__generated__/graphql';
 import { Group } from '../App';
-import { ImmerHook } from "use-immer";
+import { ImmerHook, Updater } from "use-immer";
 
 type Props = {
-  groupState: ImmerHook<Group>
+  groupState: ImmerHook<Group>,
+  setGroupSelectorIsActive: Updater<boolean>
 }
 
 function determineSubgroup(subGroupStr: string): SubGroup.FirstGroup | SubGroup.SecondGroup {
@@ -17,8 +18,10 @@ function determineSubgroup(subGroupStr: string): SubGroup.FirstGroup | SubGroup.
 }
 
 export default function GroupSelector(props: Props) {
+  const {groupState, setGroupSelectorIsActive} = props;
+
   const { data, loading, error } = useQuery(ALL_GROUPS)
-  const [, setGroup] = props.groupState;
+  const [group, setGroup] = groupState;
 
   if (loading) return <p>Загрзука...</p>;
   if (error) return <p>Ошибка : {error.message}</p>;
@@ -30,14 +33,16 @@ export default function GroupSelector(props: Props) {
   const groupsElement = data.groups.map(g => <option value={g.id} key={g.id}>{g.name}</option>);
   return (
     <>
-      <select onChange={(e) => setGroup(g => {g.id = Number.parseInt(e.target.value)})}>
+      <select value={group.id} onChange={(e) => setGroup(g => {g.id = Number.parseInt(e.target.value)})}>
         {groupsElement}
       </select>
 
-      <select onChange={(e) => setGroup(sg => {sg.subgroup = determineSubgroup(e.target.value)})}>
+      <select value={group.subgroup} onChange={(e) => setGroup(sg => {sg.subgroup = determineSubgroup(e.target.value)})}>
         <option value={SubGroup.FirstGroup}> Первая подгруппа </option>
         <option value={SubGroup.SecondGroup}> Вторая подгруппа </option>
       </select>
+
+      <button onClick={e=> {e.stopPropagation(); setGroupSelectorIsActive(false);}}>Сохранить выбор</button>
     </>
   )
 }
