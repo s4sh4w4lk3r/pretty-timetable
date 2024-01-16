@@ -6,6 +6,7 @@ import { GroupType } from "../App";
 import CardContainer from "../CardContainer/CardContainer";
 import GroupSelector from "../GroupSelector/GroupSelector";
 import styles from "./Table.module.css";
+import Modal from "../Layouts/Modal/Modal";
 
 type Props = { weekNumber: number }
 
@@ -38,12 +39,10 @@ export default function Table(props: Props) {
         }
     });
 
-    if (groupSelectorIsActive) {
-        return (<GroupSelector
-            setGroupSelectorIsActive={setGroupSelectorIsActive}
-            groupState={[group, setGroup]}>
-        </GroupSelector>);
-    }
+    const gs = <GroupSelector
+        setGroupSelectorIsActive={setGroupSelectorIsActive}
+        groupState={[group, setGroup]}>
+    </GroupSelector>;
 
 
     if (loading) return <p>Загрзука...</p>;
@@ -71,11 +70,12 @@ export default function Table(props: Props) {
     })
 
     return (
-        <div className={styles.table}>
+        <><div className={styles.table}>
             <p className={styles.groupName} onClick={(e) => { e.stopPropagation(); setGroupSelectorIsActive(true) }}>{timetable.group.name}</p>
             <div className={styles.cardContainers}>
                 {cardContainersElement}
             </div>
         </div>
+            <Modal isVisible={groupSelectorIsActive} content={gs} onClose={() => setGroupSelectorIsActive(false)} footer={null} title="Da" ></Modal></>
     )
 }

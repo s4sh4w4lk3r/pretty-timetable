@@ -51,9 +51,9 @@ export default function GroupSelector(props: Props) {
 
       <button onClick={e => {
         e.stopPropagation();
-        setGroupSelectorIsActive(false);
         saveGroupToLocalStorage(group);
-      }}>Сохранить выбор</button>
+        setGroupSelectorIsActive(false);
+      }}>Сохранить</button>
     </div>
   )
 }
