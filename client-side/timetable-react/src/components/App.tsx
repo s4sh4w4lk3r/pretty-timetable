@@ -10,7 +10,7 @@ function getWeekNumber(date: Date) {
         - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 
-export type Group = {
+export type GroupType = {
     id: number,
     subgroup: SubGroup
 }

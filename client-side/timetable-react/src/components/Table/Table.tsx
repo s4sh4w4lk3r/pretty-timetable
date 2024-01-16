@@ -1,19 +1,35 @@
 import { useQuery } from "@apollo/client";
-import { ActualCard, ActualTimetable, SubGroup} from "../../api/graphql/__generated__/graphql";
-import { ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER } from "../../api/graphql/queries";
-import CardContainer from "../CardContainer/CardContainer";
-import styles from "./Table.module.css"
-import { Group } from "../App";
 import { useImmer } from "use-immer";
+import { ActualCard, ActualTimetable, SubGroup } from "../../api/graphql/__generated__/graphql";
+import { ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER } from "../../api/graphql/queries";
+import { GroupType } from "../App";
+import CardContainer from "../CardContainer/CardContainer";
 import GroupSelector from "../GroupSelector/GroupSelector";
+import styles from "./Table.module.css";
 
 type Props = { weekNumber: number }
 
+function getGroupFromStorageOrDefault(): GroupType {
+    const defaultGroup = { id: 1, subgroup: SubGroup.FirstGroup };
+    const group = localStorage.getItem("group");
+
+    if (group === undefined || group === null) {
+        return defaultGroup;
+    }
+
+    const groupParsed = JSON.parse(group) as GroupType;
+    if (groupParsed === undefined || groupParsed === null) {
+        return defaultGroup;
+    }
+
+    return groupParsed;
+}
+
 export default function Table(props: Props) {
-    const {weekNumber} = props;
+    const { weekNumber } = props;
 
     const [groupSelectorIsActive, setGroupSelectorIsActive] = useImmer<boolean>(false);
-    const [group, setGroup] = useImmer<Group>({ id: 1, subgroup: SubGroup.FirstGroup });
+    const [group, setGroup] = useImmer<GroupType>(getGroupFromStorageOrDefault());
 
 
     const { loading, error, data } = useQuery(ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER, {
@@ -22,10 +38,10 @@ export default function Table(props: Props) {
         }
     });
 
-    if (groupSelectorIsActive){
-        return (<GroupSelector 
-        setGroupSelectorIsActive={setGroupSelectorIsActive} 
-        groupState={[group, setGroup]}>
+    if (groupSelectorIsActive) {
+        return (<GroupSelector
+            setGroupSelectorIsActive={setGroupSelectorIsActive}
+            groupState={[group, setGroup]}>
         </GroupSelector>);
     }
 
@@ -56,7 +72,7 @@ export default function Table(props: Props) {
 
     return (
         <div className={styles.table}>
-            <p className={styles.groupName} onClick={(e) => { e.stopPropagation(); setGroupSelectorIsActive(true)}}>{timetable.group.name}</p>
+            <p className={styles.groupName} onClick={(e) => { e.stopPropagation(); setGroupSelectorIsActive(true) }}>{timetable.group.name}</p>
             <div className={styles.cardContainers}>
                 {cardContainersElement}
             </div>
