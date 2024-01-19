@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Repository.Entities.Substs;
 using Repository.Entities.Timetable;
 using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable.Cards.Parts;
@@ -90,5 +91,12 @@ namespace Repository.Database
             entity.HasIndex(e => e.AscId).IsUnique().AreNullsDistinct();
         }
 
+
+        public static void ConfigureSubstitution(EntityTypeBuilder<Substitution> entity)
+        {
+            entity.ToTable("Substitution", SchemaName);
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.Date, e.LessonTimeId, e.SubGroup }).IsUnique();
+        }
     }
 }
