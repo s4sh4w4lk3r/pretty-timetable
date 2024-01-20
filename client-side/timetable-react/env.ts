@@ -1,5 +1,6 @@
 type Api = {
-    readonly address: string
+    readonly restUrl: string,
+    readonly graphqlUrl: string
 }
 
 type Auth = {
@@ -15,7 +16,8 @@ type EnvConfig = {
 
 export default <EnvConfig>{
     api: {
-        address: "http://localhost:5012"
+        restUrl: "http://localhost:5012",
+        graphqlUrl: "http://localhost:5012/graphql"
     },
 
     auth: {

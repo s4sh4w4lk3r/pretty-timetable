@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&display=swap');
+
+.appGrid {
+    display: grid;
+    grid-template-areas: "header" "main" "footer";
+}
+
+body {
+    background-color: #121214;
+    color: white;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+button {
+    --color: #00A97F;
+    --color2: rgb(10, 25, 30);
+    background-color: transparent;
+    border-radius: 6px;
+    border: .3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+button::after,
+button::before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    transform: skew(90deg) translate(-50%, -50%);
+    position: absolute;
+    inset: 50%;
+    left: 25%;
+    z-index: -1;
+    transition: .5s ease-out;
+    background-color: var(--color);
+}
+
+button::before {
+    top: -50%;
+    left: -25%;
+    transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+}
+
+button:hover::before {
+    transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+}
+
+button:hover::after {
+    transform: skew(45deg) translate(-50%, -50%);
+}
+
+button:hover {
+    color: var(--color2);
+}
+
+button:active {
+    filter: brightness(.7);
+    transform: scale(.98);
+}
+
+
+select {
+    padding: 0 1em;
+    color: #fff;
+    background-color: #252427;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align-last: center;
+}

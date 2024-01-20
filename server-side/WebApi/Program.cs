@@ -22,6 +22,7 @@ namespace WebApi
 
 
             var app = builder.Build();
+            app.UsePathBase(new PathString("/api"));
 
             app.UseForwardedHeaders();
 
@@ -35,7 +36,7 @@ namespace WebApi
             .WithOrigins(origins));
 
 
-            app.MapGraphQL().RequireAuthorization();
+            app.MapGraphQL();
 
             app.MapControllers().RequireAuthorization();
 

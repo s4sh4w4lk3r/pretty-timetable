@@ -1,0 +1,18 @@
+.table{
+    display: flex;
+    flex-direction: column;
+    grid-area: main;
+    margin: 10px 5px;
+}
+
+.cardContainers{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.groupName{
+    align-self: center;
+    cursor: pointer;
+    padding: 5px;
+}

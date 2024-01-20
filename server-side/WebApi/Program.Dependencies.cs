@@ -7,6 +7,7 @@ using Services.Interfaces;
 using Services.Interfaces.Actual;
 using Services.Interfaces.CardParts;
 using Services.Interfaces.Stable;
+using Services.Interfaces.Substs;
 using Services.StableTimetables;
 
 namespace WebApi
@@ -29,6 +30,9 @@ namespace WebApi
             builder.Services.AddScoped<ISubjectService, SubjectService>();
             builder.Services.AddScoped<ILessonTimeService, LessonTimeService>();
             builder.Services.AddScoped<IGroupService, GroupService>();
+
+#warning добавить реализацию сервиса
+            //builder.Services.AddScoped<ISubstService>();
         }
     }
 }
