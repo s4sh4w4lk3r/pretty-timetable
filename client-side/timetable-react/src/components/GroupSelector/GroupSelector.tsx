@@ -21,7 +21,7 @@ function determineSubgroup(subGroupStr: string): SubGroup.FirstGroup | SubGroup.
 function saveGroupToLocalStorage(group: GroupType) {
   localStorage.setItem("group", JSON.stringify(group));
 }
-
+// FIXME : убрать стейт из гроуп селектора, сделать обычный метод пропсом.
 export default function GroupSelector(props: Props) {
   const { groupState, setGroupSelectorIsActive } = props;
 
@@ -38,7 +38,8 @@ export default function GroupSelector(props: Props) {
   const groupsElement = data.groups.map(g => <option value={g.id} key={g.id}>{g.name}</option>);
   return (
     <div className={styles.groupSelector}>
-      <select value={group.id} onChange={(e) => setGroup(g => { g.id = Number.parseInt(e.target.value) })}>
+      <select value={group.id}
+        onChange={(e) => setGroup(g => { g.id = Number.parseInt(e.target.value) })}>
         {groupsElement}
       </select>
 
@@ -49,11 +50,14 @@ export default function GroupSelector(props: Props) {
         <option value={SubGroup.SecondGroup}> Вторая подгруппа </option>
       </select>
 
-      <button onClick={e => {
-        e.stopPropagation();
-        saveGroupToLocalStorage(group);
-        setGroupSelectorIsActive(false);
-      }}>Сохранить</button>
+      <button
+        onClick={e => {
+          e.stopPropagation();
+          saveGroupToLocalStorage(group);
+          setGroupSelectorIsActive(false);
+        }}>
+        Сохранить
+      </button>
     </div>
   )
 }

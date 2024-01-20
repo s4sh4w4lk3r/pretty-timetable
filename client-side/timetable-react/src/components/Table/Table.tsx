@@ -35,14 +35,10 @@ export default function Table(props: Props) {
 
     const { loading, error, data } = useQuery(ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER, {
         variables: {
-            weekNumber: weekNumber, groupId: group.id
+            weekNumber: weekNumber,
+            groupId: group.id
         }
     });
-
-    const gs = <GroupSelector
-        setGroupSelectorIsActive={setGroupSelectorIsActive}
-        groupState={[group, setGroup]}>
-    </GroupSelector>;
 
 
     if (loading) return <p>Загрзука...</p>;
@@ -66,16 +62,37 @@ export default function Table(props: Props) {
             .filter(c => c.subGroup === "ALL" || c.subGroup === group.subgroup);
         const dayOfWeekProp = date.toLocaleString("RU-ru", { weekday: "short" }).toUpperCase();
 
-        return <CardContainer key={dayOfWeekProp} cards={cardsProp} dayOfWeek={dayOfWeekProp}></CardContainer>
+        return (
+            <CardContainer
+                key={dayOfWeekProp}
+                cards={cardsProp}
+                dayOfWeek={dayOfWeekProp}>
+            </CardContainer>)
     })
 
     return (
-        <><div className={styles.table}>
-            <p className={styles.groupName} onClick={(e) => { e.stopPropagation(); setGroupSelectorIsActive(true) }}>{timetable.group.name}</p>
-            <div className={styles.cardContainers}>
-                {cardContainersElement}
+        <>
+            <div className={styles.table}>
+                <p className={styles.groupName}
+                    onClick={(e) => { e.stopPropagation(); setGroupSelectorIsActive(true) }}>
+                    {timetable.group.name}
+                </p>
+
+                <div className={styles.cardContainers}>
+                    {cardContainersElement}
+                </div>
+
             </div>
-        </div>
-            <Modal isVisible={groupSelectorIsActive} content={gs} onClose={() => setGroupSelectorIsActive(false)} footer={null} title="Da" ></Modal></>
+
+            <Modal
+                isVisible={groupSelectorIsActive}
+                onClose={() => setGroupSelectorIsActive(false)}
+                title="Выбор группы" >
+                <GroupSelector
+                    setGroupSelectorIsActive={setGroupSelectorIsActive}
+                    groupState={[group, setGroup]}>
+                </GroupSelector>
+            </Modal>
+        </>
     )
 }

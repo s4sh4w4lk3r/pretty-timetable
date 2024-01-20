@@ -15,6 +15,8 @@ export type GroupType = {
     subgroup: SubGroup
 }
 
+// TODO: провести рефакторинг, сделать побольше переносов строк, поменьше передавать стейты напрямую в компоненты
+
 export default function App() {
     const date = new Date(2024, 8, 2);
 
@@ -24,7 +26,7 @@ export default function App() {
     return (
         <>
             <div className={styles.appGrid}>
-                <Table weekNumber={currentWeekNumber}></Table>
+                <Table weekNumber={currentWeekNumber}/>
             </div>
 
         </>

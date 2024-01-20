@@ -15,12 +15,11 @@
   }
   
   .modalDialog {
-    width: 100%;
     max-width: 550px;
-    background: white;
+    background: #252427;
     position: relative;
     margin: 0 20px;
-    max-height: calc(100vh - 40px);
+    max-height: 350px;
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -32,8 +31,7 @@
     animation-duration: 0.5s;
   }
   
-  .modalHeader,
-  .modalFooter {
+  .modalHeader {
     display: flex;
     align-items: center;
     padding: 1rem;
@@ -44,19 +42,10 @@
     justify-content: space-between;
   }
   
-  .modalFooter {
-    border-top: 1px solid #dbdbdb;
-    justify-content: flex-end;
-  }
-  
   .modalClose {
     cursor: pointer;
     padding: 1rem;
     margin: -1rem -1rem -1rem auto;
-  }
-  
-  .modalBody {
-    overflow: auto;
   }
   
   .modalContent {
