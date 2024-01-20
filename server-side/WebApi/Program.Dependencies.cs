@@ -32,7 +32,7 @@ namespace WebApi
             builder.Services.AddScoped<IGroupService, GroupService>();
 
 #warning добавить реализацию сервиса
-            builder.Services.AddScoped<ISubstService>();
+            //builder.Services.AddScoped<ISubstService>();
         }
     }
 }

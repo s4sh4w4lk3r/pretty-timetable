@@ -22,6 +22,7 @@ namespace WebApi
 
 
             var app = builder.Build();
+            app.UsePathBase(new PathString("/api"));
 
             app.UseForwardedHeaders();
 

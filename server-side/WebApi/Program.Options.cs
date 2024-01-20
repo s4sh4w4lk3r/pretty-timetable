@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.HttpOverrides;
 using Repository.Database;
+using TelegramBot;
 
 namespace WebApi
 {
@@ -14,6 +15,7 @@ namespace WebApi
 
             builder.Services.Configure<PostgresConfiguration>(builder.Configuration.GetRequiredSection(nameof(PostgresConfiguration)));
             builder.Services.Configure<CorsConfiguration>(builder.Configuration.GetRequiredSection(nameof(CorsConfiguration)));
+            builder.Services.Configure<BotConfiguration>(builder.Configuration.GetRequiredSection(nameof(BotConfiguration)));
         }
     }
 
