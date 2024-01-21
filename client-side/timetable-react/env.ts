@@ -14,14 +14,15 @@ type EnvConfig = {
     readonly auth: Auth;
 };
 
+const baseUrl = "http://localhost";
 export default <EnvConfig>{
     api: {
-        restUrl: "http://localhost:5012",
-        graphqlUrl: "http://localhost:5012/graphql",
+        restUrl: `${baseUrl}/api`,
+        graphqlUrl: `${baseUrl}/api/graphql`,
     },
 
     auth: {
-        address: "http://localhost:8080",
+        address: `${baseUrl}/auth`,
         clientId: "react",
         realm: "timetable",
     },
