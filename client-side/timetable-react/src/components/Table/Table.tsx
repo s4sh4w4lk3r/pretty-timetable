@@ -86,6 +86,7 @@ export default function Table(props: Props) {
                 title="Выбор группы"
             >
                 <GroupSelector
+                    initialGroup={group}
                     onGroupSave={g => {
                         setGroup(g);
                         setGroupSelectorIsActive(false);

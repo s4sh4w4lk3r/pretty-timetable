@@ -5,8 +5,6 @@ import { GroupType } from "../App";
 import { useImmer } from "use-immer";
 import styles from "./GroupSelector.module.css";
 
-type Props = { onGroupSave: (group: GroupType) => void };
-
 function determineSubgroup(subGroupStr: string): SubGroup.FirstGroup | SubGroup.SecondGroup {
     switch (subGroupStr) {
         case "FIRST_GROUP":
@@ -21,11 +19,16 @@ function determineSubgroup(subGroupStr: string): SubGroup.FirstGroup | SubGroup.
 function saveGroupToLocalStorage(group: GroupType) {
     localStorage.setItem("group", JSON.stringify(group));
 }
+
+type Props = {
+    initialGroup: GroupType;
+    onGroupSave: (group: GroupType) => void;
+};
 export default function GroupSelector(props: Props) {
-    const { onGroupSave } = props;
+    const { onGroupSave, initialGroup } = props;
 
     const { data, loading, error } = useQuery(ALL_GROUPS);
-    const [group, setGroup] = useImmer<GroupType>({ id: 1, subgroup: SubGroup.FirstGroup });
+    const [group, setGroup] = useImmer<GroupType>(initialGroup);
 
     if (loading) return <p>Загрзука...</p>;
     if (error) return <p>Ошибка : {error.message}</p>;
