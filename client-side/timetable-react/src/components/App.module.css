@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&display=swap");
 
 .appGrid {
     display: grid;
@@ -8,16 +8,16 @@
 body {
     background-color: #121214;
     color: white;
-    font-family: 'Nunito Sans', sans-serif;
+    font-family: "Nunito Sans", sans-serif;
 }
 
 button {
-    --color: #00A97F;
+    --color: #00a97f;
     --color2: rgb(10, 25, 30);
     background-color: transparent;
     border-radius: 6px;
-    border: .3px solid var(--color);
-    transition: .5s;
+    border: 0.3px solid var(--color);
+    transition: 0.5s;
     position: relative;
     overflow: hidden;
     cursor: pointer;
@@ -28,7 +28,7 @@ button {
 
 button::after,
 button::before {
-    content: '';
+    content: "";
     display: block;
     height: 100%;
     width: 100%;
@@ -37,7 +37,7 @@ button::before {
     inset: 50%;
     left: 25%;
     z-index: -1;
-    transition: .5s ease-out;
+    transition: 0.5s ease-out;
     background-color: var(--color);
 }
 
@@ -60,10 +60,9 @@ button:hover {
 }
 
 button:active {
-    filter: brightness(.7);
-    transform: scale(.98);
+    filter: brightness(0.7);
+    transform: scale(0.98);
 }
-
 
 select {
     padding: 0 1em;

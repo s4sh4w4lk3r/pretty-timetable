@@ -1,4 +1,4 @@
-import { gql } from "./__generated__/gql"
+import { gql } from "./__generated__/gql";
 
 export const ALL_GROUPS = gql(`
 query Groups {
@@ -9,7 +9,7 @@ query Groups {
 }
 `);
 
-export const ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER = gql( `
+export const ACTUAL_TIMETABLE_BY_GROUP_ID_WEEKNUMBER = gql(`
 query ActualTimetables($groupId: Int!, $weekNumber: Int!) {
     actualTimetables(
         where: { groupId: { eq: $groupId }, weekNumber: { eq: $weekNumber } }
@@ -49,4 +49,4 @@ query ActualTimetables($groupId: Int!, $weekNumber: Int!) {
         }
     }
 }
-`)
+`);
