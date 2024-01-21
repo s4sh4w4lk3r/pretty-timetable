@@ -12,9 +12,9 @@
     background-color: rgba(0, 0, 0, 0.25);
     animation-name: appear;
     animation-duration: 300ms;
-  }
-  
-  .modalDialog {
+}
+
+.modalDialog {
     max-width: 550px;
     background: #252427;
     position: relative;
@@ -29,43 +29,43 @@
     -webkit-animation-duration: 0.4s;
     animation-name: slide-in;
     animation-duration: 0.5s;
-  }
-  
-  .modalHeader {
+}
+
+.modalHeader {
     display: flex;
     align-items: center;
     padding: 1rem;
-  }
-  
-  .modalHeader {
+}
+
+.modalHeader {
     border-bottom: 1px solid #dbdbdb;
     justify-content: space-between;
-  }
-  
-  .modalClose {
+}
+
+.modalClose {
     cursor: pointer;
     padding: 1rem;
     margin: -1rem -1rem -1rem auto;
-  }
-  
-  .modalContent {
+}
+
+.modalContent {
     padding: 1rem;
-  }
-  
-  @keyframes appear {
+}
+
+@keyframes appear {
     from {
-      opacity: 0;
+        opacity: 0;
     }
     to {
-      opacity: 1;
+        opacity: 1;
     }
-  }
-  
-  @keyframes slide-in {
+}
+
+@keyframes slide-in {
     from {
-      transform: translateY(-150px);
+        transform: translateY(-150px);
     }
     to {
-      transform: translateY(0);
+        transform: translateY(0);
     }
-  }
+}
