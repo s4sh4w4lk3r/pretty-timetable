@@ -14,7 +14,7 @@ type EnvConfig = {
     readonly auth: Auth;
 };
 
-const baseUrl = "http://localhost";
+const baseUrl = import.meta.env.VITE_baseUrl;
 export default <EnvConfig>{
     api: {
         restUrl: `${baseUrl}/api`,
