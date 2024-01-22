@@ -1,20 +1,14 @@
 import Table from "./Table/Table";
-import styles from "./App.module.css";
 import { SubGroup } from "../api/graphql/__generated__/graphql";
+import Main from "./Layouts/Main/Main";
+import Header from "./Layouts/Header/Header";
+import Footer from "./Layouts/Footer/Footer";
 
 function getWeekNumber(date: Date) {
     date.setHours(0, 0, 0, 0);
     date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
     const week1 = new Date(date.getFullYear(), 0, 4);
-    return (
-        1 +
-        Math.round(
-            ((date.getTime() - week1.getTime()) / 86400000 -
-                3 +
-                ((week1.getDay() + 6) % 7)) /
-                7
-        )
-    );
+    return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
 }
 
 export type GroupType = {
@@ -26,15 +20,17 @@ export type GroupType = {
 // TODO: прикрутить аутентификацию
 
 export default function App() {
-    const date = new Date(2024, 8, 2);
-
-    const currentWeekNumber = getWeekNumber(date);
+    const currentWeekNumber = getWeekNumber(new Date(2024, 8, 2));
 
     return (
         <>
-            <div className={styles.appGrid}>
+            <Header></Header>
+
+            <Main>
                 <Table weekNumber={currentWeekNumber} />
-            </div>
+            </Main>
+
+            <Footer></Footer>
         </>
     );
 }
