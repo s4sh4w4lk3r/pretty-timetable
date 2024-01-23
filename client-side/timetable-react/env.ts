@@ -1,18 +1,18 @@
-type Api = {
+interface Api {
     readonly restUrl: string;
     readonly graphqlUrl: string;
-};
+}
 
-type Auth = {
+interface Auth {
     readonly address: string;
     readonly realm: string;
     readonly clientId: string;
-};
+}
 
-type EnvConfig = {
+interface EnvConfig {
     readonly api: Api;
     readonly auth: Auth;
-};
+}
 
 const baseUrl = import.meta.env.VITE_baseUrl;
 export default <EnvConfig>{
