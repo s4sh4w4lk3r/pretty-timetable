@@ -10,19 +10,21 @@ interface Auth {
 }
 
 interface EnvConfig {
+    readonly baseUrl: string;
     readonly api: Api;
     readonly auth: Auth;
 }
 
-const baseUrl = import.meta.env.VITE_baseUrl;
 export default <EnvConfig>{
+    baseUrl: import.meta.env.VITE_baseUrl,
+
     api: {
-        restUrl: `${baseUrl}/api`,
-        graphqlUrl: `${baseUrl}/api/graphql`,
+        restUrl: `${import.meta.env.VITE_baseUrl}/api`,
+        graphqlUrl: `${import.meta.env.VITE_baseUrl}/api/graphql`,
     },
 
     auth: {
-        address: `${baseUrl}/auth`,
+        address: `${import.meta.env.VITE_baseUrl}/auth`,
         clientId: "react",
         realm: "timetable",
     },
