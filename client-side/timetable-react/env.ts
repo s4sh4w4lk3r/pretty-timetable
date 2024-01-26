@@ -7,6 +7,13 @@ interface Auth {
     readonly address: string;
     readonly realm: string;
     readonly clientId: string;
+    readonly cookie: Cookie;
+}
+
+interface Cookie {
+    readonly accessExpiresIn: number;
+    readonly refreshExpiresIn: number;
+    readonly isHttps: boolean;
 }
 
 interface EnvConfig {
@@ -27,5 +34,11 @@ export default <EnvConfig>{
         address: `${import.meta.env.VITE_baseUrl}/auth`,
         clientId: "react",
         realm: "timetable",
+        cookie: {
+            // Expiring in days
+            accessExpiresIn: 1,
+            refreshExpiresIn: 30,
+            isHttps: false,
+        },
     },
 };
