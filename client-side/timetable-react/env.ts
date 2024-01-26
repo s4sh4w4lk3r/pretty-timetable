@@ -31,7 +31,7 @@ export default <EnvConfig>{
     },
 
     auth: {
-        address: `${import.meta.env.VITE_baseUrl}/auth`,
+        address: `${import.meta.env.VITE_baseUrl}/auth/realms/timetable/`,
         clientId: "react",
         realm: "timetable",
         cookie: {
