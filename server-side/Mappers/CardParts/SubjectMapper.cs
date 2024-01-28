@@ -11,8 +11,7 @@ namespace Mappers.CardParts
             {
                 Id = model.Id,
                 Name = model.Name,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                ModifiedAt = DateTime.UtcNow,
             };
         }
     }

@@ -20,8 +20,7 @@ namespace Mappers
                 IsCanceled = model.IsCanceled,
                 IsModified = model.IsModified,
                 IsMoved = model.IsMoved,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                ModifiedAt = DateTime.UtcNow,
                 RelatedTimetableId = model.RelatedTimetableId,
                 Date = DateOnly.Parse(model.Date)
             };

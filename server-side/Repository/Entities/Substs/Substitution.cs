@@ -6,8 +6,7 @@ namespace Repository.Entities.Substs
     public class Substitution : IEntity
     {
         public required int Id { get; init; }
-        public required DateTime CreatedAt { get; init; }
-        public required DateTime UpdatedAt { get; init; }
+        public required DateTime ModifiedAt { get; init; }
 
 
         public required int AbsentId { get; init; }

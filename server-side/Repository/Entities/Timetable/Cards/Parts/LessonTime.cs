@@ -6,8 +6,7 @@
         public required int Number { get; init; }
         public required TimeOnly StartsAt { get; init; }
         public required TimeOnly EndsAt { get; init; }
-        public required DateTime CreatedAt { get; init; }
-        public required DateTime UpdatedAt { get; init; }
+        public required DateTime ModifiedAt { get; init; }
 
         public ICollection<StableCard>? StableCards { get; init; }
         public ICollection<ActualCard>? ActualCards { get; init; }

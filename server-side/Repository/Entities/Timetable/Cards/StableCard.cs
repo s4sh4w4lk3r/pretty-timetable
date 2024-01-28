@@ -20,7 +20,6 @@ namespace Repository.Entities.Timetable.Cards
         public required int RelatedTimetableId { get; init; }
         public StableTimetable? RelatedTimetable { get; set; }
 
-        public required DateTime CreatedAt { get; init; }
-        public required DateTime UpdatedAt { get; set; }
+        public required DateTime ModifiedAt { get; set; }
     }
 }

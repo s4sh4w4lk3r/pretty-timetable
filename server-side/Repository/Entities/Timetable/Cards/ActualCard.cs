@@ -18,8 +18,7 @@ namespace Repository.Entities.Timetable.Cards
         public required bool IsCanceled { get; set; }
         public required bool IsMoved { get; set; }
         public required SubGroup SubGroup { get; set; }
-        public required DateTime CreatedAt { get; init; }
-        public required DateTime UpdatedAt { get; set; }
+        public required DateTime ModifiedAt { get; set; }
 
         public required int RelatedTimetableId { get; init; }
         public ActualTimetable? RelatedTimetable { get; set; }

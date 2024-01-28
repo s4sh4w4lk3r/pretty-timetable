@@ -11,8 +11,7 @@ namespace Mappers
             {
                 Id = group.Id,
                 Name = group.Name,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                ModifiedAt = DateTime.UtcNow
             };
         }
     }

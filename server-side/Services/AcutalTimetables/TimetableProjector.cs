@@ -28,8 +28,7 @@ namespace Services.AcutalTimetables
                     GroupId = timetable.Id,
                     WeekNumber = checkDatesResult.Value,
                     Cards = [],
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
+                    ModifiedAt = DateTime.UtcNow
                 };
 
                 foreach (var date in dates)
@@ -100,8 +99,7 @@ namespace Services.AcutalTimetables
                 TeacherId = stableCard.TeacherId,
                 RelatedTimetableId = relatedTimetableId,
                 Date = date,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                ModifiedAt = DateTime.UtcNow
             };
         }
     }

@@ -20,8 +20,7 @@ namespace Mappers
                 IsWeekEven = model.IsWeekEven,
                 SubGroup = (SubGroup)model.SubGroup,
                 DayOfWeek = (DayOfWeek)model.DayOfWeek,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                ModifiedAt = DateTime.UtcNow
             };
         }
     }

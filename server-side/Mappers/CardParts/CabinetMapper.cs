@@ -14,8 +14,7 @@ namespace Mappers.CardParts
                 Address = model.Address,
                 Number = model.Number,
                 FullName = model.FullName,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                ModifiedAt = DateTime.UtcNow
             };
         }
     }

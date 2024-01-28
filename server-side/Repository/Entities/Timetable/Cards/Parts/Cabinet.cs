@@ -7,8 +7,7 @@ public class Cabinet : IEntity
     public required string Number { get; init; }
     public required string FullName { get; init; }
     public string? AscId { get; init; }
-    public required DateTime CreatedAt { get; init; }
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime ModifiedAt { get; init; }
     public ICollection<StableCard>? StableCards { get; init; }
     public ICollection<ActualCard>? ActualCards { get; init; }
 }
