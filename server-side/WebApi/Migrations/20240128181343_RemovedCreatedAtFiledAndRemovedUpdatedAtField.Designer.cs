@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Repository.Database;
@@ -11,9 +12,11 @@ using Repository.Database;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(TimetableContext))]
-    partial class TimetableContextModelSnapshot : ModelSnapshot
+    [Migration("20240128181343_RemovedCreatedAtFiledAndRemovedUpdatedAtField")]
+    partial class RemovedCreatedAtFiledAndRemovedUpdatedAtField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,6 +58,9 @@ namespace WebApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CabinetId")
+                        .HasColumnType("integer");
+
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
@@ -76,9 +82,6 @@ namespace WebApi.Migrations
                     b.Property<int>("RelatedTimetableId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("RoomId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("SubGroup")
                         .HasColumnType("integer");
 
@@ -90,11 +93,11 @@ namespace WebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CabinetId");
+
                     b.HasIndex("LessonTimeId");
 
                     b.HasIndex("RelatedTimetableId");
-
-                    b.HasIndex("RoomId");
 
                     b.HasIndex("SubjectId");
 
@@ -106,35 +109,7 @@ namespace WebApi.Migrations
                     b.ToTable("ActualCard", "timetable");
                 });
 
-            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Info.LessonTime", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<TimeOnly>("EndsAt")
-                        .HasColumnType("time without time zone");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("integer");
-
-                    b.Property<TimeOnly>("StartsAt")
-                        .HasColumnType("time without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Number", "StartsAt", "EndsAt")
-                        .IsUnique();
-
-                    b.ToTable("LessonTime", "timetable");
-                });
-
-            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Info.Room", b =>
+            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Parts.Cabinet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,10 +142,38 @@ namespace WebApi.Migrations
 
                     NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex("AscId"), true);
 
-                    b.ToTable("Room", "timetable");
+                    b.ToTable("Cabinet", "timetable");
                 });
 
-            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Info.Subject", b =>
+            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Parts.LessonTime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<TimeOnly>("EndsAt")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
+                    b.Property<TimeOnly>("StartsAt")
+                        .HasColumnType("time without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Number", "StartsAt", "EndsAt")
+                        .IsUnique();
+
+                    b.ToTable("LessonTime", "timetable");
+                });
+
+            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Parts.Subject", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -198,7 +201,7 @@ namespace WebApi.Migrations
                     b.ToTable("Subject", "timetable");
                 });
 
-            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Info.Teacher", b =>
+            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Parts.Teacher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -242,6 +245,9 @@ namespace WebApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CabinetId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("integer");
 
@@ -257,9 +263,6 @@ namespace WebApi.Migrations
                     b.Property<int>("RelatedTimetableId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("RoomId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("SubGroup")
                         .HasColumnType("integer");
 
@@ -271,11 +274,11 @@ namespace WebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CabinetId");
+
                     b.HasIndex("LessonTimeId");
 
                     b.HasIndex("RelatedTimetableId");
-
-                    b.HasIndex("RoomId");
 
                     b.HasIndex("SubjectId");
 
@@ -350,7 +353,13 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("Repository.Entities.Timetable.Cards.ActualCard", b =>
                 {
-                    b.HasOne("Repository.Entities.Timetable.Cards.Info.LessonTime", "LessonTime")
+                    b.HasOne("Repository.Entities.Timetable.Cards.Parts.Cabinet", "Cabinet")
+                        .WithMany("ActualCards")
+                        .HasForeignKey("CabinetId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Repository.Entities.Timetable.Cards.Parts.LessonTime", "LessonTime")
                         .WithMany("ActualCards")
                         .HasForeignKey("LessonTimeId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -362,19 +371,13 @@ namespace WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Repository.Entities.Timetable.Cards.Info.Room", "Cabinet")
-                        .WithMany("ActualCards")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Repository.Entities.Timetable.Cards.Info.Subject", "Subject")
+                    b.HasOne("Repository.Entities.Timetable.Cards.Parts.Subject", "Subject")
                         .WithMany("ActualCards")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Repository.Entities.Timetable.Cards.Info.Teacher", "Teacher")
+                    b.HasOne("Repository.Entities.Timetable.Cards.Parts.Teacher", "Teacher")
                         .WithMany("ActualCards")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -393,7 +396,13 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("Repository.Entities.Timetable.Cards.StableCard", b =>
                 {
-                    b.HasOne("Repository.Entities.Timetable.Cards.Info.LessonTime", "LessonTime")
+                    b.HasOne("Repository.Entities.Timetable.Cards.Parts.Cabinet", "Cabinet")
+                        .WithMany("StableCards")
+                        .HasForeignKey("CabinetId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Repository.Entities.Timetable.Cards.Parts.LessonTime", "LessonTime")
                         .WithMany("StableCards")
                         .HasForeignKey("LessonTimeId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -405,19 +414,13 @@ namespace WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Repository.Entities.Timetable.Cards.Info.Room", "Cabinet")
-                        .WithMany("StableCards")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Repository.Entities.Timetable.Cards.Info.Subject", "Subject")
+                    b.HasOne("Repository.Entities.Timetable.Cards.Parts.Subject", "Subject")
                         .WithMany("StableCards")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Repository.Entities.Timetable.Cards.Info.Teacher", "Teacher")
+                    b.HasOne("Repository.Entities.Timetable.Cards.Parts.Teacher", "Teacher")
                         .WithMany("StableCards")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -450,28 +453,28 @@ namespace WebApi.Migrations
                     b.Navigation("Cards");
                 });
 
-            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Info.LessonTime", b =>
+            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Parts.Cabinet", b =>
                 {
                     b.Navigation("ActualCards");
 
                     b.Navigation("StableCards");
                 });
 
-            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Info.Room", b =>
+            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Parts.LessonTime", b =>
                 {
                     b.Navigation("ActualCards");
 
                     b.Navigation("StableCards");
                 });
 
-            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Info.Subject", b =>
+            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Parts.Subject", b =>
                 {
                     b.Navigation("ActualCards");
 
                     b.Navigation("StableCards");
                 });
 
-            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Info.Teacher", b =>
+            modelBuilder.Entity("Repository.Entities.Timetable.Cards.Parts.Teacher", b =>
                 {
                     b.Navigation("ActualCards");
 

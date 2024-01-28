@@ -13,7 +13,7 @@ namespace Models.Request
             private const string REGEX_ERROR_MSG = "Дата должна иметь формат dd/mm/yyyy, dd-mm-yyyy или dd.mm.yyyy";
 
             public int Id { get; init; }
-            public int CabinetId { get; init; }
+            public int RoomId { get; init; }
             public bool IsCanceled { get; init; }
             public bool IsModified { get; init; }
             public bool IsMoved { get; init; }

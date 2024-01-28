@@ -1,4 +1,6 @@
-﻿namespace Services.Asc.Timetable
+﻿using Repository.Entities.Timetable.Cards.Info;
+
+namespace Services.Asc.Timetable
 {
     internal static class StaticDeterminers
     {
@@ -54,15 +56,15 @@
         /// <param name="subgroupCode"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public static Repository.Entities.Timetable.Cards.Parts.SubGroup DetermineSubgroup(string subgroupCode)
+        public static SubGroup DetermineSubgroup(string subgroupCode)
         {
             return subgroupCode switch
             {
-                "Весь класс" => Repository.Entities.Timetable.Cards.Parts.SubGroup.All,
-                "1 группа" => Repository.Entities.Timetable.Cards.Parts.SubGroup.FirstGroup,
-                "2 группа" => Repository.Entities.Timetable.Cards.Parts.SubGroup.SecondGroup,
-                "Мальчики" => Repository.Entities.Timetable.Cards.Parts.SubGroup.Males,
-                "Девочки" => Repository.Entities.Timetable.Cards.Parts.SubGroup.Females,
+                "Весь класс" => SubGroup.All,
+                "1 группа" => SubGroup.FirstGroup,
+                "2 группа" => SubGroup.SecondGroup,
+                "Мальчики" => SubGroup.Males,
+                "Девочки" => SubGroup.Females,
                 _ => throw new ArgumentException("Подгруппа не определена.")
             };
         }
@@ -76,7 +78,7 @@
         /// <param name="ascCabinetsStr"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public static Repository.Entities.Timetable.Cards.Parts.Cabinet DetermineCabinets(IEnumerable<Repository.Entities.Timetable.Cards.Parts.Cabinet> cabinets, string ascCabinetsStr)
+        public static Room DetermineCabinets(IEnumerable<Room> cabinets, string ascCabinetsStr)
         {
             var ascCabinetsSplitted = ascCabinetsStr.Split(',');
             foreach (var ascCabinet in ascCabinetsSplitted)

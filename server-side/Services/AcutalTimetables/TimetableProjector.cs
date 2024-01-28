@@ -92,7 +92,7 @@ namespace Services.AcutalTimetables
                 IsCanceled = false,
                 IsModified = false,
                 IsMoved = false,
-                CabinetId = stableCard.CabinetId,
+                RoomId = stableCard.RoomId,
                 LessonTimeId = stableCard.LessonTimeId,
                 SubGroup = stableCard.SubGroup,
                 SubjectId = stableCard.SubjectId,

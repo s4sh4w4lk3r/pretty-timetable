@@ -1,5 +1,5 @@
 ﻿using Repository.Entities.Timetable;
-using Repository.Entities.Timetable.Cards.Parts;
+using Repository.Entities.Timetable.Cards.Info;
 
 namespace Repository.Entities.Substs
 {
@@ -13,7 +13,7 @@ namespace Repository.Entities.Substs
         public required int LessonTimeId { get; init; }
         public required int SubjectId { get; init; }
         public required int GroupId { get; init; }
-        public required int CabinetId { get; init; }
+        public required int RoomId { get; init; }
         public SubGroup SubGroup { get; init; }
         public required int TeacherId { get; init; }
 
@@ -22,7 +22,7 @@ namespace Repository.Entities.Substs
         public Subject? Subject { get; init; }
         public Group? Group { get; init; }
         public Teacher? Teacher { get; init; }
-        public Cabinet? Cabinet { get; init; }
+        public Room? Cabinet { get; init; }
         public LessonTime? LessonTime { get; init; }
 
         public required DateOnly Date { get; init; }

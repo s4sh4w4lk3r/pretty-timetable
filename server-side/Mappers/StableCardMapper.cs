@@ -1,6 +1,6 @@
 ﻿using Models.Request;
 using Repository.Entities.Timetable.Cards;
-using Repository.Entities.Timetable.Cards.Parts;
+using Repository.Entities.Timetable.Cards.Info;
 
 namespace Mappers
 {
@@ -16,7 +16,7 @@ namespace Mappers
                 RelatedTimetableId = model.RelatedTimetableId,
                 SubjectId = model.SubjectId,
                 TeacherId = model.TeacherId,
-                CabinetId = model.CabinetId,
+                RoomId = model.RoomId,
                 IsWeekEven = model.IsWeekEven,
                 SubGroup = (SubGroup)model.SubGroup,
                 DayOfWeek = (DayOfWeek)model.DayOfWeek,

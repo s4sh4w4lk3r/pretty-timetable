@@ -1,4 +1,4 @@
-﻿namespace Repository.Entities.Timetable.Cards.Parts;
+﻿namespace Repository.Entities.Timetable.Cards.Info;
 
 public class Subject : IEntity
 {

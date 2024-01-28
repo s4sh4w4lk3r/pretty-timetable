@@ -1,12 +1,12 @@
 ﻿using Models.Request.CardParts;
-using Repository.Entities.Timetable.Cards.Parts;
+using Repository.Entities.Timetable.Cards.Info;
 
 namespace Mappers.CardParts
 {
-    public static class CabinetMapper
+    public static class RoomMapper
     {
 
-        public static Cabinet ToEntity(this CabinetModels.CabinetPut model)
+        public static Room ToEntity(this RoomModels.RoomPut model)
         {
             return new()
             {

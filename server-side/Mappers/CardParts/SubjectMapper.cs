@@ -1,5 +1,5 @@
 ﻿using Models.Request.CardParts;
-using Repository.Entities.Timetable.Cards.Parts;
+using Repository.Entities.Timetable.Cards.Info;
 
 namespace Mappers.CardParts
 {

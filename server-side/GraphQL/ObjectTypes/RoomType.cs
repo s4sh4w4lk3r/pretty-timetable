@@ -1,10 +1,10 @@
-﻿using Repository.Entities.Timetable.Cards.Parts;
+﻿using Repository.Entities.Timetable.Cards.Info;
 
 namespace GraphQL.ObjectTypes
 {
-    public class CabinetType : ObjectType<Cabinet>
+    public class RoomType : ObjectType<Room>
     {
-        protected override void Configure(IObjectTypeDescriptor<Cabinet> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<Room> descriptor)
         {
             descriptor.BindFieldsImplicitly();
 

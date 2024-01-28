@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Repository.Entities.Timetable.Cards.Parts;
+using Repository.Entities.Timetable.Cards.Info;
 
 namespace Validation.Entities.CardParts
 {
-    public class CabinetValidator : AbstractValidator<Cabinet>
+    public class RoomValidator : AbstractValidator<Room>
     {
-        public CabinetValidator()
+        public RoomValidator()
         {
             RuleFor(e=>e.Address).NotEmpty();
             RuleFor(e=>e.Number).NotEmpty();

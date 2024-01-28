@@ -2,9 +2,9 @@
 
 namespace Services.Interfaces.CardParts
 {
-    public interface ISubjectService
+    public interface IRoomService
     {
-        public Task<ServiceResult<int>> PutAsync(Subject subject, CancellationToken cancellationToken = default);
+        public Task<ServiceResult<int>> PutAsync(Room cabinet, CancellationToken cancellationToken = default);
         public Task<ServiceResult> DeleteAsync(int id, CancellationToken cancellationToken = default);
     }
 }

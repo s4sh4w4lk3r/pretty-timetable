@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Repository.Entities.Substs;
 using Repository.Entities.Timetable;
 using Repository.Entities.Timetable.Cards;
-using Repository.Entities.Timetable.Cards.Parts;
+using Repository.Entities.Timetable.Cards.Info;
 
 namespace Repository.Database
 {
@@ -11,9 +11,9 @@ namespace Repository.Database
     {
         private const string SchemaName = "timetable";
 
-        public static void ConfigureCabinet(EntityTypeBuilder<Cabinet> entity)
+        public static void ConfigureRoom(EntityTypeBuilder<Room> entity)
         {
-            entity.ToTable("Cabinet", SchemaName);
+            entity.ToTable("Room", SchemaName);
             entity.HasKey(c => c.Id);
             entity.Property(c => c.Address);
             entity.Property(c => c.Number);
@@ -50,7 +50,7 @@ namespace Repository.Database
         {
             entity.ToTable("ActualCard", SchemaName);
             entity.HasKey(e => e.Id);
-            entity.HasOne(e => e.Cabinet).WithMany(e => e.ActualCards).HasForeignKey(e=>e.CabinetId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.Cabinet).WithMany(e => e.ActualCards).HasForeignKey(e=>e.RoomId).OnDelete(DeleteBehavior.NoAction).IsRequired();
             entity.HasOne(e => e.Subject).WithMany(e => e.ActualCards).HasForeignKey(e => e.SubjectId).OnDelete(DeleteBehavior.NoAction).IsRequired();
             entity.HasOne(e => e.Teacher).WithMany(e => e.ActualCards).HasForeignKey(e => e.TeacherId).OnDelete(DeleteBehavior.NoAction).IsRequired();
             entity.HasOne(e => e.LessonTime).WithMany(e => e.ActualCards).HasForeignKey(e => e.LessonTimeId).OnDelete(DeleteBehavior.NoAction).IsRequired();
@@ -61,7 +61,7 @@ namespace Repository.Database
         {
             entity.ToTable("StableCard", SchemaName);
             entity.HasKey(e => e.Id);
-            entity.HasOne(e => e.Cabinet).WithMany(e => e.StableCards).HasForeignKey(e => e.CabinetId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            entity.HasOne(e => e.Cabinet).WithMany(e => e.StableCards).HasForeignKey(e => e.RoomId).OnDelete(DeleteBehavior.NoAction).IsRequired();
             entity.HasOne(e => e.Subject).WithMany(e => e.StableCards).HasForeignKey(e => e.SubjectId).OnDelete(DeleteBehavior.NoAction).IsRequired();
             entity.HasOne(e => e.Teacher).WithMany(e => e.StableCards).HasForeignKey(e => e.TeacherId).OnDelete(DeleteBehavior.NoAction).IsRequired();
             entity.HasOne(e => e.LessonTime).WithMany(e => e.StableCards).HasForeignKey(e => e.LessonTimeId).OnDelete(DeleteBehavior.NoAction).IsRequired();

@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Request.CardParts;
 using Services.Interfaces.CardParts;
+using Validation.Entities.CardParts;
 
 namespace WebApi.Controllers.CardParts
 {
-    [ApiController, Route("cabinet")]
-    public class CabinetController(ICabinetService cabinetService) : ControllerBase
+    [ApiController, Route("room")]
+    public class RoomController(IRoomService cabinetService) : ControllerBase
     {
         [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
-        public async Task<IActionResult> Put(CabinetModels.CabinetPut model)
+        public async Task<IActionResult> Put(RoomModels.RoomPut model)
         {
             var result = await cabinetService.PutAsync(model.ToEntity());
 

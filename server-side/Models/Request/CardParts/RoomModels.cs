@@ -2,9 +2,9 @@
 
 namespace Models.Request.CardParts
 {
-    public static class CabinetModels
+    public static class RoomModels
     {
-        public class CabinetPut
+        public class RoomPut
         {
             public required int Id { get; init; }
             [Required] public required string Address { get; init; }

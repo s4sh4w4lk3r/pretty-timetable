@@ -1,4 +1,4 @@
-﻿using Repository.Entities.Timetable.Cards.Parts;
+﻿using Repository.Entities.Timetable.Cards.Info;
 
 namespace Repository.Entities.Timetable.Cards
 {
@@ -7,11 +7,11 @@ namespace Repository.Entities.Timetable.Cards
         public required int Id { get; init; }
         public Teacher? Teacher { get; set; }
         public Subject? Subject { get; set; }
-        public Cabinet? Cabinet { get; set; }
+        public Room? Cabinet { get; set; }
         public LessonTime? LessonTime { get; set; }
         public required int TeacherId { get; set; }
         public required int SubjectId { get; set; }
-        public required int CabinetId { get; set; }
+        public required int RoomId { get; set; }
         public required int LessonTimeId { get; set; }
         public required bool IsWeekEven { get; set; }
         public required DayOfWeek DayOfWeek { get; set; }

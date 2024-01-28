@@ -24,7 +24,7 @@ namespace WebApi
             .AddType<GroupType>()
             .AddType<TeacherType>()
             .AddType<SubjectType>()
-            .AddType<CabinetType>()
+            .AddType<RoomType>()
             .AddType<LessonTimeType>()
 
             .AddType<SubGroupType>()

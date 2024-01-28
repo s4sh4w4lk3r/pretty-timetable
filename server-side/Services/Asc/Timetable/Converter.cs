@@ -1,4 +1,5 @@
 ﻿using Repository.Database;
+using Repository.Entities.Timetable.Cards.Info;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
@@ -8,10 +9,10 @@ namespace Services.Asc.Timetable
 {
     internal class Converter(TimetableContext timetableContext)
     {
-        public List<Repository.Entities.Timetable.Cards.Parts.Cabinet> Cabinets { get; private set; } = [];
-        public List<Repository.Entities.Timetable.Cards.Parts.Teacher> Teachers { get; private set; } = [];
-        public List<Repository.Entities.Timetable.Cards.Parts.LessonTime> LessonTimes { get; private set; } = [];
-        public List<Repository.Entities.Timetable.Cards.Parts.Subject> Subjects { get; private set; } = [];
+        public List<Room> Cabinets { get; private set; } = [];
+        public List<Teacher> Teachers { get; private set; } = [];
+        public List<LessonTime> LessonTimes { get; private set; } = [];
+        public List<Subject> Subjects { get; private set; } = [];
         public List<Repository.Entities.Timetable.Cards.StableCard> StableCards { get; private set; } = [];
         public List<Repository.Entities.Timetable.StableTimetable> StableTimetables { get; private set; } = [];
         public List<Repository.Entities.Timetable.Group> Groups { get; private set; } = [];
@@ -54,7 +55,7 @@ namespace Services.Asc.Timetable
             Groups = _ascTimetable.Classes.Class.Select(e => new Repository.Entities.Timetable.Group()
             { Id = default, AscId = e.Id, Name = e.Name, ModifiedAt = DateTime.UtcNow }).ToList();
 
-            Teachers = _ascTimetable.Teachers.Teacher.Select(e => new Repository.Entities.Timetable.Cards.Parts.Teacher()
+            Teachers = _ascTimetable.Teachers.Teacher.Select(e => new Repository.Entities.Timetable.Cards.Info.Teacher()
             {
                 Id = default,
                 AscId = e.Id,
@@ -64,13 +65,13 @@ namespace Services.Asc.Timetable
                 ModifiedAt = DateTime.UtcNow
             }).ToList();
 
-            Subjects = _ascTimetable.Subjects.Subject.Select(e => new Repository.Entities.Timetable.Cards.Parts.Subject()
+            Subjects = _ascTimetable.Subjects.Subject.Select(e => new Repository.Entities.Timetable.Cards.Info.Subject()
             { Id = default, AscId = e.Id, Name = e.Name, ModifiedAt = DateTime.UtcNow }).ToList();
 
-            LessonTimes = _ascTimetable.Periods.Period.Select(e => new Repository.Entities.Timetable.Cards.Parts.LessonTime()
+            LessonTimes = _ascTimetable.Periods.Period.Select(e => new Repository.Entities.Timetable.Cards.Info.LessonTime()
             { Id = default, StartsAt = TimeOnly.Parse(e.Starttime), EndsAt = TimeOnly.Parse(e.Endtime), Number = int.Parse(e._period), ModifiedAt = DateTime.UtcNow }).ToList();
 
-            Cabinets = _ascTimetable.Classrooms.Classroom.Select(e => new Repository.Entities.Timetable.Cards.Parts.Cabinet()
+            Cabinets = _ascTimetable.Classrooms.Classroom.Select(e => new Repository.Entities.Timetable.Cards.Info.Room()
             {
                 Id = default,
                 AscId = e.Id,
@@ -117,12 +118,12 @@ namespace Services.Asc.Timetable
 
                     DayOfWeek dayOfWeek = DetermineDayOfWeek(card.Days);
 
-                    Repository.Entities.Timetable.Cards.Parts.Teacher teacher = Teachers.Single(e => e.AscId == lesson.Teacherids);
-                    Repository.Entities.Timetable.Cards.Parts.Subject subject = Subjects.Single(e => e.AscId == lesson.Subjectid);
-                    Repository.Entities.Timetable.Cards.Parts.LessonTime lessonTime = LessonTimes.Single(e => e.Number == int.Parse(card.Period));
-                    Repository.Entities.Timetable.Cards.Parts.Cabinet cabinet = DetermineCabinets(Cabinets, lesson.Classroomids);
+                    Teacher teacher = Teachers.Single(e => e.AscId == lesson.Teacherids);
+                    Subject subject = Subjects.Single(e => e.AscId == lesson.Subjectid);
+                    LessonTime lessonTime = LessonTimes.Single(e => e.Number == int.Parse(card.Period));
+                    Room cabinet = DetermineCabinets(Cabinets, lesson.Classroomids);
 
-                    Repository.Entities.Timetable.Cards.Parts.SubGroup subGroup = DetermineSubgroup(_ascTimetable.Groups.Group.Single(e => e.Id == lesson.Groupids).Name);
+                    SubGroup subGroup = DetermineSubgroup(_ascTimetable.Groups.Group.Single(e => e.Id == lesson.Groupids).Name);
                     switch (DetermineWeekEvenness(card.Weeks))
                     {
                         case WeekEvenness.Both:
@@ -132,7 +133,7 @@ namespace Services.Asc.Timetable
                                 SubjectId = subject.Id,
                                 LessonTimeId = lessonTime.Id,
                                 TeacherId = teacher.Id,
-                                CabinetId = cabinet.Id,
+                                RoomId = cabinet.Id,
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
                                 IsWeekEven = true,
@@ -146,7 +147,7 @@ namespace Services.Asc.Timetable
                                 SubjectId = subject.Id,
                                 LessonTimeId = lessonTime.Id,
                                 TeacherId = teacher.Id,
-                                CabinetId = cabinet.Id,
+                                RoomId = cabinet.Id,
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
                                 IsWeekEven = false,
@@ -162,7 +163,7 @@ namespace Services.Asc.Timetable
                                 SubjectId = subject.Id,
                                 LessonTimeId = lessonTime.Id,
                                 TeacherId = teacher.Id,
-                                CabinetId = cabinet.Id,
+                                RoomId = cabinet.Id,
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
                                 IsWeekEven = true,
@@ -178,7 +179,7 @@ namespace Services.Asc.Timetable
                                 SubjectId = subject.Id,
                                 LessonTimeId = lessonTime.Id,
                                 TeacherId = teacher.Id,
-                                CabinetId = cabinet.Id,
+                                RoomId = cabinet.Id,
                                 SubGroup = subGroup,
                                 DayOfWeek = dayOfWeek,
                                 IsWeekEven = false,

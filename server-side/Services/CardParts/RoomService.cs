@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Database;
-using Repository.Entities.Timetable.Cards.Parts;
+using Repository.Entities.Timetable.Cards.Info;
 using Services.Interfaces.CardParts;
 using Validation.Entities.CardParts;
 
 namespace Services.CardParts
 {
-    public class CabinetService(TimetableContext timetableContext) : ICabinetService
+    public class RoomService(TimetableContext timetableContext) : IRoomService
     {
-        public async Task<ServiceResult<int>> PutAsync(Cabinet cabinet, CancellationToken cancellationToken = default)
+        public async Task<ServiceResult<int>> PutAsync(Room cabinet, CancellationToken cancellationToken = default)
         {
-            var valResult = new CabinetValidator().Validate(cabinet);
+            var valResult = new RoomValidator().Validate(cabinet);
             if (valResult.IsValid is false)
             {
                 return ServiceResult.Fail(valResult.ToString(), default(int));

@@ -1,9 +1,9 @@
 ﻿using Repository.Database;
-using Repository.Entities.Timetable.Cards.Parts;
 using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable;
 using GraphQL.FilterTypes;
 using GraphQL.SortTypes;
+using Repository.Entities.Timetable.Cards.Info;
 
 namespace GraphQL.OperationTypes
 {
@@ -12,7 +12,7 @@ namespace GraphQL.OperationTypes
         public IQueryable<Subject> GetSubjects([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Subjects;
         public IQueryable<Teacher> GetTeachers([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Teachers;
         public IQueryable<Group> GetGroups([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Groups;
-        public IQueryable<Cabinet> GetCabinets([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Cabinets;
+        public IQueryable<Room> GetRooms([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Cabinets;
         public IQueryable<LessonTime> GetLessonTimes([Service(ServiceKind.Synchronized)] TimetableContext context) => context.LessonTimes;
         public IQueryable<ActualCard> GetActualCards([Service(ServiceKind.Synchronized)] TimetableContext context) => context.ActualCards;
         public IQueryable<ActualTimetable> GetActualTimetables([Service(ServiceKind.Synchronized)] TimetableContext context) => context.ActualTimetables;
@@ -35,12 +35,12 @@ namespace GraphQL.OperationTypes
                 });
 
 
-            descriptor.Field(e => e.GetCabinets(default!))
-                .UseFiltering<Cabinet>(x =>
+            descriptor.Field(e => e.GetRooms(default!))
+                .UseFiltering<Room>(x =>
                 {
                     x.BindFieldsImplicitly(); x.Ignore(e => e.StableCards); x.Ignore(e => e.ActualCards);
                 })
-                .UseSorting<Cabinet>(x =>
+                .UseSorting<Room>(x =>
                 {
                     x.BindFieldsImplicitly(); x.Ignore(e => e.StableCards); x.Ignore(e => e.ActualCards);
                 });
