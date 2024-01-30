@@ -1,10 +1,8 @@
-import { getServerSession } from "next-auth";
-import { getToken } from "next-auth/jwt";
+"use client";
 import { useSession } from "next-auth/react";
 
 export default function Home() {
-    getToken({});
-    const { accessToken } = data;
-
+    const { data } = useSession();
+    console.log(data);
     return <></>;
 }
