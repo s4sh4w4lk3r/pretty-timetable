@@ -5,7 +5,6 @@ volumes:
   timetable-pgadmin-vol:
   timetable-nginx-vol:
   timetable-certbot-vol:
-  timetable-html-vol:
 
 
 services:
@@ -65,7 +64,6 @@ services:
     restart: always
     volumes:
       - "timetable-nginx-vol:/etc/nginx/conf.d/"
-      - "timetable-html-vol:/usr/share/nginx/html/"
       - "timetable-certbot-vol:/var/www/certbot/"
       - "timetable-certbot-vol:/etc/nginx/ssl/"
     ports:

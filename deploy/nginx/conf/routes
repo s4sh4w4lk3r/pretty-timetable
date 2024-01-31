@@ -2,22 +2,38 @@ location / {
     # root   html;
     # root   /usr/share/nginx/html;
     # index  index.html index.htm;
-    
+
     include proxy_params;
     proxy_pass http://localhost:3001;
 }
 
-location /api/auth {
-    include proxy_params;
-    proxy_pass /api/auth;
-}
 
 location /api {
+
+    location /api/auth {
+        include proxy_params;
+        proxy_pass http://localhost:3001/api/auth;
+    }
+
     include proxy_params;
     proxy_pass http://localhost:5012;
 }
 
+
 location /auth {
-    include proxy_params;
-    proxy_pass http://localhost:8080/auth;
+
+    location /auth/realms {
+        include proxy_params;
+        proxy_pass http://keycloak:8080/auth/realms;
+    }
+
+    location /auth/resources {
+        include proxy_params;
+        proxy_pass http://keycloak:8080/auth/resources;
+    }
+
+    location /auth/robots.txt {
+        include proxy_params;
+        proxy_pass http://keycloak:8080/auth/robots.txt;
+    }
 }
