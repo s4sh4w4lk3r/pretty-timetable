@@ -1,0 +1,23 @@
+location / {
+    # root   html;
+    # root   /usr/share/nginx/html;
+    # index  index.html index.htm;
+    
+    include proxy_params;
+    proxy_pass http://localhost:3001;
+}
+
+location /api/auth {
+    include proxy_params;
+    proxy_pass /api/auth;
+}
+
+location /api {
+    include proxy_params;
+    proxy_pass http://localhost:5012;
+}
+
+location /auth {
+    include proxy_params;
+    proxy_pass http://localhost:8080/auth;
+}
