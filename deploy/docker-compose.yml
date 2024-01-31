@@ -22,7 +22,6 @@ services:
     volumes:
       - timetable-postgres-vol:/var/lib/postgresql/data
 
-
   # pgadmin:
   #   image: dpage/pgadmin4:8.1
   #   environment:
@@ -43,18 +42,17 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres/keycloak
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: keycloak
+      KC_DB_USERNAME: ${KEYCLOAK_DB_USERNAME}
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KC_HTTP_RELATIVE_PATH: auth/
+      KC_PROXY: edge
+      KC_HOSTNAME_URL: ${KEYCLOAK_HOSTNAME_URL}
     ports:
-      - 9090:8080
+      - 8080:8080
     depends_on:
       - postgres
     command:
-      - start-dev
-      - --proxy=edge
-      - --hostname-strict=false
-      - --hostname-strict-https=false
-      - --http-relative-path=auth/
+      - start
 
 
   nginx:
@@ -71,7 +69,6 @@ services:
       - "443:443"
     depends_on:
       - keycloak
-
 
   certbot:
     image: certbot/certbot:v2.8.0
