@@ -18,6 +18,7 @@ const authConfig: NextAuthOptions = {
             session.accessToken = token.accessToken as string;
             return session;
         },
+
         async jwt({ token, account }) {
             if (account && account.access_token) {
                 token.accessToken = account.access_token;
