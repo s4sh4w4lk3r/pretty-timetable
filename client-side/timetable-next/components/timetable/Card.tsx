@@ -43,7 +43,7 @@ export default function Card(props: Props) {
     return (
         <ChakraCard
             maxW={"350px"}
-            maxH={"150px"}
+            maxH={"120px"}
             px={"5px"}
             borderColor={highlighting}
             borderWidth={"2px"}

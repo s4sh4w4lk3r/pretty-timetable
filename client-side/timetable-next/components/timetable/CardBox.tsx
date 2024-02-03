@@ -1,4 +1,4 @@
-import { Card } from "@chakra-ui/react";
+import { Card as ChakraCard, Tag, VStack } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
 type Props = {
     dayOfWeek: string;
@@ -7,5 +7,17 @@ type Props = {
 };
 export default function CardBox(props: Props) {
     const { children, dayOfWeek, doesHighlight } = props;
-    return <Card>{children}</Card>;
+    return (
+        <ChakraCard
+            maxH={"750px"}
+            p={"8px"}
+            borderWidth={"2px"}
+            borderColor={doesHighlight ? "red.300" : "gray.500"}
+        >
+            <VStack gap={"10px"}>
+                <Tag size="lg">{dayOfWeek}</Tag>
+                {children}
+            </VStack>
+        </ChakraCard>
+    );
 }
