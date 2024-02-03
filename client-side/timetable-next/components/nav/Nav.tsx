@@ -5,7 +5,7 @@ export default function Nav({ children }: { children: ReactNode }) {
     return (
         <Flex
             h="70px"
-            bgColor="goldenrod"
+            bgColor="purple.200"
             gap="10px"
             justifyContent="center"
             alignItems="center"

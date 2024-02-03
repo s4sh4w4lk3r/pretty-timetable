@@ -16,6 +16,5 @@ export default function NavLinks() {
             {l.label}
         </Link>
     ));
-
     return linksElement;
 }
