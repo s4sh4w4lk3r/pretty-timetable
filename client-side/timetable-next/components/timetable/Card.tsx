@@ -76,10 +76,17 @@ export default function Card(props: Props) {
                     <p>{lessonTime.endsAt.toString()}</p>
                 </VStack>
 
-                <VStack divider={<StackDivider />}>
+                <VStack
+                    divider={<StackDivider />}
+                    justifyContent={"space-around"}
+                    w={"100%"}
+                >
                     {badge}
                     <p>{subject}</p>
-                    <HStack>
+                    <HStack
+                        w={"100%"}
+                        justifyContent={"space-around"}
+                    >
                         <p>{teacher}</p>
                         <p>{cabinet}</p>
                     </HStack>

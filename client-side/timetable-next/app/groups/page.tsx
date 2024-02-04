@@ -1,6 +1,6 @@
 import Group from "@/components/group/Group";
 import { getGroups } from "@/fetching/rest/data";
-import { Center, SimpleGrid, VStack } from "@chakra-ui/react";
+import { Center, SimpleGrid } from "@chakra-ui/react";
 
 export default async function Groups() {
     const groups = await getGroups();
@@ -25,3 +25,4 @@ export default async function Groups() {
         </Center>
     );
 }
+// TODO : изменть запрос графкл, сделать три списка с группами из трех корпусов
