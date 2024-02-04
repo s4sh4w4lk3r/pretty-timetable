@@ -56,13 +56,16 @@ export default function Card(props: Props) {
 
     return (
         <ChakraCard
-            maxW={"350px"}
             maxH={"200px"}
             px={"5px"}
             borderColor={highlighting}
             borderWidth={"2px"}
+            w="100%"
         >
-            <HStack divider={<StackDivider />}>
+            <HStack
+                divider={<StackDivider />}
+                w="100%"
+            >
                 <p>{lessonTime.number}</p>
                 <VStack divider={<StackDivider />}>
                     <p>{lessonTime.startsAt.toString()}</p>

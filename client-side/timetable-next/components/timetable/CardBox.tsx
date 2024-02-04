@@ -10,6 +10,7 @@ export default function CardBox(props: Props) {
     return (
         <ChakraCard
             maxH={"750px"}
+            maxW={"360px"}
             p={"8px"}
             borderWidth={"2px"}
             borderColor={doesHighlight ? "red.300" : "gray.500"}
