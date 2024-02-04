@@ -13,30 +13,39 @@ services:
     build:
       context: ./postgres
       dockerfile: Dockerfile
+    image: timetable-postgres
+
+    volumes:
+      - timetable-postgres-vol:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+
     environment:
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: "/var/lib/postgresql/data/pgdata"
-    ports:
-      - 5433:5432
-    volumes:
-      - timetable-postgres-vol:/var/lib/postgresql/data
 
   # pgadmin:
   #   image: dpage/pgadmin4:8.1
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
-  #     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+
   #   ports:
   #     - 82:80
   #   volumes:
   #     - timetable-pgadmin-vol:/var/lib/pgadmin
+
   #   depends_on:
   #     - postgres
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+  #     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
 
 
   keycloak:
     image: quay.io/keycloak/keycloak:23.0
+
+    ports:
+      - 8080:8080
+
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_USERNAME}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
@@ -47,8 +56,6 @@ services:
       KC_HTTP_RELATIVE_PATH: auth/
       KC_PROXY: edge
       KC_HOSTNAME_URL: ${KEYCLOAK_HOSTNAME_URL}
-    ports:
-      - 8080:8080
     depends_on:
       - postgres
     command:
@@ -58,6 +65,8 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
+    image: timetable-nginx
+
     volumes:
       - "timetable-nginx-vol:/etc/nginx/conf.d/"
       - "timetable-certbot-vol:/var/www/certbot/"
@@ -65,14 +74,25 @@ services:
     ports:
       - "80:80"
       - "443:443"
+
     depends_on:
       - keycloak
 
   certbot:
     image: certbot/certbot:v2.8.0
-    depends_on:
-      - nginx
+
     volumes:
       - "timetable-certbot-vol:/var/www/certbot/"
       - "timetable-certbot-vol:/etc/letsencrypt/"
       - "timetable-certbot-vol:/var/lib/letsencrypt/"
+    depends_on:
+      - nginx
+
+  frontend:
+    build:
+      context: ./../client-side/timetable-next
+      dockerfile: Dockerfile
+    image: timetable-next
+
+    depends_on:
+      - nginx
