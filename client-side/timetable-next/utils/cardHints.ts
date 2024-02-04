@@ -1,6 +1,10 @@
 import moment from "moment";
 
-export function defineHintsRequired(lessonStartsAt: string, lessonEndsAt: string, dateFromCard: string): { isNow: boolean; isPending: boolean } {
+export function defineHintsRequired(params: { lessonStartsAt: string; lessonEndsAt: string; dateFromCard: string }): {
+    isNow: boolean;
+    isPending: boolean;
+} {
+    const { dateFromCard, lessonEndsAt, lessonStartsAt } = params;
     const startDate = new Date(new Date().setHours(Number.parseInt(lessonStartsAt.split(":")[0]), Number.parseInt(lessonStartsAt.split(":")[1]), 0));
     const endDate = new Date(new Date().setHours(Number.parseInt(lessonEndsAt.split(":")[0]), Number.parseInt(lessonEndsAt.split(":")[1]), 0));
     const dateOk = new Date(Date.parse(dateFromCard)).getUTCDate() === new Date().getUTCDate();
@@ -13,22 +17,10 @@ export function defineHintsRequired(lessonStartsAt: string, lessonEndsAt: string
     return { isNow: isNow, isPending };
 }
 
-function defineCardClass(isNow: boolean, isPending: boolean, isCanceled: boolean, isModified: boolean): string {
-    if (isCanceled) {
-        return `${""} ${"canceled"}`;
-    }
-
-    if (isNow) {
-        return `${""} ${"now"}`;
-    }
-
-    if (isPending) {
-        return `${""} ${"pending"}`;
-    }
-
-    if (isModified) {
-        return `${""} ${"modified"}`;
-    }
-
-    return `${""}`;
+export function getStatus(params: { isCanceled: boolean; isModified: boolean; isMoved: boolean }) {
+    const { isCanceled, isModified, isMoved } = params;
+    if (isCanceled) return "canceled";
+    if (isModified) return "modified";
+    if (isMoved) return "moved";
+    return "none";
 }

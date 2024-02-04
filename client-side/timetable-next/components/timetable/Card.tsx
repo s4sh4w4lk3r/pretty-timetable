@@ -2,7 +2,11 @@ import React from "react";
 import { Badge, Card as ChakraCard, HStack, StackDivider, VStack } from "@chakra-ui/react";
 
 type StatusType = "none" | "now" | "pending";
-type ChangesType = "none" | "canceled" | "modified";
+type ChangesType = {
+    isMoved: boolean;
+    isCanceled: boolean;
+    isModified: boolean;
+};
 type Props = {
     id: number;
     subject: string;
@@ -17,13 +21,23 @@ type Props = {
     changes: ChangesType;
 };
 
-function getBadge(changes: ChangesType) {
+function getBadges(changes: ChangesType) {
+    const { isCanceled, isModified, isMoved } = changes;
+
     const canceledBadge = <Badge color={"red.500"}>ОТМЕНЕН</Badge>;
     const modifiedBadge = <Badge color={"yellow.500"}>ЗАМЕНА</Badge>;
+    const movedBadge = <Badge color={"yellow.500"}>ПЕРЕМЕЩЕН</Badge>;
 
-    if (changes === "canceled") return canceledBadge;
-    if (changes === "modified") return modifiedBadge;
-    return null;
+    const badgesRequired = isCanceled || isModified || isMoved;
+    if (badgesRequired) {
+        return (
+            <HStack>
+                {isCanceled && canceledBadge}
+                {isModified && modifiedBadge}
+                {isMoved && movedBadge}
+            </HStack>
+        );
+    }
 }
 
 function getStatusHighlighting(status: StatusType) {
@@ -37,13 +51,13 @@ function getStatusHighlighting(status: StatusType) {
 export default function Card(props: Props) {
     const { cabinet, lessonTime, status, subject, teacher, changes } = props;
 
-    const badge = getBadge(changes);
+    const badge = getBadges(changes);
     const highlighting = getStatusHighlighting(status);
 
     return (
         <ChakraCard
             maxW={"350px"}
-            maxH={"120px"}
+            maxH={"200px"}
             px={"5px"}
             borderColor={highlighting}
             borderWidth={"2px"}

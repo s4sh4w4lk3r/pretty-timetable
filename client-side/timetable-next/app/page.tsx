@@ -1,68 +1,51 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
+import { SubGroup } from "@/fetching/graphql/__generated__/graphql";
 import { getTimetable } from "@/fetching/rest/data";
+import { getDailyCards } from "@/utils/date";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 
 export default async function Home() {
-    const cards = (await getTimetable())[0].cards!.slice(0, 5);
-    const cardsElement = cards.map(c => {
-        const { cabinet, id, subject, teacher, lessonTime } = c;
+    const { group, cards } = (await getTimetable())[0];
+    const dailyCards = getDailyCards(cards!, SubGroup.FirstGroup);
+    const cardBoxes = dailyCards.map(dc => {
+        const cardsElement = dc.cards.map(c => {
+            const { id, cabinet, lessonTime, subject, teacher } = c;
+            return (
+                <Card
+                    id={id}
+                    key={id}
+                    cabinet={cabinet.number}
+                    lessonTime={lessonTime}
+                    subject={subject.name}
+                    teacher={teacher.lastname + " " + teacher.firstname}
+                    status="none"
+                    changes={{ ...c }}
+                />
+            );
+        });
         return (
-            <Card
-                id={id}
-                key={id}
-                cabinet={cabinet.number}
-                lessonTime={lessonTime}
-                subject={subject.name}
-                teacher={teacher.lastname + " " + teacher.firstname}
-                status="none"
-                changes="none"
-            ></Card>
+            <CardBox
+                key={dc.dayOfWeek}
+                dayOfWeek={dc.dayOfWeek}
+                doesHighlight={false}
+            >
+                {cardsElement}
+            </CardBox>
         );
     });
-
     return (
         <>
             <Center mt={"10px"}>
-                <Text fontSize={"3xl"}>{"4ИП-2-20"}</Text>
+                <Text fontSize={"3xl"}>{group.name}</Text>
             </Center>
-
             <SimpleGrid
                 minChildWidth="380px"
                 justifyItems={"center"}
-                mx={"10px"}
-                my={"15px"}
+                my={"10px"}
+                rowGap={"25px"}
             >
-                <CardBox
-                    dayOfWeek="Понедельник"
-                    doesHighlight={true}
-                >
-                    {cardsElement}
-                </CardBox>
-                <CardBox
-                    dayOfWeek="Понедельник"
-                    doesHighlight={true}
-                >
-                    {cardsElement}
-                </CardBox>
-                <CardBox
-                    dayOfWeek="Понедельник"
-                    doesHighlight={true}
-                >
-                    {cardsElement}
-                </CardBox>
-                <CardBox
-                    dayOfWeek="Понедельник"
-                    doesHighlight={true}
-                >
-                    {cardsElement}
-                </CardBox>
-                <CardBox
-                    dayOfWeek="Понедельник"
-                    doesHighlight={true}
-                >
-                    {cardsElement}
-                </CardBox>
+                {cardBoxes}
             </SimpleGrid>
         </>
     );
@@ -70,3 +53,4 @@ export default async function Home() {
 
 // FIXME: Везде использовать марджины паддинги и разрмеры из темы!
 // TODO: "Добавить автоскролл на выделенный день"
+// TODO: "Добавить скелетон"
