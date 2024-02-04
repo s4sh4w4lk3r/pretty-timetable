@@ -10,7 +10,7 @@ export default async function Home() {
     const dailyCards = getDailyCards(cards!, SubGroup.FirstGroup);
     const cardBoxes = dailyCards.map(dc => {
         const cardsElement = dc.cards.map(c => {
-            const { id, cabinet, lessonTime, subject, teacher } = c;
+            const { id, cabinet, lessonTime, subject, teacher, date } = c;
             return (
                 <Card
                     id={id}
@@ -19,8 +19,8 @@ export default async function Home() {
                     lessonTime={lessonTime}
                     subject={subject.name}
                     teacher={teacher.lastname + " " + teacher.firstname}
-                    status="none"
                     changes={{ ...c }}
+                    date={date}
                 />
             );
         });

@@ -1,5 +1,6 @@
 import React from "react";
 import { Badge, Card as ChakraCard, HStack, StackDivider, VStack } from "@chakra-ui/react";
+import { defineHintsRequired } from "@/utils/cardHints";
 
 type StatusType = "none" | "now" | "pending";
 type ChangesType = {
@@ -17,8 +18,8 @@ type Props = {
         endsAt: string;
     };
     cabinet: string;
-    status: StatusType;
     changes: ChangesType;
+    date: any;
 };
 
 function getBadges(changes: ChangesType) {
@@ -40,19 +41,22 @@ function getBadges(changes: ChangesType) {
     }
 }
 
-function getStatusHighlighting(status: StatusType) {
-    if (status === "now") return "green";
+function getStatusHighlighting(params: { isNow: boolean; isPending: boolean }) {
+    const { isNow, isPending } = params;
+    if (isNow) return "green";
 
-    if (status === "pending") return "cyan";
+    if (isPending) return "cyan";
 
     return "pink";
 }
 
 export default function Card(props: Props) {
-    const { cabinet, lessonTime, status, subject, teacher, changes } = props;
+    const { cabinet, lessonTime, subject, teacher, changes, date } = props;
 
     const badge = getBadges(changes);
-    const highlighting = getStatusHighlighting(status);
+    const hintsRequired = defineHintsRequired({ lessonStartsAt: lessonTime.startsAt, lessonEndsAt: lessonTime.endsAt, dateFromCard: date });
+
+    const highlighting = getStatusHighlighting(hintsRequired);
 
     return (
         <ChakraCard

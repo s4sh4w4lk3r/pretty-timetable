@@ -16,11 +16,3 @@ export function defineHintsRequired(params: { lessonStartsAt: string; lessonEnds
 
     return { isNow: isNow, isPending };
 }
-
-export function getStatus(params: { isCanceled: boolean; isModified: boolean; isMoved: boolean }) {
-    const { isCanceled, isModified, isMoved } = params;
-    if (isCanceled) return "canceled";
-    if (isModified) return "modified";
-    if (isMoved) return "moved";
-    return "none";
-}

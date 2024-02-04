@@ -8,9 +8,7 @@ export function getWeekNumber(date: Date) {
 }
 
 export function getDailyCards(cards: ActualCard[], subgroup: SubGroup): { dayOfWeek: string; cards: ActualCard[] }[] {
-    const datesDistincted = [...new Set(cards.map(c => c.date))]
-        .map(d => new Date(d))
-        .sort((date1, date2) => (date1.getTime() > date2.getTime() ? 1 : -1));
+    const datesDistincted = distinctDates(cards);
 
     const dailyCards = datesDistincted.map(date => {
         const cardsFiltred = cards
@@ -24,4 +22,8 @@ export function getDailyCards(cards: ActualCard[], subgroup: SubGroup): { dayOfW
     });
 
     return dailyCards;
+}
+
+export function distinctDates(cards: ActualCard[]) {
+    return [...new Set(cards.map(c => c.date))].map(d => new Date(d)).sort((date1, date2) => (date1.getTime() > date2.getTime() ? 1 : -1));
 }
