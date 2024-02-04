@@ -19,8 +19,11 @@ export default function useGroup() {
 
 // FIXME выбивает ошибку localStorage is not defined. Почему-то отрабатывает на сервере
 function getGroupFromLocalStorage() {
-    const str = localStorage.getItem("group");
-    if (str) {
-        return JSON.parse(str) as Group;
-    } else return { groupId: 1, subgroup: SubGroup.All };
+    try {
+        const str = localStorage.getItem("group");
+        if (str) {
+            return JSON.parse(str) as Group;
+        } else;
+    } catch {}
+    return { groupId: 1, subgroup: SubGroup.All };
 }

@@ -1,6 +1,6 @@
 import Group from "@/components/group/Group";
 import { getGroups } from "@/fetching/rest/data";
-import { VStack } from "@chakra-ui/react";
+import { Center, SimpleGrid, VStack } from "@chakra-ui/react";
 
 export default async function Groups() {
     const groups = await getGroups();
@@ -13,12 +13,15 @@ export default async function Groups() {
     ));
 
     return (
-        <VStack
-            alignItems={"stretch"}
-            m={"15px"}
-            gap={"15px"}
-        >
-            {groupsElement}
-        </VStack>
+        <Center>
+            <SimpleGrid
+                columns={[1, 2, null, null, 3]}
+                spacing={3}
+                m={"20px"}
+                maxW={"1200px"}
+            >
+                {groupsElement}
+            </SimpleGrid>
+        </Center>
     );
 }
