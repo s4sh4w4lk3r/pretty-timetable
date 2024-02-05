@@ -1,20 +1,25 @@
+set $upstream_frontend http://frontend:3000;
+set $upstream_backend http://keycloak:5000;
+set $upstream_keycloak http://keycloak:8080;
+resolver 127.0.0.11 valid=30s;
+
 location / {
     # root   html;
     # root   /usr/share/nginx/html;
     # index  index.html index.htm;
 
     include conf.d/proxy_params;
-    proxy_pass http://frontend:3000;
+    proxy_pass $upstream_frontend;
 }
 
 
 location /api {
 
     location /api/auth {
-        proxy_pass http://frontend:3000/api/auth;
+        proxy_pass $upstream_frontend;
     }
 
-    proxy_pass http://localhost:5012;
+    proxy_pass $upstream_backend;
 
     include conf.d/proxy_params;
 }
@@ -23,15 +28,15 @@ location /api {
 location /auth {
 
     location /auth/realms {
-        proxy_pass http://keycloak:8080/auth/realms;
+        proxy_pass $upstream_keycloak/auth/realms;
     }
 
     location /auth/resources {
-        proxy_pass http://keycloak:8080/auth/resources;
+        proxy_pass $upstream_keycloak/auth/resources;
     }
 
     location /auth/robots.txt {
-        proxy_pass http://keycloak:8080/auth/robots.txt;
+        proxy_pass $upstream_keycloak/auth/robots.txt;
     }
 
     include conf.d/proxy_params;
