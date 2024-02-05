@@ -3,7 +3,7 @@ location / {
     # root   /usr/share/nginx/html;
     # index  index.html index.htm;
 
-    include proxy_params;
+    include conf.d/proxy_params;
     proxy_pass http://frontend:3000;
 }
 
@@ -11,29 +11,28 @@ location / {
 location /api {
 
     location /api/auth {
-        include proxy_params;
         proxy_pass http://frontend:3000/api/auth;
     }
 
-    include proxy_params;
     proxy_pass http://localhost:5012;
+
+    include conf.d/proxy_params;
 }
 
 
 location /auth {
 
     location /auth/realms {
-        include proxy_params;
         proxy_pass http://keycloak:8080/auth/realms;
     }
 
     location /auth/resources {
-        include proxy_params;
         proxy_pass http://keycloak:8080/auth/resources;
     }
 
     location /auth/robots.txt {
-        include proxy_params;
         proxy_pass http://keycloak:8080/auth/robots.txt;
     }
+
+    include conf.d/proxy_params;
 }
