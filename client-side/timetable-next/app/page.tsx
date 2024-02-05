@@ -1,13 +1,13 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { SubGroup } from "@/fetching/graphql/__generated__/graphql";
+import { ActualCard, SubGroup } from "@/fetching/graphql/__generated__/graphql";
 import { getTimetable } from "@/fetching/rest/data";
 import { getDailyCards } from "@/utils/date";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 
 export default async function Home() {
     const { group, cards } = (await getTimetable())[0];
-    const dailyCards = getDailyCards(cards!, SubGroup.FirstGroup);
+    const dailyCards = getDailyCards(cards as ActualCard[], SubGroup.FirstGroup);
     const cardBoxes = dailyCards.map(dc => {
         const cardsElement = dc.cards.map(c => {
             const { id, cabinet, lessonTime, subject, teacher, date } = c;

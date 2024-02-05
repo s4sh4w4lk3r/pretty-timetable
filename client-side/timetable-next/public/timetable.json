@@ -1,0 +1,545 @@
+{
+    "actualTimetables": [
+        {
+            "group": {
+                "id": 79,
+                "name": "4ИП-2-20"
+            },
+            "weekNumber": 36,
+            "cards": [
+                {
+                    "cabinet": {
+                        "id": 13,
+                        "number": "210",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 5,
+                        "firstname": "О.А.",
+                        "lastname": "Арцыбашева"
+                    },
+                    "subject": {
+                        "name": "МДК 02.01 Технология разработки программного обеспечения",
+                        "id": 198
+                    },
+                    "date": "2024-09-02",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1482,
+                    "lessonTime": {
+                        "endsAt": "17:40",
+                        "startsAt": "16:10",
+                        "id": 6,
+                        "number": 5
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 14,
+                        "number": "213",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 91,
+                        "firstname": "И.С.",
+                        "lastname": "Прохоренкова"
+                    },
+                    "subject": {
+                        "name": "МДК 07.01 Управление и автоматизация баз данных",
+                        "id": 147
+                    },
+                    "date": "2024-09-02",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1483,
+                    "lessonTime": {
+                        "endsAt": "14:10",
+                        "startsAt": "12:40",
+                        "id": 4,
+                        "number": 3
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 14,
+                        "number": "213",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 91,
+                        "firstname": "И.С.",
+                        "lastname": "Прохоренкова"
+                    },
+                    "subject": {
+                        "name": "МДК 11.01 Технология разработки и защиты баз данных",
+                        "id": 143
+                    },
+                    "date": "2024-09-02",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1484,
+                    "lessonTime": {
+                        "endsAt": "12:20",
+                        "startsAt": "10:50",
+                        "id": 3,
+                        "number": 2
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 15,
+                        "number": "215",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 8,
+                        "firstname": "Н.Д.",
+                        "lastname": "Ахмерова"
+                    },
+                    "subject": {
+                        "name": "МДК 11.02 Программные решения для бизнеса",
+                        "id": 140
+                    },
+                    "date": "2024-09-02",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1485,
+                    "lessonTime": {
+                        "endsAt": "16:00",
+                        "startsAt": "14:30",
+                        "id": 5,
+                        "number": 4
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 13,
+                        "number": "210",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 5,
+                        "firstname": "О.А.",
+                        "lastname": "Арцыбашева"
+                    },
+                    "subject": {
+                        "name": "МДК 02.01 Технология разработки программного обеспечения",
+                        "id": 198
+                    },
+                    "date": "2024-09-03",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1486,
+                    "lessonTime": {
+                        "endsAt": "14:10",
+                        "startsAt": "12:40",
+                        "id": 4,
+                        "number": 3
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 16,
+                        "number": "301",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 116,
+                        "firstname": "О.А.",
+                        "lastname": "Танченко"
+                    },
+                    "subject": {
+                        "name": "Иностранный язык в профессиональной деятельности",
+                        "id": 279
+                    },
+                    "date": "2024-09-03",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1487,
+                    "lessonTime": {
+                        "endsAt": "17:40",
+                        "startsAt": "16:10",
+                        "id": 6,
+                        "number": 5
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 26,
+                        "number": "316",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 84,
+                        "firstname": "И.В.",
+                        "lastname": "Петренко"
+                    },
+                    "subject": {
+                        "name": "МДК.07.02 Сертификация информационных систем",
+                        "id": 83
+                    },
+                    "date": "2024-09-03",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1488,
+                    "lessonTime": {
+                        "endsAt": "16:00",
+                        "startsAt": "14:30",
+                        "id": 5,
+                        "number": 4
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 5,
+                        "number": "Трен",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 125,
+                        "firstname": "Л.Л.",
+                        "lastname": "Чернова"
+                    },
+                    "subject": {
+                        "name": "Физическая культура",
+                        "id": 19
+                    },
+                    "date": "2024-09-04",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1489,
+                    "lessonTime": {
+                        "endsAt": "14:10",
+                        "startsAt": "12:40",
+                        "id": 4,
+                        "number": 3
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 20,
+                        "number": "308",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 12,
+                        "firstname": "О.Н.",
+                        "lastname": "Барсукова"
+                    },
+                    "subject": {
+                        "name": "Правовое обеспечение профессиональной деятельности",
+                        "id": 44
+                    },
+                    "date": "2024-09-04",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1490,
+                    "lessonTime": {
+                        "endsAt": "17:40",
+                        "startsAt": "16:10",
+                        "id": 6,
+                        "number": 5
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 14,
+                        "number": "213",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 91,
+                        "firstname": "И.С.",
+                        "lastname": "Прохоренкова"
+                    },
+                    "subject": {
+                        "name": "МДК 07.01 Управление и автоматизация баз данных",
+                        "id": 147
+                    },
+                    "date": "2024-09-04",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1491,
+                    "lessonTime": {
+                        "endsAt": "16:00",
+                        "startsAt": "14:30",
+                        "id": 5,
+                        "number": 4
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 26,
+                        "number": "316",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 84,
+                        "firstname": "И.В.",
+                        "lastname": "Петренко"
+                    },
+                    "subject": {
+                        "name": "МДК.07.02 Сертификация информационных систем",
+                        "id": 83
+                    },
+                    "date": "2024-09-04",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1492,
+                    "lessonTime": {
+                        "endsAt": "12:20",
+                        "startsAt": "10:50",
+                        "id": 3,
+                        "number": 2
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 1,
+                        "number": "102",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 50,
+                        "firstname": "Е. А.",
+                        "lastname": "Ипполитова"
+                    },
+                    "subject": {
+                        "name": "Стандартизация, сертификация и техническое докуметоведение",
+                        "id": 30
+                    },
+                    "date": "2024-09-05",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1493,
+                    "lessonTime": {
+                        "endsAt": "16:00",
+                        "startsAt": "14:30",
+                        "id": 5,
+                        "number": 4
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 1,
+                        "number": "102",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 50,
+                        "firstname": "Е. А.",
+                        "lastname": "Ипполитова"
+                    },
+                    "subject": {
+                        "name": "Стандартизация, сертификация и техническое докуметоведение",
+                        "id": 30
+                    },
+                    "date": "2024-09-05",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1494,
+                    "lessonTime": {
+                        "endsAt": "10:30",
+                        "startsAt": "9:00",
+                        "id": 2,
+                        "number": 1
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 14,
+                        "number": "213",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 91,
+                        "firstname": "И.С.",
+                        "lastname": "Прохоренкова"
+                    },
+                    "subject": {
+                        "name": "МДК 07.01 Управление и автоматизация баз данных",
+                        "id": 147
+                    },
+                    "date": "2024-09-05",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1495,
+                    "lessonTime": {
+                        "endsAt": "14:10",
+                        "startsAt": "12:40",
+                        "id": 4,
+                        "number": 3
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 14,
+                        "number": "213",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 91,
+                        "firstname": "И.С.",
+                        "lastname": "Прохоренкова"
+                    },
+                    "subject": {
+                        "name": "МДК 11.01 Технология разработки и защиты баз данных",
+                        "id": 143
+                    },
+                    "date": "2024-09-05",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1496,
+                    "lessonTime": {
+                        "endsAt": "12:20",
+                        "startsAt": "10:50",
+                        "id": 3,
+                        "number": 2
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 1,
+                        "number": "102",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 50,
+                        "firstname": "Е. А.",
+                        "lastname": "Ипполитова"
+                    },
+                    "subject": {
+                        "name": "Стандартизация, сертификация и техническое докуметоведение",
+                        "id": 30
+                    },
+                    "date": "2024-09-06",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1497,
+                    "lessonTime": {
+                        "endsAt": "12:20",
+                        "startsAt": "10:50",
+                        "id": 3,
+                        "number": 2
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 13,
+                        "number": "210",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 5,
+                        "firstname": "О.А.",
+                        "lastname": "Арцыбашева"
+                    },
+                    "subject": {
+                        "name": "МДК 02.01 Технология разработки программного обеспечения",
+                        "id": 198
+                    },
+                    "date": "2024-09-06",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1498,
+                    "lessonTime": {
+                        "endsAt": "16:00",
+                        "startsAt": "14:30",
+                        "id": 5,
+                        "number": 4
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 20,
+                        "number": "308",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 12,
+                        "firstname": "О.Н.",
+                        "lastname": "Барсукова"
+                    },
+                    "subject": {
+                        "name": "Правовое обеспечение профессиональной деятельности",
+                        "id": 44
+                    },
+                    "date": "2024-09-06",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1499,
+                    "lessonTime": {
+                        "endsAt": "17:40",
+                        "startsAt": "16:10",
+                        "id": 6,
+                        "number": 5
+                    }
+                },
+                {
+                    "cabinet": {
+                        "id": 26,
+                        "number": "316",
+                        "address": "Аккадемика Миллионщикова"
+                    },
+                    "teacher": {
+                        "id": 84,
+                        "firstname": "И.В.",
+                        "lastname": "Петренко"
+                    },
+                    "subject": {
+                        "name": "МДК.07.02 Сертификация информационных систем",
+                        "id": 83
+                    },
+                    "date": "2024-09-06",
+                    "isModified": false,
+                    "isCanceled": false,
+                    "isMoved": false,
+                    "subGroup": "ALL",
+                    "id": 1500,
+                    "lessonTime": {
+                        "endsAt": "14:10",
+                        "startsAt": "12:40",
+                        "id": 4,
+                        "number": 3
+                    }
+                }
+            ]
+        }
+    ]
+}

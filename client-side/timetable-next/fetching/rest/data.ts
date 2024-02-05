@@ -1,17 +1,15 @@
-import { LessonTime, Group, ActualTimetable } from "../graphql/__generated__/graphql";
+import gr from "./../../public/groups.json";
+import ttt from "./../../public/timetable.json";
+import lt from "./../../public/lessontimes.json";
 
-const revalidateIn = 10;
-export async function getGroups() {
-    const data = await (await fetch("http://localhost:3001/groups.json", { next: { revalidate: revalidateIn } })).json();
-    return data.groups as Group[];
+export function getGroups() {
+    return gr.groups;
 }
 
-export async function getLessonTimes() {
-    const data = await (await fetch("http://localhost:3001/lessontimes.json", { next: { revalidate: revalidateIn } })).json();
-    return data.lessonTimes as LessonTime[];
+export function getLessonTimes() {
+    return lt.lessonTimes;
 }
 
-export async function getTimetable() {
-    const data = await (await fetch("http://localhost:3001/timetable.json", { next: { revalidate: revalidateIn } })).json();
-    return data.actualTimetables as ActualTimetable[];
+export function getTimetable() {
+    return ttt.actualTimetables;
 }
