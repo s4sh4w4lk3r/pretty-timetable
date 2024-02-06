@@ -1,5 +1,5 @@
 "use client";
-import { SubGroup } from "@/fetching/graphql/__generated__/graphql";
+import { SubGroup } from "@/types/graphql";
 import { useState } from "react";
 
 type Group = {

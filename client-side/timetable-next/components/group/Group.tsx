@@ -1,5 +1,5 @@
 "use client";
-import { SubGroup } from "@/fetching/graphql/__generated__/graphql";
+import { SubGroup } from "@/types/graphql";
 import useGroup from "@/hooks/useGroup";
 import { Button, Card, HStack, Menu, MenuButton, MenuItem, MenuList, Text, UseToastOptions, useToast } from "@chakra-ui/react";
 

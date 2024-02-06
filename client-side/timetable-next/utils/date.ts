@@ -1,4 +1,4 @@
-import { ActualCard, SubGroup } from "@/fetching/graphql/__generated__/graphql";
+import { ActualCard, SubGroup } from "@/types/graphql";
 
 export function getWeekNumber(date: Date) {
     date.setHours(0, 0, 0, 0);
