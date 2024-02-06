@@ -1,12 +1,14 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
+import { getTimetable } from "@/fetching/graphql/requests";
 import { ActualCard, SubGroup } from "@/types/graphql";
-import { getTimetable } from "@/fetching/rest/data";
 import { getDailyCards } from "@/utils/date";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 
 export default async function Home() {
-    const { group, cards } = (await getTimetable())[0];
+    const res = await getTimetable({ groupId: 79, weekNumber: 6 });
+    // TODO: обработать что если нет данных
+    const { group, cards } = res;
     const dailyCards = getDailyCards(cards as ActualCard[], SubGroup.FirstGroup);
     const cardBoxes = dailyCards.map(dc => {
         const cardsElement = dc.cards.map(c => {
