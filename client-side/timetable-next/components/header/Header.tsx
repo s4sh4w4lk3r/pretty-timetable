@@ -1,14 +1,14 @@
 "use client";
-import { Button, Flex, Grid, GridItem, HStack, SimpleGrid, useColorMode } from "@chakra-ui/react";
+import { Button, HStack, useColorMode, useColorModeValue, Box, Flex, Grid } from "@chakra-ui/react";
 import { generalLinks } from "./links";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { usePathname } from "next/navigation";
 export default function Nav() {
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { toggleColorMode } = useColorMode();
+    const modeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
     const pathname = usePathname();
-    const modeIcon = colorMode === "light" ? <MoonIcon /> : <SunIcon />;
 
     const toggleThemeBtn = (
         <Button
@@ -19,7 +19,7 @@ export default function Nav() {
         </Button>
     );
 
-    const linksElement = generalLinks.map(l => (
+    const linksElements = generalLinks.map(l => (
         <ChakraLink
             key={l.path}
             href={l.path}
@@ -36,7 +36,7 @@ export default function Nav() {
             h={"70px"}
             justifyContent={"center"}
         >
-            {linksElement}
+            {linksElements}
             {toggleThemeBtn}
         </HStack>
     );
