@@ -1,5 +1,6 @@
 import Group from "@/components/group/Group";
-import { getGroups } from "@/fetching/rest/data";
+import { getGroups } from "@/fetching/graphql/requests";
+
 import { Center, SimpleGrid } from "@chakra-ui/react";
 
 export default async function Groups() {

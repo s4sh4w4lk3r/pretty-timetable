@@ -1,4 +1,4 @@
-import { getLessonTimes } from "@/fetching/rest/data";
+import { getLessonTimes } from "@/fetching/graphql/requests";
 
 export default async function LessonTimes() {
     const lessontimes = await getLessonTimes();

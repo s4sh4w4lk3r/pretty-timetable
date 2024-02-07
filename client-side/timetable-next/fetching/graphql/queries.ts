@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 
-export const getTimetableById = gql`
+export const getTimetableByIdQuery = gql`
     query ActualTimetables($groupId: Int!, $weekNumber: Int!) {
         actualTimetables(where: { groupId: { eq: $groupId }, weekNumber: { eq: $weekNumber } }) {
             group {
@@ -36,6 +36,26 @@ export const getTimetableById = gql`
                     number
                 }
             }
+        }
+    }
+`;
+
+export const getGroupsQuery = gql`
+    query Groups {
+        groups {
+            id
+            name
+        }
+    }
+`;
+
+export const getLessonTimesQuery = gql`
+    query LessonTimes {
+        lessonTimes {
+            id
+            number
+            startsAt
+            endsAt
         }
     }
 `;
