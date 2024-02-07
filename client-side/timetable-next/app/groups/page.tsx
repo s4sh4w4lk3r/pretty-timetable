@@ -1,10 +1,14 @@
+import alertNoData from "@/components/miscellaneous/alertNoData";
 import Group from "@/components/group/Group";
 import { getGroups } from "@/fetching/graphql/requests";
-
 import { Center, SimpleGrid } from "@chakra-ui/react";
 
 export default async function Groups() {
     const groups = await getGroups();
+    if (!groups) {
+        return alertNoData;
+    }
+
     const groupsElement = groups.map(g => (
         <Group
             key={g.id}

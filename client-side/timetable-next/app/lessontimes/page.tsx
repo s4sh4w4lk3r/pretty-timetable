@@ -1,7 +1,12 @@
+import alertNoData from "@/components/miscellaneous/alertNoData";
 import { getLessonTimes } from "@/fetching/graphql/requests";
 
 export default async function LessonTimes() {
     const lessontimes = await getLessonTimes();
+    if (!lessontimes) {
+        return alertNoData;
+    }
+
     return (
         <ul>
             {lessontimes.map(g => (
