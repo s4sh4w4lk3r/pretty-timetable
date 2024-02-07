@@ -35,6 +35,7 @@ namespace WebApi.Controllers.Actual
         {
             var dates = stableToActualModel.Dates.Select(DateOnly.Parse);
 
+#warning на линуксе и видне по разному парсятся даты
             var result = await actualTimetableService.ProjectStableToActualAsync(dates);
             if (result.Success is false)
             {

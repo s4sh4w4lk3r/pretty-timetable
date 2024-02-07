@@ -13,6 +13,7 @@ namespace GraphQL.ObjectTypes
 
             descriptor.Field(e => e.EndsAt).Type<NonNullType<StringType>>();
             descriptor.Field(e => e.StartsAt).Type<NonNullType<StringType>>();
+#warning на линуксе и видне по разному парсятся даты
         }
     }
 }
