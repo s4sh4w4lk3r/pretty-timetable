@@ -1,5 +1,5 @@
 "use client";
-import { Button, HStack, useColorMode, useColorModeValue, Box, Flex, Grid } from "@chakra-ui/react";
+import { Button, HStack, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { generalLinks } from "./links";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import NextLink from "next/link";

@@ -13,7 +13,7 @@ export function getDailyCards(cards: ActualCard[], subgroup: SubGroup): { dayOfW
     const dailyCards = datesDistincted.map(date => {
         const cardsFiltred = cards
             .filter(c => new Date(c.date).getTime() === date.getTime())
-            .filter(c => c.subGroup === "ALL" || c.subGroup === subgroup)
+            .filter(c => (subgroup !== SubGroup.All ? c.subGroup === "ALL" || c.subGroup === subgroup : c))
             .sort((card1, card2) => (card1.lessonTime.number > card2.lessonTime.number ? 1 : -1));
 
         const dayOfWeek = date.toLocaleString("RU-ru", { weekday: "long" }).toUpperCase();

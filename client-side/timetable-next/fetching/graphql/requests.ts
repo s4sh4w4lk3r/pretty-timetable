@@ -16,3 +16,4 @@ export async function getLessonTimes(): Promise<LessonTime[] | null> {
     const data = await client.request(queries.getLessonTimesQuery);
     return data!.lessonTimes as LessonTime[];
 }
+//FIXME: пофиксить типы

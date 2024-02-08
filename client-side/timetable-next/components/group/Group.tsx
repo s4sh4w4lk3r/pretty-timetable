@@ -1,7 +1,6 @@
 "use client";
-import { SubGroup } from "@/types/graphql";
-import useGroup from "@/hooks/useGroup";
 import { Button, Card, HStack, Menu, MenuButton, MenuItem, MenuList, Text, UseToastOptions, useToast } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
 type Props = {
     id: number;
@@ -9,7 +8,7 @@ type Props = {
 };
 
 const toastOptions: UseToastOptions = {
-    title: "Настройки группы сохранены.",
+    title: "Расписание выбрано.",
     description: "Теперь вы можете просмотреть расписание.",
     status: "success",
     duration: 5000,
@@ -18,7 +17,7 @@ const toastOptions: UseToastOptions = {
 
 export default function Group(props: Props) {
     const { name, id } = props;
-    const { setGroup } = useGroup();
+    const router = useRouter();
     const toast = useToast();
 
     return (
@@ -36,21 +35,32 @@ export default function Group(props: Props) {
                     <MenuList>
                         <MenuItem
                             onClick={() => {
-                                setGroup({ groupId: id, subgroup: SubGroup.FirstGroup });
                                 toast(toastOptions);
+                                router.push(`/${id}/first`);
                             }}
                             value={1}
                         >
                             1-ая подгруппа
                         </MenuItem>
+
                         <MenuItem
                             onClick={() => {
-                                setGroup({ groupId: id, subgroup: SubGroup.SecondGroup });
                                 toast(toastOptions);
+                                router.push(`/${id}/second`);
                             }}
                             value={2}
                         >
                             2-ая подгруппа
+                        </MenuItem>
+
+                        <MenuItem
+                            onClick={() => {
+                                toast(toastOptions);
+                                router.push(`/${id}/`);
+                            }}
+                            value={0}
+                        >
+                            Общее
                         </MenuItem>
                     </MenuList>
                 </Menu>
