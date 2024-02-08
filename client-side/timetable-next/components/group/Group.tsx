@@ -9,7 +9,7 @@ type Props = {
 
 const toastOptions: UseToastOptions = {
     title: "Расписание выбрано.",
-    description: "Теперь вы можете просмотреть расписание.",
+    description: "Сохраните страницу в закладки для удобства.",
     status: "success",
     duration: 5000,
     isClosable: true,

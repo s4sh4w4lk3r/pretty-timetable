@@ -7,12 +7,11 @@ import { getDailyCards, getWeekNumber } from "@/utils/date";
 import { parseGroup } from "@/utils/groups";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 
-export default async function Page({ params }: { params: { group: [groupId: string, subGroup: string] } }) {
+export default async function Timetable({ params }: { params: { group: [groupId: string, subGroup: string] } }) {
     const [groupId, subgroup] = params.group;
 
     const group = parseGroup(groupId, subgroup);
     if (!group) return alertNoData;
-    console.log(group);
     // FIXME: возможно не кэшируется
     const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
     if (!timetable) {

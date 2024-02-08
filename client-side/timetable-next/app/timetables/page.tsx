@@ -3,7 +3,7 @@ import Group from "@/components/group/Group";
 import { getGroups } from "@/fetching/graphql/requests";
 import { Center, SimpleGrid } from "@chakra-ui/react";
 
-export default async function Groups() {
+export default async function Timetables() {
     const groups = await getGroups();
     if (!groups) {
         return alertNoData;
@@ -30,4 +30,4 @@ export default async function Groups() {
         </Center>
     );
 }
-// TODO : изменть запрос графкл, сделать три списка с группами из трех корпусов
+// TODO : сделать поиск по группам на клиенте

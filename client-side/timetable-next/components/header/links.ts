@@ -5,13 +5,13 @@ interface LinkType {
 
 export const generalLinks: LinkType[] = [
     {
-        label: "Расписание",
+        label: "Главная",
         path: "/",
     },
 
     {
-        label: "Группы",
-        path: "/groups",
+        label: "Расписание",
+        path: "/timetables",
     },
 
     {
