@@ -28,6 +28,11 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN \
+    if [ -f .env.production ]; then echo "Production config was found."; \
+    else echo ".env.production config file required." && exit 1; \
+    fi
+
+RUN \
     if [ -f yarn.lock ]; then yarn run build; \
     elif [ -f package-lock.json ]; then npm run build; \
     elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
