@@ -1,7 +1,6 @@
+import GroupList from "@/components/group/GroupList";
 import alertNoData from "@/components/miscellaneous/alertNoData";
-import Group from "@/components/group/Group";
 import { getGroups } from "@/fetching/graphql/requests";
-import { Center, SimpleGrid } from "@chakra-ui/react";
 
 export default async function Timetables() {
     const groups = await getGroups();
@@ -9,25 +8,5 @@ export default async function Timetables() {
         return alertNoData;
     }
 
-    const groupsElement = groups.map(g => (
-        <Group
-            key={g.id}
-            id={g.id}
-            name={g.name}
-        ></Group>
-    ));
-
-    return (
-        <Center>
-            <SimpleGrid
-                columns={[1, 2, null, null, 3]}
-                spacing={3}
-                m={"20px"}
-                maxW={"1200px"}
-            >
-                {groupsElement}
-            </SimpleGrid>
-        </Center>
-    );
+    return <GroupList groups={groups}></GroupList>;
 }
-// TODO : сделать поиск по группам на клиенте
