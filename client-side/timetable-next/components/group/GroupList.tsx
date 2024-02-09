@@ -25,6 +25,7 @@ export default function GroupList(props: { groups: GroupType[] }) {
                     onChange={e => setQuery(e.target.value)}
                     mt={"25px"}
                     maxW={"400px"}
+                    placeholder="Поиск по группам"
                 ></Input>
                 <Center>
                     <SimpleGrid
