@@ -11,9 +11,8 @@ namespace GraphQL.ObjectTypes
             descriptor.Ignore(e => e.ActualCards);
             descriptor.Ignore(e => e.StableCards);
 
-            descriptor.Field(e => e.EndsAt).Type<NonNullType<StringType>>();
-            descriptor.Field(e => e.StartsAt).Type<NonNullType<StringType>>();
-#warning на линуксе и видне по разному парсятся даты
+            descriptor.Field(e => e.EndsAt);
+            descriptor.Field(e => e.StartsAt);
         }
     }
 }

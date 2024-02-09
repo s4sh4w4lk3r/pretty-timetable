@@ -1,4 +1,5 @@
 import { ActualCard, SubGroup } from "@/types/graphql";
+import moment from "moment";
 
 export function getWeekNumber(date: Date) {
     date.setHours(0, 0, 0, 0);
@@ -26,4 +27,8 @@ export function getDailyCards(cards: ActualCard[], subgroup: SubGroup): { dayOfW
 
 export function distinctDates(cards: ActualCard[]) {
     return [...new Set(cards.map(c => c.date))].map(d => new Date(d)).sort((date1, date2) => (date1.getTime() > date2.getTime() ? 1 : -1));
+}
+
+export function durationToTimeOnly(duration: string) {
+    return moment.utc(moment.duration(duration).asMilliseconds()).format("H:mm");
 }

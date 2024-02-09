@@ -1,8 +1,8 @@
 import React from "react";
 import { Badge, Card as ChakraCard, HStack, StackDivider, VStack } from "@chakra-ui/react";
 import { defineHintsRequired } from "@/utils/cardHints";
+import { durationToTimeOnly } from "@/utils/date";
 
-type StatusType = "none" | "now" | "pending";
 type ChangesType = {
     isMoved: boolean;
     isCanceled: boolean;
@@ -53,9 +53,11 @@ function getStatusHighlighting(params: { isNow: boolean; isPending: boolean }) {
 export default function Card(props: Props) {
     const { cabinet, lessonTime, subject, teacher, changes, date } = props;
 
-    const badge = getBadges(changes);
-    const hintsRequired = defineHintsRequired({ lessonStartsAt: lessonTime.startsAt, lessonEndsAt: lessonTime.endsAt, dateFromCard: date });
+    const startsAt = durationToTimeOnly(lessonTime.startsAt);
+    const endsAt = durationToTimeOnly(lessonTime.endsAt);
 
+    const hintsRequired = defineHintsRequired({ lessonStartsAt: startsAt, lessonEndsAt: endsAt, dateFromCard: date });
+    const badge = getBadges(changes);
     const highlighting = getStatusHighlighting(hintsRequired);
 
     return (
@@ -71,8 +73,8 @@ export default function Card(props: Props) {
             >
                 <p>{lessonTime.number}</p>
                 <VStack divider={<StackDivider />}>
-                    <p>{lessonTime.startsAt.toString()}</p>
-                    <p>{lessonTime.endsAt.toString()}</p>
+                    <p>{startsAt}</p>
+                    <p>{endsAt}</p>
                 </VStack>
 
                 <VStack
