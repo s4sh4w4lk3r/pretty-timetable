@@ -23,7 +23,7 @@ export default function GroupList(props: { groups: GroupType[] }) {
             <VStack>
                 <Input
                     onChange={e => setQuery(e.target.value)}
-                    mt={"25px"}
+                    mt={6}
                     maxW={"400px"}
                     placeholder="Поиск по группам"
                 ></Input>
@@ -31,7 +31,7 @@ export default function GroupList(props: { groups: GroupType[] }) {
                     <SimpleGrid
                         columns={[1, 2, null, null, 3]}
                         spacing={3}
-                        m={"20px"}
+                        m={5}
                         maxW={"1200px"}
                     >
                         {groupsElement}

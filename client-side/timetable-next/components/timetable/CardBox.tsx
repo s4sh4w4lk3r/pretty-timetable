@@ -11,11 +11,11 @@ export default function CardBox(props: Props) {
         <ChakraCard
             maxH={"750px"}
             maxW={"360px"}
-            p={"8px"}
+            p={2}
             borderWidth={"2px"}
             borderColor={doesHighlight ? "red.300" : "gray.500"}
         >
-            <VStack gap={"10px"}>
+            <VStack gap={2.5}>
                 <Tag size="lg">{dayOfWeek}</Tag>
                 {children}
             </VStack>

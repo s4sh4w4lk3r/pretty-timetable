@@ -18,8 +18,8 @@ export default function CardBoxesSkeleton() {
             <SimpleGrid
                 minChildWidth="380px"
                 justifyItems={"center"}
-                my={"10px"}
-                rowGap={"25px"}
+                my={2.5}
+                rowGap={6}
             >
                 {skeleton}
                 {skeleton}

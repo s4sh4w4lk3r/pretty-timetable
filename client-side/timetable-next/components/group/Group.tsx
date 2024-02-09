@@ -25,7 +25,7 @@ export default function Group(props: Props) {
             h={"50px"}
             bgColor={"purple.400"}
             justifyContent={"center"}
-            p={"20px"}
+            p={5}
             minW={"350px"}
         >
             <HStack justifyContent={"space-between"}>

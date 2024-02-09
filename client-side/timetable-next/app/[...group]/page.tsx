@@ -48,14 +48,14 @@ export default async function Timetable({ params }: { params: { group: [groupId:
     });
     return (
         <>
-            <Center mt={"10px"}>
+            <Center mt={2.5}>
                 <Text fontSize={"3xl"}>{timetable.group.name}</Text>
             </Center>
             <SimpleGrid
                 minChildWidth="380px"
                 justifyItems={"center"}
-                my={"10px"}
-                rowGap={"25px"}
+                my={2.5}
+                rowGap={6}
             >
                 {cardBoxes}
             </SimpleGrid>
