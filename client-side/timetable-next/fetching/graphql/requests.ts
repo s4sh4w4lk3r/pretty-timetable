@@ -3,17 +3,16 @@ import { ActualTimetable, Group, LessonTime } from "@/types/graphql";
 import client from "@/configs/graphqlClient";
 
 export async function getTimetable(params: { groupId: number; weekNumber: number }): Promise<ActualTimetable | null> {
-    const data = await client.request(queries.getTimetableByIdQuery, params);
-    return data!.actualTimetables[0] as ActualTimetable;
+    const data = await client.request<{ actualTimetables: ActualTimetable[] }>(queries.getTimetableByIdQuery, params);
+    return data.actualTimetables[0];
 }
 
 export async function getGroups(): Promise<Group[] | null> {
-    const data = await client.request(queries.getGroupsQuery);
-    return data!.groups as Group[];
+    const data = await client.request<{ groups: Group[] }>(queries.getGroupsQuery);
+    return data.groups;
 }
 
 export async function getLessonTimes(): Promise<LessonTime[] | null> {
-    const data = await client.request(queries.getLessonTimesQuery);
-    return data!.lessonTimes as LessonTime[];
+    const data = await client.request<{ lessonTimes: LessonTime[] }>(queries.getLessonTimesQuery);
+    return data.lessonTimes;
 }
-//FIXME: пофиксить типы
