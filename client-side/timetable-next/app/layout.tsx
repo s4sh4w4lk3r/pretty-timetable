@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Providers from "@/components/Providers";
-import Header from "@/components/header/Header";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
@@ -14,10 +13,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     return (
         <html lang="ru">
             <body className={inter.className}>
-                <Providers>
-                    <Header />
-                    {children}
-                </Providers>
+                <Providers>{children}</Providers>
             </body>
         </html>
     );
