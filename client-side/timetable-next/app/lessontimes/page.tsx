@@ -1,5 +1,5 @@
 import alertNoData from "@/components/miscellaneous/alertNoData";
-import { getLessonTimes } from "@/fetching/graphql/requests";
+import { getLessonTimes } from "@/fetching/getRequests";
 
 export default async function LessonTimes() {
     const lessontimes = await getLessonTimes();

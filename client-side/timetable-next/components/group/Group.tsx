@@ -36,7 +36,7 @@ export default function Group(props: Props) {
                         <MenuItem
                             onClick={() => {
                                 toast(toastOptions);
-                                router.push(`/${id}/first`);
+                                router.push(`/timetables/${id}/first`);
                             }}
                             value={1}
                         >
@@ -46,7 +46,7 @@ export default function Group(props: Props) {
                         <MenuItem
                             onClick={() => {
                                 toast(toastOptions);
-                                router.push(`/${id}/second`);
+                                router.push(`/timetables/${id}/second`);
                             }}
                             value={2}
                         >
@@ -56,7 +56,7 @@ export default function Group(props: Props) {
                         <MenuItem
                             onClick={() => {
                                 toast(toastOptions);
-                                router.push(`/${id}/`);
+                                router.push(`/timetables/${id}/`);
                             }}
                             value={0}
                         >

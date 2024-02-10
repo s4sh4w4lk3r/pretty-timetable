@@ -1,21 +1,27 @@
-import alertNoData from "@/components/miscellaneous/alertNoData";
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { getTimetable } from "@/fetching/graphql/requests";
+import { getTimetable } from "@/fetching/getRequests";
 import { ActualCard } from "@/types/graphql";
 import { getDailyCards, getWeekNumber } from "@/utils/date";
 import { parseGroup } from "@/utils/groups";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
+import { notFound } from "next/navigation";
+
+export const dynamic = "force-static";
+export const revalidate = 10;
 
 export default async function Timetable({ params }: { params: { group: [groupId: string, subGroup: string] } }) {
     const [groupId, subgroup] = params.group;
 
     const group = parseGroup(groupId, subgroup);
-    if (!group) return alertNoData;
+    if (!group) {
+        notFound();
+    }
+
     // FIXME: возможно не кэшируется
     const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
     if (!timetable) {
-        return alertNoData;
+        notFound();
     }
 
     const { cards } = timetable;

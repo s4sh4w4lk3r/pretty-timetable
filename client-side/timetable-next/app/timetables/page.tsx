@@ -1,6 +1,6 @@
 import GroupList from "@/components/group/GroupList";
 import alertNoData from "@/components/miscellaneous/alertNoData";
-import { getGroups } from "@/fetching/graphql/requests";
+import { getGroups } from "@/fetching/getRequests";
 
 export default async function Timetables() {
     const groups = await getGroups();
