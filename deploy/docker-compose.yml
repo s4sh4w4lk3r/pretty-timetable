@@ -75,11 +75,10 @@ services:
       - "certbot-vol:/var/lib/letsencrypt/"
     depends_on:
       - nginx
-
-  frontend:
-    build:
-      context: ./../client-side/timetable-next
-      dockerfile: Dockerfile
-    image: timetable-next
-    depends_on:
-      - nginx
+  # frontend:
+  #   build:
+  #     context: ./../client-side/timetable-next
+  #     dockerfile: Dockerfile
+  #   image: timetable-next
+  #   depends_on:
+  #     - nginx
