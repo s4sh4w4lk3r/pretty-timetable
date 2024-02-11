@@ -1,3 +1,4 @@
+import "client-only";
 export function delGroup(id: number) {}
 
 export function delRoom(id: number) {}

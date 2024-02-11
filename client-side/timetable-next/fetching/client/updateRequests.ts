@@ -1,3 +1,4 @@
+import "client-only";
 export function updateGroup(group: { id: number; name: string }) {}
 
 export function updateRoom(room: { id: string; address: string; number: string; fullName: string }) {}

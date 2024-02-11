@@ -1,3 +1,4 @@
+import "server-only";
 import * as queries from "@/fetching/graphql/queries";
 import { ActualTimetable, Group, LessonTime } from "@/types/graphql";
 import client from "@/configs/graphqlClient";

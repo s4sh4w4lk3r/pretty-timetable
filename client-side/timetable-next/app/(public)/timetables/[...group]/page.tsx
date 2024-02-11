@@ -1,6 +1,6 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { getTimetable } from "@/fetching/getRequests";
+import { getTimetable } from "@/fetching/server/getRequests";
 import { ActualCard } from "@/types/graphql";
 import { getDailyCards, getWeekNumber } from "@/utils/date";
 import { parseGroup } from "@/utils/groups";

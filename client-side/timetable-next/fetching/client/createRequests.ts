@@ -1,3 +1,4 @@
+import "client-only";
 import kyInstance from "ky";
 
 const ky = kyInstance.create({
