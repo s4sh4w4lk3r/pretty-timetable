@@ -11,6 +11,7 @@ const authOptions: NextAuthOptions = {
     ],
     // TODO : добавить роли в сессию
     // TODO : сделать логаут сессии в kc
+    // FIXME : не работает колбек после аутентификации, если фронт хостится на верселе, а кс в докере
 
     callbacks: {
         async session({ session, token }) {

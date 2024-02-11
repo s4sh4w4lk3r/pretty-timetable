@@ -18,7 +18,6 @@ export default async function Timetable({ params }: { params: { group: [groupId:
         notFound();
     }
 
-    // FIXME: возможно не кэшируется
     const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
     if (!timetable) {
         notFound();
