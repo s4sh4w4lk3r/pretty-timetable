@@ -5,9 +5,12 @@ import { Link as ChakraLink } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { usePathname } from "next/navigation";
+
 export default function Nav() {
     const { toggleColorMode } = useColorMode();
     const modeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
+    const headerBgColor = useColorModeValue("whiteAlpha.800", "blackAlpha.800");
+
     const pathname = usePathname();
 
     const toggleThemeBtn = (
@@ -24,20 +27,29 @@ export default function Nav() {
             key={l.path}
             href={l.path}
             as={NextLink}
-            color={l.path === pathname ? "purple.600" : "white.500"}
+            color={l.path === pathname ? "purple.500" : ""}
         >
             {l.label}
         </ChakraLink>
     ));
 
     return (
-        <HStack
-            bgColor="purple.300"
-            h={"70px"}
-            justifyContent={"center"}
-        >
-            {linksElements}
-            {toggleThemeBtn}
-        </HStack>
+        <>
+            <HStack
+                bgColor={headerBgColor}
+                h={16}
+                justifyContent={"center"}
+                as={"header"}
+                pos={"fixed"}
+                w={"100%"}
+                zIndex={"200"}
+                backdropFilter="saturate(180%) blur(5px)"
+                top={0}
+                borderBottomWidth={"2px"}
+            >
+                {linksElements}
+                {toggleThemeBtn}
+            </HStack>
+        </>
     );
 }
