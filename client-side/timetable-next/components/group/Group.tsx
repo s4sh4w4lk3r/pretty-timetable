@@ -29,7 +29,7 @@ export default function Group(props: Props) {
             minW={"350px"}
         >
             <HStack justifyContent={"space-between"}>
-                <Text> {name}</Text>
+                <Text color={"white"}> {name}</Text>
                 <Menu>
                     <MenuButton as={Button}>Выбрать</MenuButton>
                     <MenuList>
