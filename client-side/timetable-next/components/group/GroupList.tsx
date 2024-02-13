@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Group as GroupType } from "@/types/graphql";
 import GroupComponent from "./Group";
 import { Center, Input, SimpleGrid, VStack } from "@chakra-ui/react";
@@ -7,6 +7,9 @@ import { Center, Input, SimpleGrid, VStack } from "@chakra-ui/react";
 export default function GroupList(props: { groups: GroupType[] }) {
     const { groups } = props;
     const [query, setQuery] = useState("");
+
+    const inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => inputRef.current?.focus(), []);
 
     let groupFiltered: GroupType[] = groups.filter(g => (query ? g.name.toUpperCase().startsWith(query.toUpperCase()) : g));
 
@@ -26,6 +29,7 @@ export default function GroupList(props: { groups: GroupType[] }) {
                     mt={3}
                     maxW={"400px"}
                     placeholder="Поиск по группам"
+                    ref={inputRef}
                 ></Input>
                 <Center>
                     <SimpleGrid
