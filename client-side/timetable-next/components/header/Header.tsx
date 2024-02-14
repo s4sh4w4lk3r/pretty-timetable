@@ -1,12 +1,12 @@
 "use client";
 import { Button, HStack, useColorMode, useColorModeValue } from "@chakra-ui/react";
-import { generalLinks } from "./links";
+import { type LinkType } from "./links";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { usePathname } from "next/navigation";
 
-export default function Nav() {
+export default function Nav({ links }: { links: LinkType[] }) {
     const { toggleColorMode } = useColorMode();
     const modeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
     const headerBgColor = useColorModeValue("whiteAlpha.800", "blackAlpha.700");
@@ -22,7 +22,7 @@ export default function Nav() {
         </Button>
     );
 
-    const linksElements = generalLinks.map(l => (
+    const linksElements = links.map(l => (
         <ChakraLink
             key={l.path}
             href={l.path}

@@ -1,4 +1,4 @@
-interface LinkType {
+export interface LinkType {
     path: string;
     label: string;
 }
