@@ -1,9 +1,12 @@
-import { Box, Button, Center, Container, Divider, Flex, HStack, StackDivider, Text, VStack } from "@chakra-ui/react";
+"use client";
+import { Box, Button, Center, Flex, Text, VStack, useColorModeValue } from "@chakra-ui/react";
 import Image from "next/image";
 import timetableExapmleImage from "@/public/timetableExample.png";
 import Link from "next/link";
 
 export default function Home() {
+    const buttonColorOnHover = useColorModeValue("purple.400", "purple.400");
+
     return (
         <Center
             mt={24}
@@ -35,6 +38,9 @@ export default function Home() {
                                     w={"100%"}
                                     bgColor={"purple.500"}
                                     color={"white"}
+                                    _hover={{
+                                        background: buttonColorOnHover,
+                                    }}
                                 >
                                     Расписание занятий
                                 </Button>
@@ -45,6 +51,9 @@ export default function Home() {
                                     w={"100%"}
                                     bgColor={"purple.500"}
                                     color={"white"}
+                                    _hover={{
+                                        background: buttonColorOnHover,
+                                    }}
                                 >
                                     Расписание звонков
                                 </Button>
