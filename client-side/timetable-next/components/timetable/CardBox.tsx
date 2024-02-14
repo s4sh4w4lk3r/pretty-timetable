@@ -22,3 +22,5 @@ export default function CardBox(props: Props) {
         </ChakraCard>
     );
 }
+
+// FIXME: сделать каточки одинаковыми по ширине

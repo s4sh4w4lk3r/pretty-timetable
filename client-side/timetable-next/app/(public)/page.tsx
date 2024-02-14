@@ -1,6 +1,6 @@
 import { Box, Button, Center, Container, Divider, Flex, HStack, StackDivider, Text, VStack } from "@chakra-ui/react";
 import Image from "next/image";
-import ttImg from "@/public/timetableExample.png";
+import timetableExapmleImage from "@/public/timetableExample.png";
 import Link from "next/link";
 
 export default function Home() {
@@ -53,10 +53,13 @@ export default function Home() {
                     </VStack>
                 </Box>
 
-                <Box>
+                <Box
+                    borderWidth={2}
+                    borderRadius={"7px"}
+                >
                     <Image
                         priority={false}
-                        src={ttImg}
+                        src={timetableExapmleImage}
                         alt="Timetable Example"
                         height={450}
                         style={{ borderRadius: "7px" }}
