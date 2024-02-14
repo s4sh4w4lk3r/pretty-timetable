@@ -8,33 +8,6 @@ volumes:
 
 
 services:
-  # postgres:
-  #   build:
-  #     context: ./postgres
-  #     dockerfile: Dockerfile
-  #   image: timetable-postgres
-  #   volumes:
-  #     - postgres-vol:/var/lib/postgresql/data
-  #   ports:
-  #     - 5433:5432
-  #   environment:
-  #     POSTGRES_USER: ${POSTGRES_USERNAME}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     PGDATA: "/var/lib/postgresql/data/pgdata"
-
-  # pgadmin:
-  #   image: dpage/pgadmin4:8.1
-  #   ports:
-  #     - 82:80
-  #   volumes:
-  #     - pgadmin-vol:/var/lib/pgadmin
-  #   depends_on:
-  #     - postgres
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
-  #     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
-
-
   keycloak:
     image: quay.io/keycloak/keycloak:23.0
     ports:
@@ -51,8 +24,8 @@ services:
       # KC_HOSTNAME_URL: ${KEYCLOAK_HOSTNAME_URL}
       # KC_HOSTNAME_ADMIN_URL: http://localhost:8080/auth
       # KC_HOSTNAME_STRICT: false
-    # depends_on:
-    #   - postgres
+      # depends_on:
+      #   - postgres
     command:
       - start
 
@@ -68,19 +41,3 @@ services:
     ports:
       - "80:80"
       - "443:443"
-
-  certbot:
-    image: certbot/certbot:v2.8.0
-    volumes:
-      - "certbot-vol:/var/www/certbot/"
-      - "certbot-vol:/etc/letsencrypt/"
-      - "certbot-vol:/var/lib/letsencrypt/"
-    depends_on:
-      - nginx
-  # frontend:
-  #   build:
-  #     context: ./../client-side/timetable-next
-  #     dockerfile: Dockerfile
-  #   image: timetable-next
-  #   depends_on:
-  #     - nginx
