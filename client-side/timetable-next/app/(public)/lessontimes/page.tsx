@@ -1,5 +1,7 @@
+import LessonTime from "@/components/lessontime/LessonTime";
 import alertNoData from "@/components/miscellaneous/alertNoData";
 import { getLessonTimes } from "@/fetching/server/getRequests";
+import { VStack } from "@chakra-ui/react";
 
 export default async function LessonTimes() {
     const lessontimes = await getLessonTimes();
@@ -7,13 +9,21 @@ export default async function LessonTimes() {
         return alertNoData;
     }
 
+    const lessonTimesElement = lessontimes.map(l => (
+        <LessonTime
+            key={l.id}
+            {...l}
+        ></LessonTime>
+    ));
+
     return (
-        <ul>
-            {lessontimes.map(g => (
-                <li key={g.id}>
-                    {g.number} {g.startsAt.toString()} {g.endsAt.toString()}
-                </li>
-            ))}
-        </ul>
+        <>
+            <VStack
+                gap={4}
+                mt={20}
+            >
+                {lessonTimesElement}
+            </VStack>
+        </>
     );
 }
