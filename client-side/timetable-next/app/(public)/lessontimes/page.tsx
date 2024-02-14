@@ -1,7 +1,7 @@
 import LessonTime from "@/components/lessontime/LessonTime";
 import alertNoData from "@/components/miscellaneous/alertNoData";
 import { getLessonTimes } from "@/fetching/server/getRequests";
-import { VStack } from "@chakra-ui/react";
+import { Text, VStack } from "@chakra-ui/react";
 
 export default async function LessonTimes() {
     const lessontimes = await getLessonTimes();
@@ -22,6 +22,7 @@ export default async function LessonTimes() {
                 gap={4}
                 mt={20}
             >
+                <Text fontSize={"3xl"}>Расписание звонков</Text>
                 {lessonTimesElement}
             </VStack>
         </>

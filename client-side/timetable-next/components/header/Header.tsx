@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 export default function Nav() {
     const { toggleColorMode } = useColorMode();
     const modeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
-    const headerBgColor = useColorModeValue("whiteAlpha.800", "blackAlpha.800");
+    const headerBgColor = useColorModeValue("whiteAlpha.800", "blackAlpha.700");
 
     const pathname = usePathname();
 
