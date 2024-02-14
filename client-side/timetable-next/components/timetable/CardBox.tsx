@@ -10,7 +10,7 @@ export default function CardBox(props: Props) {
     return (
         <ChakraCard
             maxH={"750px"}
-            maxW={"360px"}
+            w={"350px"}
             p={2}
             borderWidth={"2px"}
             borderColor={doesHighlight ? "red.300" : "gray.500"}
@@ -22,5 +22,3 @@ export default function CardBox(props: Props) {
         </ChakraCard>
     );
 }
-
-// FIXME: сделать каточки одинаковыми по ширине

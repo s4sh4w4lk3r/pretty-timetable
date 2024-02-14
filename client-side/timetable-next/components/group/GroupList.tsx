@@ -27,16 +27,16 @@ export default function GroupList(props: { groups: GroupType[] }) {
                 <Input
                     onChange={e => setQuery(e.target.value)}
                     mt={3}
-                    maxW={"400px"}
+                    w={["300px", null, "600px", null, null]}
                     placeholder="Поиск по группам"
                     ref={inputRef}
                 ></Input>
                 <Center>
                     <SimpleGrid
-                        columns={[1, 2, null, null, 3]}
+                        columns={[1, 1, 2, null, 3]}
                         spacing={3}
                         m={5}
-                        maxW={"1200px"}
+                        w={["300px", null, "600px", null, "1200px"]}
                     >
                         {groupsElement}
                     </SimpleGrid>

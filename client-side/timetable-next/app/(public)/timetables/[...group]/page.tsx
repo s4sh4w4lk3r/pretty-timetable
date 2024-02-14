@@ -51,6 +51,7 @@ export default async function Timetable({ params }: { params: { group: [groupId:
             </CardBox>
         );
     });
+
     return (
         <>
             <Center mt={2.5}>

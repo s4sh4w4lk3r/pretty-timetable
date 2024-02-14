@@ -26,7 +26,7 @@ export default function Group(props: Props) {
             bgColor={"purple.400"}
             justifyContent={"center"}
             p={5}
-            minW={"350px"}
+            w={"100%"}
         >
             <HStack justifyContent={"space-between"}>
                 <Text color={"white"}> {name}</Text>
