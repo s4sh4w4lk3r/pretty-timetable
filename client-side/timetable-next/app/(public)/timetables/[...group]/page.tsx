@@ -68,3 +68,4 @@ export default async function Timetable({ params }: { params: { group: [groupId:
         </>
     );
 }
+// TODO: сделать указание подгруппы через квери параметр
