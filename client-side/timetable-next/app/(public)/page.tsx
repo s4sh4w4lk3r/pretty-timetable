@@ -3,9 +3,12 @@ import { Box, Button, Center, Flex, Text, VStack, useColorModeValue } from "@cha
 import Image from "next/image";
 import timetableExapmleImage from "@/public/timetableExample.png";
 import Link from "next/link";
+import timetableExampleImageDark from "@/public/timetableExamples/exampleDarkMode.png";
+import timetableExampleImageLight from "@/public/timetableExamples/exampleLightMode.png";
 
 export default function Home() {
     const buttonColorOnHover = useColorModeValue("purple.400", "purple.400");
+    const exampleImage = useColorModeValue(timetableExampleImageLight, timetableExampleImageDark);
 
     return (
         <Center
@@ -67,10 +70,11 @@ export default function Home() {
                     borderRadius={"7px"}
                 >
                     <Image
-                        priority={false}
-                        src={timetableExapmleImage}
+                        priority={true}
+                        src={exampleImage}
                         alt="Timetable Example"
-                        height={450}
+                        height={520}
+                        quality={80}
                         style={{ borderRadius: "7px" }}
                     ></Image>
                 </Box>
