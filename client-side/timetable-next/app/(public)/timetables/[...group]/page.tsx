@@ -1,13 +1,41 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { ActualCard } from "@/types/api";
+import { ActualCard, ActualTimetable } from "@/types/api";
 import { getDailyCards, getWeekNumber } from "@/utils/date";
 import { parseGroup } from "@/utils/groups";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 import { notFound } from "next/navigation";
 
-export const dynamic = "force-static";
-export const revalidate = 10;
+async function getTimetable({ groupId, weekNumber }: { groupId: number; weekNumber: number }) {
+    const query = "GetActualTimetableByGroupId";
+
+    const res = await fetch(`${process.env.GRAPHQL_URL}/?id=${query}&variables={"groupId":${groupId},"weekNumber":${weekNumber}}`, {
+        method: "GET",
+    });
+
+    const timetables = (await res.json()).data.actualTimetables as ActualTimetable[];
+    if (!timetables) {
+        return null;
+    }
+
+    return timetables[0];
+    // FIXME : может можно сделать как-то плоским это
+}
+
+export async function generateMetadata(params: { params: { group: [groupId: string, subGroup: string] } }) {
+    const [groupIdStr, subGroupStr] = params.params.group;
+    const group = parseGroup(groupIdStr, subGroupStr);
+
+    const timetable = await getTimetable({ groupId: group!.groupId, weekNumber: getWeekNumber(new Date()) });
+
+    if (!timetable) {
+        return null;
+    }
+
+    return {
+        title: `${timetable.group.name} ${group?.subgroup}`,
+    };
+}
 
 export default async function Timetable({ params }: { params: { group: [groupId: string, subGroup: string] } }) {
     const [groupId, subgroup] = params.group;
@@ -18,7 +46,7 @@ export default async function Timetable({ params }: { params: { group: [groupId:
     }
 
     const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
-    if (!timetable) {
+    if (!timetable || !timetable.cards) {
         notFound();
     }
 

@@ -1,26 +1,24 @@
 ﻿using Repository.Database;
-using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable;
-using GraphQL.FilterTypes;
-using GraphQL.SortTypes;
+using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable.Cards.Info;
 
 namespace GraphQL.OperationTypes
 {
     public class Query
     {
-        public IQueryable<Subject> GetSubjects([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Subjects;
-        public IQueryable<Teacher> GetTeachers([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Teachers;
-        public IQueryable<Group> GetGroups([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Groups;
-        public IQueryable<Room> GetRooms([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Cabinets;
-        public IQueryable<LessonTime> GetLessonTimes([Service(ServiceKind.Synchronized)] TimetableContext context) => context.LessonTimes;
-        public IQueryable<ActualCard> GetActualCards([Service(ServiceKind.Synchronized)] TimetableContext context) => context.ActualCards;
-        public IQueryable<ActualTimetable> GetActualTimetables([Service(ServiceKind.Synchronized)] TimetableContext context) => context.ActualTimetables;
-        public IQueryable<StableCard> GetStableCards([Service(ServiceKind.Synchronized)] TimetableContext context) => context.StableCards;
-        public IQueryable<StableTimetable> GetStableTimetables([Service(ServiceKind.Synchronized)] TimetableContext context) => context.StableTimetables;
+        [UseProjection][UseFiltering][UseSorting] public IQueryable<Subject> GetSubjects([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Subjects;
+        [UseProjection][UseFiltering][UseSorting] public IQueryable<Teacher> GetTeachers([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Teachers;
+        [UseProjection][UseFiltering][UseSorting] public IQueryable<Group> GetGroups([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Groups;
+        [UseProjection][UseFiltering][UseSorting] public IQueryable<Room> GetRooms([Service(ServiceKind.Synchronized)] TimetableContext context) => context.Cabinets;
+        [UseProjection][UseFiltering][UseSorting] public IQueryable<LessonTime> GetLessonTimes([Service(ServiceKind.Synchronized)] TimetableContext context) => context.LessonTimes;
+        [UseProjection][UseFiltering][UseSorting] public IQueryable<ActualCard> GetActualCards([Service(ServiceKind.Synchronized)] TimetableContext context) => context.ActualCards;
+        [UseProjection][UseFiltering][UseSorting] public IQueryable<ActualTimetable> GetActualTimetables([Service(ServiceKind.Synchronized)] TimetableContext context) => context.ActualTimetables;
+        [UseProjection][UseFiltering][UseSorting] public IQueryable<StableCard> GetStableCards([Service(ServiceKind.Synchronized)] TimetableContext context) => context.StableCards;
+        [UseProjection][UseFiltering][UseSorting] public IQueryable<StableTimetable> GetStableTimetables([Service(ServiceKind.Synchronized)] TimetableContext context) => context.StableTimetables;
     }
 
-    public class QueryType : ObjectType<Query>
+    /*public class QueryType : ObjectType<Query>
     {
         protected override void Configure(IObjectTypeDescriptor<Query> descriptor)
         {
@@ -86,5 +84,5 @@ namespace GraphQL.OperationTypes
             descriptor.Field(e => e.GetStableCards(default!)).UseProjection().UseFiltering<StableCardFilterType>().UseSorting<StableCardSortType>();
             descriptor.Field(e => e.GetStableTimetables(default!)).UseProjection().UseFiltering<StableTimetableFilterType>().UseSorting<StableTimetableSortType>();
         }
-    }
+    }*/
 }

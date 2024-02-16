@@ -6,8 +6,13 @@ import { Text, VStack } from "@chakra-ui/react";
 async function getLessonTimes() {
     const query = "GetAllLessonTimes";
     const res = await fetch(`${process.env.GRAPHQL_URL}/?id=${query}`, { method: "GET" });
-    return (await res.json()).data.lessonTimes as LessonTimeType[];
-    // FIXME : может можно сделать как-то плоским это
+
+    const lessonTimes = (await res.json()).data.lessonTimes as LessonTimeType[];
+    if (!lessonTimes) {
+        return null;
+    }
+
+    return lessonTimes;
 }
 
 export default async function LessonTimes() {

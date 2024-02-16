@@ -12,6 +12,7 @@ export default function Home() {
     return (
         <Center
             mt={24}
+            mb={16}
             mx={5}
         >
             <Flex
@@ -75,6 +76,7 @@ export default function Home() {
                         height={520}
                         quality={80}
                         style={{ borderRadius: "7px" }}
+                        placeholder="blur"
                     ></Image>
                 </Box>
             </Flex>
