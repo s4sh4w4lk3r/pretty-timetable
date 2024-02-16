@@ -1,0 +1,39 @@
+query ActualTimetables($weekNumber: Int!) {
+    actualTimetables(
+        where: { weekNumber: { eq: $weekNumber } }
+    ) {
+        group {
+            id
+            name
+        }
+        weekNumber
+        cards {
+            cabinet {
+                id
+                number
+                address
+            }
+            teacher {
+                id
+                firstname
+                lastname
+            }
+            subject {
+                name
+                id
+            }
+            date
+            isModified
+            isCanceled
+            isMoved
+            subGroup
+            id
+            lessonTime {
+                endsAt
+                startsAt
+                id
+                number
+            }
+        }
+    }
+}

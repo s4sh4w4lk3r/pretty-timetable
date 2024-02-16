@@ -1,7 +1,6 @@
 "use client";
 import { Box, Button, Center, Flex, Text, VStack, useColorModeValue } from "@chakra-ui/react";
 import Image from "next/image";
-import timetableExapmleImage from "@/public/timetableExample.png";
 import Link from "next/link";
 import timetableExampleImageDark from "@/public/timetableExamples/exampleDarkMode.png";
 import timetableExampleImageLight from "@/public/timetableExamples/exampleLightMode.png";
@@ -82,3 +81,4 @@ export default function Home() {
         </Center>
     );
 }
+// TODO: возможно картинки не оптимизированы

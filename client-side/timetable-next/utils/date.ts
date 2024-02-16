@@ -1,4 +1,4 @@
-import { ActualCard, SubGroup } from "@/types/graphql";
+import { ActualCard, SubGroup } from "@/types/api";
 import moment from "moment";
 
 export function getWeekNumber(date: Date) {

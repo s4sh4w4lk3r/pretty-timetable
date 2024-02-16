@@ -1,7 +1,6 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { getTimetable } from "@/fetching/server/getRequests";
-import { ActualCard } from "@/types/graphql";
+import { ActualCard } from "@/types/api";
 import { getDailyCards, getWeekNumber } from "@/utils/date";
 import { parseGroup } from "@/utils/groups";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";

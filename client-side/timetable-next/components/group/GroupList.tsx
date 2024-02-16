@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Group as GroupType } from "@/types/graphql";
+import { Group as GroupType } from "@/types/api";
 import GroupComponent from "./Group";
 import { Center, Input, SimpleGrid, VStack } from "@chakra-ui/react";
 
