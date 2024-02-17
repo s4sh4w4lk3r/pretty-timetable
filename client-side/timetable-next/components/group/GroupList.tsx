@@ -1,17 +1,15 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Group as GroupType } from "@/types/api";
 import GroupComponent from "./Group";
 import { Center, Input, SimpleGrid, VStack } from "@chakra-ui/react";
 
-export default function GroupList(props: { groups: GroupType[] }) {
-    const { groups } = props;
+export default function GroupList({ groups }: { groups: { id: number; name: string }[] }) {
     const [query, setQuery] = useState("");
 
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => inputRef.current?.focus(), []);
 
-    let groupFiltered: GroupType[] = groups.filter(g => (query ? g.name.toUpperCase().startsWith(query.toUpperCase()) : g));
+    let groupFiltered = groups.filter(g => (query ? g.name.toUpperCase().startsWith(query.toUpperCase()) : g));
 
     const groupsElement = groupFiltered.map(g => (
         <GroupComponent

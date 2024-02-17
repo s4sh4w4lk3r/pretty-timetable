@@ -1,10 +1,10 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { ActualCard, ActualTimetable } from "@/types/api";
 import { getDailyCards, getWeekNumber } from "@/utils/date";
 import { parseGroup } from "@/utils/groups";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 import { notFound } from "next/navigation";
+import { PublicFetches } from "@/fetching/fetchRequests";
 
 type Props = {
     params: { groupid: string };
@@ -17,13 +17,13 @@ export default async function Timetable({ params, searchParams }: Props) {
         notFound();
     }
 
-    const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
+    const timetable = await PublicFetches.getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
     if (!timetable || !timetable.cards) {
         notFound();
     }
 
     const { cards } = timetable;
-    const dailyCards = getDailyCards(cards as ActualCard[], group.subgroup);
+    const dailyCards = getDailyCards(cards, group.subgroup);
     const cardBoxes = dailyCards.map(dc => {
         const cardsElement = dc.cards.map(c => {
             const { id, cabinet, lessonTime, subject, teacher, date } = c;
@@ -68,29 +68,13 @@ export default async function Timetable({ params, searchParams }: Props) {
     );
 }
 
-async function getTimetable({ groupId, weekNumber }: { groupId: number; weekNumber: number }) {
-    const query = "GetActualTimetableByGroupId";
-
-    const res = await fetch(`${process.env.GRAPHQL_URL}/?id=${query}&variables={"groupId":${groupId},"weekNumber":${weekNumber}}`, {
-        method: "GET",
-    });
-
-    const timetables = (await res.json()).data.actualTimetables as ActualTimetable[];
-    if (!timetables) {
-        return null;
-    }
-
-    return timetables[0];
-    // FIXME : может можно сделать как-то плоским это
-}
-
 export async function generateMetadata({ params, searchParams }: Props) {
     const group = parseGroup(params.groupid, searchParams.subgroup);
     if (!group) {
         return null;
     }
 
-    const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
+    const timetable = await PublicFetches.getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
 
     if (!timetable) {
         return null;

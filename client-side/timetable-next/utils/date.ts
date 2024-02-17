@@ -1,5 +1,34 @@
-import { ActualCard, SubGroup } from "@/types/api";
+import { SubGroup } from "@/types/api";
 import moment from "moment";
+
+type ActualCard = {
+    cabinet: {
+        id: number;
+        number: string;
+        address: string;
+    };
+    teacher: {
+        id: number;
+        firstname: string;
+        lastname: string;
+    };
+    subject: {
+        name: string;
+        id: number;
+    };
+    date: string;
+    isModified: boolean;
+    isCanceled: boolean;
+    isMoved: boolean;
+    subGroup: string;
+    id: number;
+    lessonTime: {
+        endsAt: string;
+        startsAt: string;
+        id: number;
+        number: number;
+    };
+};
 
 export function getWeekNumber(date: Date) {
     date.setHours(0, 0, 0, 0);
