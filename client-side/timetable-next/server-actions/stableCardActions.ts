@@ -1,8 +1,12 @@
 "use server";
 
 import ServiceResult from "@/types/serviceResult";
+import { revalidateTag } from "next/cache";
+import { RevalidationTags } from "./revalidation";
 
 const baseApiUrl = `${process.env.REST_URL!}/stable/card`;
+const revalidate = () => revalidateTag(RevalidationTags.StableCard);
+
 export async function createStableCard(params: {
     teacherId: number;
     subjectId: number;
@@ -20,6 +24,7 @@ export async function createStableCard(params: {
         },
         body: JSON.stringify({ id: 0, ...params }),
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
 
@@ -41,6 +46,7 @@ export async function updateStableCard(params: {
         },
         body: JSON.stringify(params),
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
 
@@ -48,5 +54,6 @@ export async function deleteStableCard({ id }: { id: number }) {
     const res = await fetch(`${baseApiUrl}?id=${id}`, {
         method: "DELETE",
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }

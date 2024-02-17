@@ -1,8 +1,12 @@
 "use server";
 
 import ServiceResult from "@/types/serviceResult";
+import { revalidateTag } from "next/cache";
+import { RevalidationTags } from "./revalidation";
 
 const baseApiUrl = `${process.env.REST_URL!}/actual/card`;
+const revalidate = () => revalidateTag(RevalidationTags.ActualCard);
+
 export async function createActualCard(params: {
     cabinetId: number;
     isCanceled: boolean;
@@ -22,6 +26,7 @@ export async function createActualCard(params: {
         },
         body: JSON.stringify({ id: 0, ...params }),
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
 
@@ -45,6 +50,7 @@ export async function updateActualCard(params: {
         },
         body: JSON.stringify(params),
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
 
@@ -52,5 +58,6 @@ export async function deleteActualCard({ id }: { id: number }) {
     const res = await fetch(`${baseApiUrl}?id=${id}`, {
         method: "DELETE",
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }

@@ -1,8 +1,12 @@
 "use server";
 
 import ServiceResult from "@/types/serviceResult";
+import { revalidateTag } from "next/cache";
+import { RevalidationTags } from "./revalidation";
 
 const baseApiUrl = `${process.env.REST_URL!}/room`;
+const revalidate = () => revalidateTag(RevalidationTags.Room);
+
 export async function createRoom(params: { address: string; number: string; fullName: string }) {
     const res = await fetch(baseApiUrl, {
         method: "PUT",
@@ -11,6 +15,7 @@ export async function createRoom(params: { address: string; number: string; full
         },
         body: JSON.stringify({ id: 0, ...params }),
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
 
@@ -22,6 +27,7 @@ export async function updateRoom(params: { id: number; address: string; number: 
         },
         body: JSON.stringify(params),
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
 
@@ -29,5 +35,6 @@ export async function deleteRoom({ id }: { id: number }) {
     const res = await fetch(`${baseApiUrl}?id=${id}`, {
         method: "DELETE",
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }

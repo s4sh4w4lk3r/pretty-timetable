@@ -1,8 +1,11 @@
 "use server";
 
 import ServiceResult from "@/types/serviceResult";
+import { revalidateTag } from "next/cache";
+import { RevalidationTags } from "./revalidation";
 
 const baseApiUrl = `${process.env.REST_URL!}/subject`;
+const revalidate = () => revalidateTag(RevalidationTags.Subject);
 export async function createSubject(params: { name: string }) {
     const res = await fetch(baseApiUrl, {
         method: "PUT",
@@ -11,6 +14,7 @@ export async function createSubject(params: { name: string }) {
         },
         body: JSON.stringify({ id: 0, ...params }),
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
 
@@ -22,6 +26,7 @@ export async function updateSubject(params: { id: number; name: string }) {
         },
         body: JSON.stringify(params),
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
 
@@ -29,5 +34,6 @@ export async function deleteSubject({ id }: { id: number }) {
     const res = await fetch(`${baseApiUrl}?id=${id}`, {
         method: "DELETE",
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }

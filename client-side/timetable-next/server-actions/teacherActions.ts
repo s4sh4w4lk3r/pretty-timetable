@@ -1,8 +1,11 @@
 "use server";
 
 import ServiceResult from "@/types/serviceResult";
+import { revalidateTag } from "next/cache";
+import { RevalidationTags } from "./revalidation";
 
 const baseApiUrl = `${process.env.REST_URL!}/teacher`;
+const revalidate = () => revalidateTag(RevalidationTags.Teacher);
 export async function createTeacher(params: { lastname: string; firstname: string; middlename: string }) {
     const res = await fetch(baseApiUrl, {
         method: "PUT",
@@ -11,6 +14,7 @@ export async function createTeacher(params: { lastname: string; firstname: strin
         },
         body: JSON.stringify({ id: 0, ...params }),
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
 
@@ -22,6 +26,7 @@ export async function updateTeacher(params: { id: number; lastname: string; firs
         },
         body: JSON.stringify(params),
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
 
@@ -29,5 +34,6 @@ export async function deleteTeacher({ id }: { id: number }) {
     const res = await fetch(`${baseApiUrl}?id=${id}`, {
         method: "DELETE",
     });
+    revalidate();
     console.log((await res.json()) as ServiceResult);
 }
