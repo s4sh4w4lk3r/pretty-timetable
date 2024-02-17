@@ -4,7 +4,7 @@ import React from "react";
 export default function TimetableNotFound() {
     return (
         <Center mt={48}>
-            <Text fontSize={["lg", "xl", "2xl", "3xl", "4xl", "6xl"]}>Страница не найдена :(</Text>
+            <Text fontSize={["lg", "xl", "2xl", "3xl", "4xl", "6xl"]}>Расписание не найдено 🥺</Text>
         </Center>
     );
 }

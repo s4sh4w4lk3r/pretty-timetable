@@ -86,8 +86,11 @@ async function getTimetable({ groupId, weekNumber }: { groupId: number; weekNumb
 
 export async function generateMetadata({ params, searchParams }: Props) {
     const group = parseGroup(params.groupid, searchParams.subgroup);
+    if (!group) {
+        return null;
+    }
 
-    const timetable = await getTimetable({ groupId: group!.groupId, weekNumber: getWeekNumber(new Date()) });
+    const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
 
     if (!timetable) {
         return null;

@@ -3,18 +3,6 @@ import alertNoData from "@/components/miscellaneous/alertNoData";
 import { LessonTime as LessonTimeType } from "@/types/api";
 import { Text, VStack } from "@chakra-ui/react";
 
-async function getLessonTimes() {
-    const query = "GetAllLessonTimes";
-    const res = await fetch(`${process.env.GRAPHQL_URL}/?id=${query}`, { method: "GET" });
-
-    const lessonTimes = (await res.json()).data.lessonTimes as LessonTimeType[];
-    if (!lessonTimes) {
-        return null;
-    }
-
-    return lessonTimes;
-}
-
 export default async function LessonTimes() {
     const lessontimes = await getLessonTimes();
     if (!lessontimes) {
@@ -39,4 +27,16 @@ export default async function LessonTimes() {
             </VStack>
         </>
     );
+}
+
+async function getLessonTimes() {
+    const query = "GetAllLessonTimes";
+    const res = await fetch(`${process.env.GRAPHQL_URL}/?id=${query}`, { method: "GET" });
+
+    const lessonTimes = (await res.json()).data.lessonTimes as LessonTimeType[];
+    if (!lessonTimes) {
+        return null;
+    }
+
+    return lessonTimes;
 }
