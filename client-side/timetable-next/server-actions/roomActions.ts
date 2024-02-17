@@ -2,9 +2,9 @@
 
 import ServiceResult from "@/types/serviceResult";
 
-const restApiUrl = process.env.REST_URL!;
+const baseApiUrl = `${process.env.REST_URL!}/room`;
 export async function createRoom(params: { address: string; number: string; fullName: string }) {
-    const res = await fetch(`${restApiUrl}/room`, {
+    const res = await fetch(baseApiUrl, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -15,7 +15,7 @@ export async function createRoom(params: { address: string; number: string; full
 }
 
 export async function updateRoom(params: { id: number; address: string; number: string; fullName: string }) {
-    const res = await fetch(`${restApiUrl}/room`, {
+    const res = await fetch(baseApiUrl, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -26,7 +26,7 @@ export async function updateRoom(params: { id: number; address: string; number: 
 }
 
 export async function deleteRoom({ id }: { id: number }) {
-    const res = await fetch(`${restApiUrl}/room?id=${id}`, {
+    const res = await fetch(`${baseApiUrl}?id=${id}`, {
         method: "DELETE",
     });
     console.log((await res.json()) as ServiceResult);

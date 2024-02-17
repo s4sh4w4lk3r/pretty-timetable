@@ -2,9 +2,9 @@
 
 import ServiceResult from "@/types/serviceResult";
 
-const restApiUrl = process.env.REST_URL!;
+const baseApiUrl = `${process.env.REST_URL!}/subject`;
 export async function createSubject(params: { name: string }) {
-    const res = await fetch(`${restApiUrl}/subject`, {
+    const res = await fetch(baseApiUrl, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -15,7 +15,7 @@ export async function createSubject(params: { name: string }) {
 }
 
 export async function updateSubject(params: { id: number; name: string }) {
-    const res = await fetch(`${restApiUrl}/subject`, {
+    const res = await fetch(baseApiUrl, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -26,7 +26,7 @@ export async function updateSubject(params: { id: number; name: string }) {
 }
 
 export async function deleteSubject({ id }: { id: number }) {
-    const res = await fetch(`${restApiUrl}/subject?id=${id}`, {
+    const res = await fetch(`${baseApiUrl}?id=${id}`, {
         method: "DELETE",
     });
     console.log((await res.json()) as ServiceResult);
