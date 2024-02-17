@@ -10,7 +10,7 @@ namespace WebApi.Controllers
     [ApiController, Route("group")]
     public class GroupController(IGroupService groupService) : ControllerBase
     {
-        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPut, Route(""), /*Authorize(policy: KeycloakPolicies.TimetableCRUD)*/ AllowAnonymous]
         public async Task<IActionResult> Update(GroupModels.GroupPut model)
         {
             var result = await groupService.PutAsync(model.ToEntity());
