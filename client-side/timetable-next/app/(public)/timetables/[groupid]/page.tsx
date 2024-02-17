@@ -6,41 +6,13 @@ import { parseGroup } from "@/utils/groups";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 import { notFound } from "next/navigation";
 
-async function getTimetable({ groupId, weekNumber }: { groupId: number; weekNumber: number }) {
-    const query = "GetActualTimetableByGroupId";
+type Props = {
+    params: { groupid: string };
+    searchParams: { subgroup: string | undefined };
+};
 
-    const res = await fetch(`${process.env.GRAPHQL_URL}/?id=${query}&variables={"groupId":${groupId},"weekNumber":${weekNumber}}`, {
-        method: "GET",
-    });
-
-    const timetables = (await res.json()).data.actualTimetables as ActualTimetable[];
-    if (!timetables) {
-        return null;
-    }
-
-    return timetables[0];
-    // FIXME : может можно сделать как-то плоским это
-}
-
-export async function generateMetadata(params: { params: { group: [groupId: string, subGroup: string] } }) {
-    const [groupIdStr, subGroupStr] = params.params.group;
-    const group = parseGroup(groupIdStr, subGroupStr);
-
-    const timetable = await getTimetable({ groupId: group!.groupId, weekNumber: getWeekNumber(new Date()) });
-
-    if (!timetable) {
-        return null;
-    }
-
-    return {
-        title: `${timetable.group.name} ${group?.subgroup}`,
-    };
-}
-
-export default async function Timetable({ params }: { params: { group: [groupId: string, subGroup: string] } }) {
-    const [groupId, subgroup] = params.group;
-
-    const group = parseGroup(groupId, subgroup);
+export default async function Timetable({ params, searchParams }: Props) {
+    const group = parseGroup(params.groupid, searchParams.subgroup);
     if (!group) {
         notFound();
     }
@@ -95,4 +67,33 @@ export default async function Timetable({ params }: { params: { group: [groupId:
         </>
     );
 }
-// TODO: сделать указание подгруппы через квери параметр
+
+async function getTimetable({ groupId, weekNumber }: { groupId: number; weekNumber: number }) {
+    const query = "GetActualTimetableByGroupId";
+
+    const res = await fetch(`${process.env.GRAPHQL_URL}/?id=${query}&variables={"groupId":${groupId},"weekNumber":${weekNumber}}`, {
+        method: "GET",
+    });
+
+    const timetables = (await res.json()).data.actualTimetables as ActualTimetable[];
+    if (!timetables) {
+        return null;
+    }
+
+    return timetables[0];
+    // FIXME : может можно сделать как-то плоским это
+}
+
+export async function generateMetadata({ params, searchParams }: Props) {
+    const group = parseGroup(params.groupid, searchParams.subgroup);
+
+    const timetable = await getTimetable({ groupId: group!.groupId, weekNumber: getWeekNumber(new Date()) });
+
+    if (!timetable) {
+        return null;
+    }
+
+    return {
+        title: `${timetable.group.name} ${group?.subgroup}`,
+    };
+}

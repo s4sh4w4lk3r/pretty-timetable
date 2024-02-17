@@ -1,6 +1,6 @@
 import { SubGroup } from "@/types/api";
 
-export function parseGroup(groupId: string, subgroup: string): { groupId: number; subgroup: SubGroup } | null {
+export function parseGroup(groupId: string, subgroup: string | undefined): { groupId: number; subgroup: SubGroup } | null {
     const groupIdNumeric = Number.parseInt(groupId);
 
     if (!groupIdNumeric) {
