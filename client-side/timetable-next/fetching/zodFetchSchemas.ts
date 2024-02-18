@@ -82,7 +82,7 @@ export namespace AdminZodFetchSchemas {
                     address: z.string(),
                     number: z.string(),
                     fullName: z.string(),
-                    ascId: z.string().optional(),
+                    ascId: z.string().optional().nullable(),
                     modifiedAt: z.coerce.date(),
                 })
                 .array(),
@@ -93,8 +93,8 @@ export namespace AdminZodFetchSchemas {
         z.object({
             success: z.boolean(),
             description: z.string(),
-            innerServiceResult: serviceResultSchema.optional(),
-            value: z.unknown().optional(),
+            innerServiceResult: serviceResultSchema.optional().nullable(),
+            value: z.unknown().optional().nullable(),
         })
     );
 }

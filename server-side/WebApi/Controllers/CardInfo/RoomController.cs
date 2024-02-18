@@ -1,4 +1,4 @@
-﻿using Auth;
+using Auth;
 using Mappers.CardParts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +16,7 @@ namespace WebApi.Controllers.CardParts
             var result = await cabinetService.PutAsync(model.ToEntity());
 
             return result.Success ? Ok(result) : BadRequest(result);
+#warning сделать возможным внесение ascId
         }
 
 
