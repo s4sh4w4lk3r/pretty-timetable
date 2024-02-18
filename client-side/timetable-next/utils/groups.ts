@@ -1,14 +1,15 @@
-import { SubGroup } from "@/types/api";
+import { PublicZodFetchShemas } from "@/fetching/zodFetchSchemas";
 
-export function parseGroup(groupId: string, subgroup: string | undefined): { groupId: number; subgroup: SubGroup } | null {
+import subgroupSchema = PublicZodFetchShemas.subgroupsSchema;
+export function parseGroup(groupId: string, subgroup?: string) {
     const groupIdNumeric = Number.parseInt(groupId);
 
     if (!groupIdNumeric) {
         return null;
     }
 
-    if (subgroup === "first") return { groupId: groupIdNumeric, subgroup: SubGroup.FirstGroup };
-    if (subgroup === "second") return { groupId: groupIdNumeric, subgroup: SubGroup.SecondGroup };
+    if (subgroup === "first") return { groupId: groupIdNumeric, subgroup: subgroupSchema.enum.FIRST_GROUP };
+    if (subgroup === "second") return { groupId: groupIdNumeric, subgroup: subgroupSchema.enum.SECOND_GROUP };
 
-    return { groupId: groupIdNumeric, subgroup: SubGroup.All };
+    return { groupId: groupIdNumeric, subgroup: subgroupSchema.enum.ALL };
 }

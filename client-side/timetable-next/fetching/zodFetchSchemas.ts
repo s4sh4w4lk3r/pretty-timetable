@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 export namespace PublicZodFetchShemas {
+    export const subgroupsSchema = z.enum(["ALL", "FIRST_GROUP", "SECOND_GROUP"]);
+
     export const actualTimetablesSchema = z.object({
         data: z.object({
             actualTimetables: z
@@ -34,11 +36,13 @@ export namespace PublicZodFetchShemas {
                                         number: z.number(),
                                     }),
 
+                                    // FIXME : сделать coerce date
                                     date: z.string(),
                                     isModified: z.boolean(),
                                     isCanceled: z.boolean(),
                                     isMoved: z.boolean(),
-                                    subGroup: z.string(),
+                                    // Имеются на бекенде также подгруппы MALES и FEMALES, но они не используются.
+                                    subGroup: subgroupsSchema,
                                 })
                             )
                             .nonempty(),
