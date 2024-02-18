@@ -1,6 +1,6 @@
 "use server";
 
-import ServiceResult from "@/types/serviceResult";
+import { AdminZodFetchSchemas } from "@/fetching/zodFetchSchemas";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
 import config from "@/configs/config";
@@ -17,7 +17,9 @@ export async function createLessonTime(params: { number: number; startsAt: strin
         body: JSON.stringify({ id: 0, ...params }),
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }
 
 export async function updateLessonTime(params: { id: number; number: number; startsAt: string; endsAt: string }) {
@@ -29,7 +31,9 @@ export async function updateLessonTime(params: { id: number; number: number; sta
         body: JSON.stringify(params),
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }
 
 export async function deleteLessonTime({ id }: { id: number }) {
@@ -37,5 +41,7 @@ export async function deleteLessonTime({ id }: { id: number }) {
         method: "DELETE",
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }

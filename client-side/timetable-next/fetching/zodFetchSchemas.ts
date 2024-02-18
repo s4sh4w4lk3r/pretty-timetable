@@ -1,3 +1,4 @@
+import ServiceResult from "@/types/serviceResult";
 import { z } from "zod";
 
 export namespace PublicZodFetchShemas {
@@ -87,4 +88,13 @@ export namespace AdminZodFetchSchemas {
                 .array(),
         }),
     });
+
+    export const serviceResultSchema: z.ZodSchema<ServiceResult> = z.lazy(() =>
+        z.object({
+            success: z.boolean(),
+            description: z.string(),
+            innerServiceResult: serviceResultSchema.optional(),
+            value: z.unknown().optional(),
+        })
+    );
 }

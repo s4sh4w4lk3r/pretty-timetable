@@ -1,6 +1,6 @@
 "use server";
 
-import ServiceResult from "@/types/serviceResult";
+import { AdminZodFetchSchemas } from "@/fetching/zodFetchSchemas";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
 import config from "@/configs/config";
@@ -28,7 +28,9 @@ export async function createActualCard(params: {
         body: JSON.stringify({ id: 0, ...params }),
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = await AdminZodFetchSchemas.serviceResultSchema.safeParseAsync(await res.json());
+    return result.success ? result.data : result.error;
 }
 
 export async function updateActualCard(params: {
@@ -52,7 +54,9 @@ export async function updateActualCard(params: {
         body: JSON.stringify(params),
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }
 
 export async function deleteActualCard({ id }: { id: number }) {
@@ -60,5 +64,7 @@ export async function deleteActualCard({ id }: { id: number }) {
         method: "DELETE",
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }

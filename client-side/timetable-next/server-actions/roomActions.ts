@@ -1,6 +1,6 @@
 "use server";
 
-import ServiceResult from "@/types/serviceResult";
+import { AdminZodFetchSchemas } from "@/fetching/zodFetchSchemas";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
 import config from "@/configs/config";
@@ -17,7 +17,9 @@ export async function createRoom(params: { address: string; number: string; full
         body: JSON.stringify({ id: 0, ...params }),
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }
 
 export async function updateRoom(params: { id: number; address: string; number: string; fullName: string }) {
@@ -29,7 +31,9 @@ export async function updateRoom(params: { id: number; address: string; number: 
         body: JSON.stringify(params),
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }
 
 export async function deleteRoom({ id }: { id: number }) {
@@ -37,5 +41,7 @@ export async function deleteRoom({ id }: { id: number }) {
         method: "DELETE",
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }

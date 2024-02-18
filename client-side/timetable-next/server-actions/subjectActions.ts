@@ -1,6 +1,6 @@
 "use server";
 
-import ServiceResult from "@/types/serviceResult";
+import { AdminZodFetchSchemas } from "@/fetching/zodFetchSchemas";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
 import config from "@/configs/config";
@@ -16,7 +16,9 @@ export async function createSubject(params: { name: string }) {
         body: JSON.stringify({ id: 0, ...params }),
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }
 
 export async function updateSubject(params: { id: number; name: string }) {
@@ -28,7 +30,9 @@ export async function updateSubject(params: { id: number; name: string }) {
         body: JSON.stringify(params),
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }
 
 export async function deleteSubject({ id }: { id: number }) {
@@ -36,5 +40,7 @@ export async function deleteSubject({ id }: { id: number }) {
         method: "DELETE",
     });
     revalidate();
-    console.log((await res.json()) as ServiceResult);
+
+    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    return result.success ? result.data : result.error;
 }
