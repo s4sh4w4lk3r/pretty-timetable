@@ -3,8 +3,9 @@
 import ServiceResult from "@/types/serviceResult";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
+import config from "@/configs/config";
 
-const baseApiUrl = `${process.env.REST_URL!}/group`;
+const baseApiUrl = `${config.api.restBaseUrl}/group`;
 const revalidate = () => revalidateTag(RevalidationTags.Group);
 export async function createGroup(params: { name: string }) {
     const res = await fetch(baseApiUrl, {

@@ -3,8 +3,9 @@
 import ServiceResult from "@/types/serviceResult";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
+import config from "@/configs/config";
 
-const baseApiUrl = `${process.env.REST_URL!}/teacher`;
+const baseApiUrl = `${config.api.restBaseUrl}/teacher`;
 const revalidate = () => revalidateTag(RevalidationTags.Teacher);
 export async function createTeacher(params: { lastname: string; firstname: string; middlename: string }) {
     const res = await fetch(baseApiUrl, {

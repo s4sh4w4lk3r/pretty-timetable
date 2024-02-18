@@ -3,8 +3,9 @@
 import ServiceResult from "@/types/serviceResult";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
+import config from "@/configs/config";
 
-const baseApiUrl = `${process.env.REST_URL!}/stable`;
+const baseApiUrl = `${config.api.restBaseUrl}/stable`;
 const revalidate = () => revalidateTag(RevalidationTags.StableTimetable);
 
 export async function createStableTimetable(params: { groupId: number }) {

@@ -3,8 +3,9 @@
 import ServiceResult from "@/types/serviceResult";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
+import config from "@/configs/config";
 
-const baseApiUrl = `${process.env.REST_URL!}/subject`;
+const baseApiUrl = `${config.api.restBaseUrl}/subject`;
 const revalidate = () => revalidateTag(RevalidationTags.Subject);
 export async function createSubject(params: { name: string }) {
     const res = await fetch(baseApiUrl, {

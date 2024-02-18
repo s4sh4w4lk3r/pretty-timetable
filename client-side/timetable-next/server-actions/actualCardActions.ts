@@ -3,8 +3,9 @@
 import ServiceResult from "@/types/serviceResult";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
+import config from "@/configs/config";
 
-const baseApiUrl = `${process.env.REST_URL!}/actual/card`;
+const baseApiUrl = `${config.api.restBaseUrl}/actual/card`;
 const revalidate = () => revalidateTag(RevalidationTags.ActualCard);
 
 export async function createActualCard(params: {

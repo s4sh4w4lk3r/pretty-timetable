@@ -3,8 +3,9 @@
 import ServiceResult from "@/types/serviceResult";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
+import config from "@/configs/config";
 
-const baseApiUrl = `${process.env.REST_URL!}/lessontime`;
+const baseApiUrl = `${config.api.restBaseUrl}/lessontime`;
 const revalidate = () => revalidateTag(RevalidationTags.LessonTime);
 
 export async function createLessonTime(params: { number: number; startsAt: string; endsAt: string }) {

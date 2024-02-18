@@ -3,8 +3,9 @@
 import ServiceResult from "@/types/serviceResult";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
+import config from "@/configs/config";
 
-const baseApiUrl = `${process.env.REST_URL!}/room`;
+const baseApiUrl = `${config.api.restBaseUrl}/room`;
 const revalidate = () => revalidateTag(RevalidationTags.Room);
 
 export async function createRoom(params: { address: string; number: string; fullName: string }) {
