@@ -82,7 +82,7 @@ export namespace AdminZodFetchSchemas {
                     address: z.string(),
                     number: z.string(),
                     fullName: z.string(),
-                    ascId: z.string().optional().nullable(),
+                    ascId: z.string().nullish(),
                     modifiedAt: z.coerce.date(),
                 })
                 .array(),
@@ -93,8 +93,16 @@ export namespace AdminZodFetchSchemas {
         z.object({
             success: z.boolean(),
             description: z.string(),
-            innerServiceResult: serviceResultSchema.optional().nullable(),
-            value: z.unknown().optional().nullable(),
+            innerServiceResult: serviceResultSchema.nullish(),
+            value: z.unknown().nullish(),
         })
     );
+
+    export const updateRoomSchema = z.object({
+        id: z.coerce.number(),
+        address: z.string(),
+        number: z.string(),
+        fullName: z.string(),
+        ascId: z.string().nullish(),
+    });
 }

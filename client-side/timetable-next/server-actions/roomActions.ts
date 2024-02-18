@@ -22,13 +22,21 @@ export async function createRoom(params: { address: string; number: string; full
     return result.success ? result.data : result.error;
 }
 
-export async function updateRoom(params: { id: number; address: string; number: string; fullName: string }) {
+export async function updateRoom(formData: FormData) {
+    const rawFormData = Object.fromEntries(formData.entries());
+    const valResult = AdminZodFetchSchemas.updateRoomSchema.safeParse(rawFormData);
+    console.log(valResult);
+
+    if (!valResult.success) {
+        return valResult.error.flatten();
+    }
+
     const res = await fetch(baseApiUrl, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
         },
-        body: JSON.stringify(params),
+        body: JSON.stringify(valResult.data),
     });
     revalidate();
 
