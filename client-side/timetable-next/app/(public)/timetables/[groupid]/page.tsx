@@ -84,3 +84,4 @@ export async function generateMetadata({ params, searchParams }: Props) {
         title: `${timetable.group.name} ${group?.subgroup}`,
     };
 }
+// FIXME: надо сделать валидацию каждый день, а то на новую неделю показывается прошлое закешированное расписание

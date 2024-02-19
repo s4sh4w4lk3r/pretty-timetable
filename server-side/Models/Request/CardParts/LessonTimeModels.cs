@@ -13,6 +13,7 @@ namespace Models.Request.CardParts
             [Required] public required int Number { get; init; }
             [Required, RegularExpression(TIME_REGEX, ErrorMessage = REGEX_ERROR_MSG)] public required string StartsAt { get; init; }
             [Required, RegularExpression(TIME_REGEX, ErrorMessage = REGEX_ERROR_MSG)] public required string EndsAt { get; init; }
+            public string AscId { get; init; } = string.Empty;
         }
     }
 }

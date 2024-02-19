@@ -10,6 +10,7 @@ namespace Models.Request.CardParts
             [Required] public required string Address { get; init; }
             [Required] public required string Number { get; init; }
             [Required] public required string FullName { get; init; }
+            public string AscId { get; init; } = string.Empty;
 
         }
     }

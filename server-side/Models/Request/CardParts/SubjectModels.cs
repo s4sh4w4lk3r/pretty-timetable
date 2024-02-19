@@ -8,6 +8,7 @@ namespace Models.Request.CardParts
         {
             public required int Id { get; init; }
             [Required] public required string Name { get; init; }
+            public string AscId { get; init; } = string.Empty;
         }
     }
 }

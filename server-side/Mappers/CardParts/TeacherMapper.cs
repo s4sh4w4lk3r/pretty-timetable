@@ -13,7 +13,8 @@ namespace Mappers.CardParts
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Middlename = model.Middlename,
-                ModifiedAt = DateTime.UtcNow
+                ModifiedAt = DateTime.UtcNow,
+                AscId = model.AscId,
             };
         }
     }
