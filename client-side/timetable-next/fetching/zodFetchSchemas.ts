@@ -102,7 +102,8 @@ export namespace AdminZodFetchSchemas {
         id: z.coerce.number(),
         address: z.string(),
         number: z.string(),
-        fullName: z.string(),
+        // FIXME: вот так надо делать валидацию на пустые строки
+        fullName: z.string().trim().min(1),
         ascId: z.string().nullish(),
     });
 }

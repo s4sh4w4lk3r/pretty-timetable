@@ -14,10 +14,12 @@ type Props = {
     ascId?: string | null;
     modifiedAt: Date;
 };
+
 export default function RoomCard({ id, address, fullName, modifiedAt, number, ascId }: Props) {
-    const {} = useFormState();
+    const [formState, action] = useFormState(updateRoom, null);
+    // console.log(formState);
+
     // FIXME: сделать валидацию формы на клиенте
-    // FIXME: уведомлять юзера как-то
     const disclosure = useDisclosure();
     return (
         <>
@@ -43,7 +45,7 @@ export default function RoomCard({ id, address, fullName, modifiedAt, number, as
                 {...disclosure}
                 size={"xl"}
             >
-                <form action={updateRoom}>
+                <form action={action}>
                     <VStack>
                         <HStack w={"full"}>
                             <Text>ID</Text>
@@ -85,9 +87,9 @@ export default function RoomCard({ id, address, fullName, modifiedAt, number, as
                                 name="ascId"
                             ></Input>
                         </HStack>
-
                         <SubmitButton>Сохранить</SubmitButton>
                     </VStack>
+                    {!formState?.success === true ? formState?.message : "OK"}
                 </form>
             </EditorModal>
         </>
