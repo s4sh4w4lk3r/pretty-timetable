@@ -8,7 +8,7 @@ import { ClientResult, putEntity } from "./actionsFetchWrappers";
 
 const baseApiUrl = `${config.api.restBaseUrl}/room`;
 const revalidate = () => revalidateTag(RevalidationTags.Room);
-// FIXME : использовать везде врапперы
+
 export async function createRoom(params: { address: string; number: string; fullName: string }) {
     const res = await fetch(baseApiUrl, {
         method: "PUT",
@@ -28,10 +28,11 @@ export async function updateRoom(prevState: any, formData: FormData): Promise<Cl
     const valResult = AdminZodFetchSchemas.updateRoomSchema.safeParse(rawFormData);
 
     if (!valResult.success) {
-        return { success: false, message: valResult.error.toString() };
+        console.error(valResult.error.flatten());
+        return { message: "check logs", success: false };
     }
 
-    const res = await putEntity({ url: baseApiUrl, entity: valResult.data, revalidateFn: revalidate });
+    const res = await putEntity({ url: baseApiUrl, entity: valResult.data, revalidateFn: revalidate, authN: "" });
     return res;
 }
 

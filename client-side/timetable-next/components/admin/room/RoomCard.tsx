@@ -1,5 +1,5 @@
 "use client";
-import { Button, Card, HStack, Input, StackDivider, Text, VStack, useDisclosure } from "@chakra-ui/react";
+import { Button, Card, HStack, Input, StackDivider, Text, UseToastOptions, VStack, useDisclosure, useToast } from "@chakra-ui/react";
 import EditorModal from "../EditorModal";
 import { EditIcon } from "@chakra-ui/icons";
 import { useFormState } from "react-dom";
@@ -17,7 +17,7 @@ type Props = {
 
 export default function RoomCard({ id, address, fullName, modifiedAt, number, ascId }: Props) {
     const [formState, action] = useFormState(updateRoom, null);
-    // console.log(formState);
+    const toast = useToast({ duration: 8000, isClosable: true });
 
     // FIXME: сделать валидацию формы на клиенте
     const disclosure = useDisclosure();
@@ -45,7 +45,11 @@ export default function RoomCard({ id, address, fullName, modifiedAt, number, as
                 {...disclosure}
                 size={"xl"}
             >
-                <form action={action}>
+                <form
+                    action={action}
+                    //FIXME : в тосте испольузутся значение прошлого стейта
+                    onSubmit={() => toast({ title: "da", status: "error", description: formState?.message })}
+                >
                     <VStack>
                         <HStack w={"full"}>
                             <Text>ID</Text>
