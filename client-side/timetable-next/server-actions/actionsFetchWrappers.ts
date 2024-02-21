@@ -7,14 +7,18 @@ export interface ClientResult {
     message: string;
 }
 
+type PutParams<T> = { url: string; entity: T; authN: string; revalidateFn: () => void };
+type delParams = { url: string; id: number; authN: string; revalidateFn: () => void };
+
 const msg = "Что-то пошло не так, смотрите логи на сервере.";
 
-export async function putEntity<T>({ url, entity, revalidateFn }: { url: string; entity: T; revalidateFn: () => void }): Promise<ClientResult> {
+export async function putEntity<T>({ url, entity, revalidateFn, authN }: PutParams<T>): Promise<ClientResult> {
     try {
         const response = await fetch(url, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
+                "Authorization": authN,
             },
             body: JSON.stringify(entity),
         });
@@ -30,10 +34,11 @@ export async function putEntity<T>({ url, entity, revalidateFn }: { url: string;
     }
 }
 
-export async function deleteEntity({ url, id, revalidateFn }: { url: string; id: number; revalidateFn: () => void }): Promise<ClientResult> {
+export async function deleteEntity({ url, id, revalidateFn, authN }: delParams): Promise<ClientResult> {
     try {
         const response = await fetch(`${url}?id=${id}`, {
             method: "DELETE",
+            headers: { "Authorization": authN },
         });
 
         if (!response.ok) {
