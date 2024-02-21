@@ -29,7 +29,7 @@ export async function putEntity<T>({ url, entity, revalidateFn }: { url: string;
         }
     } catch (error) {
         if (error instanceof Error) {
-            console.log(error);
+            console.error(error);
             return { message: error.message, success: false };
         } else console.error(error);
     }
@@ -37,7 +37,7 @@ export async function putEntity<T>({ url, entity, revalidateFn }: { url: string;
 }
 
 export async function deleteEntity({ url, id, revalidateFn }: { url: string; id: number; revalidateFn: () => void }): Promise<ClientResult> {
-    // FIXME: проверить этот метод
+    // TODO: проверить этот метод
     try {
         const response = await fetch(`${url}?id=${id}`, {
             method: "DELETE",
@@ -74,19 +74,19 @@ async function badStatusCodesHandler(response: Response): Promise<ClientResult> 
             } else console.log(responseParsed.error);
 
         case 401:
-            return { message: "Отсутствует аутентификация.", success: false };
+            return { message: "Отсутствует аутентификация. 401", success: false };
 
         case 403:
-            return { message: "Отсутствует разрешение на действие.", success: false };
+            return { message: "Отсутствуют права. 403", success: false };
 
         case 404:
-            return { message: "Endpoint не найден.", success: false };
+            return { message: "Endpoint не найден. 404", success: false };
 
         case 502:
-            return { message: "Скорее всего Nginx Bad Gateway.", success: false };
+            return { message: "Скорее всего Nginx Bad Gateway. 502", success: false };
 
         case 500:
-            return { message: "Похоже, что посыпались исключения на бекенде.", success: false };
+            return { message: "Похоже, что посыпались исключения на бекенде. 500", success: false };
 
         default:
             return { message: `Что-то пошло не так. Код ошибки: ${response.status}:${response.statusText}`, success: false };
