@@ -1,9 +1,13 @@
 import { AdminZodFetchSchemas } from "@/fetching/zodFetchSchemas";
+import ServiceResult from "@/types/serviceResult";
+import { SafeParseReturnType } from "zod";
 
 export interface ClientResult {
     success: boolean | null;
     message: string;
 }
+
+const msg = "Что-то пошло не так, смотрите логи на сервере.";
 
 export async function putEntity<T>({ url, entity, revalidateFn }: { url: string; entity: T; revalidateFn: () => void }): Promise<ClientResult> {
     try {
@@ -16,62 +20,45 @@ export async function putEntity<T>({ url, entity, revalidateFn }: { url: string;
         });
 
         if (!response.ok) {
-            return await badStatusCodesHandler(response);
+            return await handleBadStatusCode(response);
         }
 
         const responseParsed = AdminZodFetchSchemas.serviceResultSchema.safeParse(await response.json());
-        if (responseParsed.success) {
-            revalidateFn();
-            return { message: responseParsed.data.description, success: responseParsed.data.success };
-        } else {
-            console.error(responseParsed.error);
-            return { message: responseParsed.error.message, success: false };
-        }
+        return handleOkStatusCode({ responseParsed: responseParsed, revalidateFn: revalidateFn });
     } catch (error) {
-        if (error instanceof Error) {
-            console.error(error);
-            return { message: error.message, success: false };
-        } else console.error(error);
+        return handleFetchException(error);
     }
-    return { message: "Что-то пошло не так.", success: false };
 }
 
 export async function deleteEntity({ url, id, revalidateFn }: { url: string; id: number; revalidateFn: () => void }): Promise<ClientResult> {
-    // TODO: проверить этот метод
     try {
         const response = await fetch(`${url}?id=${id}`, {
             method: "DELETE",
         });
 
         if (!response.ok) {
-            return await badStatusCodesHandler(response);
+            return await handleBadStatusCode(response);
         }
 
         const responseParsed = AdminZodFetchSchemas.serviceResultSchema.safeParse(await response.json());
-        if (responseParsed.success) {
-            revalidateFn();
-            return { message: responseParsed.data.description, success: responseParsed.data.success };
-        } else {
-            console.error(responseParsed.error);
-            return { message: responseParsed.error.message, success: false };
-        }
+        return handleOkStatusCode({ responseParsed: responseParsed, revalidateFn: revalidateFn });
     } catch (error) {
-        if (error instanceof Error) {
-            console.log(error);
-            return { message: error.message, success: false };
-        } else console.error(error);
+        return handleFetchException(error);
     }
-    return { message: "Что-то пошло не так.", success: false };
 }
 
-async function badStatusCodesHandler(response: Response): Promise<ClientResult> {
+async function handleBadStatusCode(response: Response): Promise<ClientResult> {
     switch (response.status) {
-        // TODO : проверить как отрабатывает 400-ые ошибки
         case 400:
             const responseParsed = AdminZodFetchSchemas.serviceResultSchema.safeParse(await response.json());
+
             if (responseParsed.success) {
-                return { message: JSON.stringify(responseParsed.data), success: false };
-            } else console.log(responseParsed.error);
+                console.error(responseParsed.data);
+                return { message: responseParsed.data.description, success: false };
+            } else {
+                console.error(responseParsed.error.flatten());
+                return { message: msg, success: false };
+            }
 
         case 401:
             return { message: "Отсутствует аутентификация. 401", success: false };
@@ -91,4 +78,28 @@ async function badStatusCodesHandler(response: Response): Promise<ClientResult> 
         default:
             return { message: `Что-то пошло не так. Код ошибки: ${response.status}:${response.statusText}`, success: false };
     }
+}
+
+function handleOkStatusCode({
+    responseParsed,
+    revalidateFn,
+}: {
+    responseParsed: SafeParseReturnType<ServiceResult, ServiceResult>;
+    revalidateFn: () => void;
+}) {
+    const zodIsValid = responseParsed.success;
+    const apiIsSuccess = zodIsValid ? responseParsed.data.success : false;
+
+    if (zodIsValid && apiIsSuccess) {
+        revalidateFn();
+        return { message: responseParsed.data.description, success: true };
+    } else {
+        if (!zodIsValid) console.error(responseParsed.error.flatten());
+        return { message: msg, success: false };
+    }
+}
+
+function handleFetchException(error: unknown) {
+    console.error(error);
+    return { message: msg, success: false };
 }
