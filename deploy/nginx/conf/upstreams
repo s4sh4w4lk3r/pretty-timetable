@@ -1,0 +1,11 @@
+# на винде внешний хост - host.docker.internal
+# на линуксе внешний хост - 172.17.0.1
+
+set $upstream_frontend http://localhost:3001;
+set $upstream_backend http://localhost:5012;
+set $upstream_keycloak http://localhost:8080;
+
+
+# в докере резолвер 127.0.0.11
+# на локалке резолвер: 192.168.1.1 
+resolver 192.168.1.1 valid=30s;
