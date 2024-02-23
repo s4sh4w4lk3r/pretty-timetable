@@ -1,29 +1,25 @@
 name: timetable
 
 volumes:
-  postgres-vol:
-  pgadmin-vol:
   nginx-conf-vol:
   certbot-vol:
 
 
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:23.0
+    image: quay.io/keycloak/keycloak:23.0.6
     ports:
       - 8080:8080
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_USERNAME}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
-      KC_DB: postgres
+      KC_DB: ${KEYCLOAK_DB}
       KC_DB_URL: ${KEYCLOAK_DB_URL}
       KC_DB_USERNAME: ${KEYCLOAK_DB_USERNAME}
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
-      KC_HTTP_RELATIVE_PATH: auth/
-      KC_PROXY: edge
-      # KC_HOSTNAME_URL: ${KEYCLOAK_HOSTNAME_URL}
-      # KC_HOSTNAME_ADMIN_URL: http://localhost:8080/auth
-      # KC_HOSTNAME_STRICT: false
+      KC_HTTP_RELATIVE_PATH: ${KEYCLOAK_HTTP_RELATIVE_PATH}
+      KC_PROXY: ${KEYCLOAK_PROXY}
+      KC_HOSTNAME_STRICT: ${KEYCLOAK_HOSTNAME_STRICT}
       # depends_on:
       #   - postgres
     command:
