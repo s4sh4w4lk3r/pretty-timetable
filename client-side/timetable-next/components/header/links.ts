@@ -3,7 +3,7 @@ export interface LinkType {
     label: string;
 }
 
-export const generalLinks: LinkType[] = [
+export const publicLinks: LinkType[] = [
     {
         label: "Главная",
         path: "/",
@@ -20,12 +20,9 @@ export const generalLinks: LinkType[] = [
     },
 ];
 
-export const loginLink: LinkType = {
-    label: "Войти",
-    path: "/api/auth/signin",
-};
-
-export const logoutLink: LinkType = {
-    label: "Выйти",
-    path: "/api/auth/signout",
-};
+export const adminLinks: LinkType[] = [
+    {
+        label: "Главная",
+        path: "/admin",
+    },
+];

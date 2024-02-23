@@ -16,5 +16,3 @@ export default function SubmitButton({ children }: { children?: ReactNode }) {
         </Button>
     );
 }
-
-// TODO: пока не проверял работу
