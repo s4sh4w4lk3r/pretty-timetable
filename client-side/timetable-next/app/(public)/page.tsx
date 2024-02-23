@@ -83,4 +83,3 @@ export default function Home() {
         </Center>
     );
 }
-// TODO: возможно картинки не оптимизированы

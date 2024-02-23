@@ -18,7 +18,7 @@ export async function putEntity<T>({ url, entity, revalidateFn, authN }: PutPara
             method: "PUT",
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
-                "Authorization": authN,
+                "Authorization": `Bearer ${authN}`,
             },
             body: JSON.stringify(entity),
         });
@@ -38,7 +38,9 @@ export async function deleteEntity({ url, id, revalidateFn, authN }: delParams):
     try {
         const response = await fetch(`${url}?id=${id}`, {
             method: "DELETE",
-            headers: { "Authorization": authN },
+            headers: {
+                "Authorization": `Bearer ${authN}`,
+            },
         });
 
         if (!response.ok) {
