@@ -24,7 +24,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
 
             <Box
                 mt={16}
-                ml={16}
+                ml={[0, null, 16, null, null, null]}
                 as={"main"}
             >
                 {children}

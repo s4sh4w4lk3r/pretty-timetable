@@ -1,6 +1,6 @@
 "use client";
 import { Box, VStack, useColorModeValue } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HamburgerMenuButton from "./HamburgerMenuButton";
 import SidebarItem from "./SidebarItem";
 import { LinkIcon, StarIcon, TimeIcon, WarningIcon } from "@chakra-ui/icons";
@@ -10,7 +10,13 @@ export default function Sidebar() {
     const [isCollapsed, setIsCopplapsed] = useState(true);
     const headerBgColor = useColorModeValue("whiteAlpha.800", "blackAlpha.700");
     const pathname = usePathname();
+    const [isMobile, setIsMobile] = useState(true);
 
+    useEffect(() => {
+        const handleWindowResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener("resize", handleWindowResize);
+        return () => window.removeEventListener("resize", handleWindowResize);
+    }, []);
     const sideBarItems = items.map(i => (
         <SidebarItem
             key={i.path}
@@ -26,7 +32,7 @@ export default function Sidebar() {
         <Box
             pos={"fixed"}
             h={"full"}
-            w={isCollapsed ? 16 : 64}
+            w={isCollapsed ? (isMobile ? 0 : 16) : 64}
             backdropFilter="saturate(180%) blur(5px)"
             bgColor={headerBgColor}
             zIndex={"200"}
@@ -40,6 +46,7 @@ export default function Sidebar() {
             />
 
             <VStack
+                hidden={isMobile && isCollapsed}
                 mt={14}
                 alignItems={isCollapsed ? "center" : "stretch"}
                 px={2}
