@@ -1,17 +1,9 @@
-import HamburgerMenuButton from "@/components/menu/HamburgerMenuButton";
 import Header from "@/components/header/Header";
-import HeaderLink from "@/components/header/HeaderLink";
 import ThemeSwitchButton from "@/components/header/ThemeSwitchButton";
-import { publicLinks } from "@/components/header/links";
+import Sidebar from "@/components/sidebarNavigation/Sidebar";
 import { Box, HStack } from "@chakra-ui/react";
 
 export default function PublicLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-    const linksElement = publicLinks.map(l => (
-        <HeaderLink
-            key={l.label}
-            {...l}
-        />
-    ));
     return (
         <>
             <Header>
@@ -22,22 +14,17 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
                 >
                     <Box
                         pos={"fixed"}
-                        left={3}
-                    >
-                        <HamburgerMenuButton />
-                    </Box>
-
-                    <Box
-                        pos={"fixed"}
                         right={3}
                     >
                         <ThemeSwitchButton />
                     </Box>
                 </HStack>
             </Header>
+            <Sidebar />
 
             <Box
                 mt={16}
+                ml={16}
                 as={"main"}
             >
                 {children}

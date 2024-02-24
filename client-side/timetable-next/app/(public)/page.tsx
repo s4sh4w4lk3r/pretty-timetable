@@ -6,7 +6,6 @@ import timetableExampleImageDark from "@/public/timetableExamples/exampleDarkMod
 import timetableExampleImageLight from "@/public/timetableExamples/exampleLightMode.png";
 
 export default function Home() {
-    const buttonColorOnHover = useColorModeValue("purple.400", "purple.400");
     const exampleImage = useColorModeValue(timetableExampleImageLight, timetableExampleImageDark);
 
     return (
@@ -23,7 +22,7 @@ export default function Home() {
                     <VStack>
                         <Text fontSize={42}>Когда расписание стало удобнее</Text>
                         <Text fontSize={20}>
-                            {`Pretty Timetable поможет студентам ориентироваться в расписании, 
+                            {`Pretty Timetable поможет студентам ориентироваться в расписании,
                     избавит от необходимости вычислять четную/нечетную неделю и будет
                     сразу показывать изменения в расписании.`}
                         </Text>
