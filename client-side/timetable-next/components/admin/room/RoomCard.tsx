@@ -5,6 +5,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import { useFormState } from "react-dom";
 import SubmitButton from "../SubmitButton";
 import { updateRoom } from "@/server-actions/roomActions";
+import { useSession } from "next-auth/react";
 
 type Props = {
     id: number;
@@ -16,11 +17,16 @@ type Props = {
 };
 
 export default function RoomCard({ id, address, fullName, modifiedAt, number, ascId }: Props) {
+    const session = useSession();
     const [formState, action] = useFormState(updateRoom, null);
     const toast = useToast({ duration: 8000, isClosable: true });
 
     // FIXME: сделать валидацию формы на клиенте
     const disclosure = useDisclosure();
+
+    if (session.status !== "authenticated") {
+        return "Ждем аутентификацию";
+    }
     return (
         <>
             <Card
@@ -50,6 +56,11 @@ export default function RoomCard({ id, address, fullName, modifiedAt, number, as
                     //FIXME : в тосте испольузутся значение прошлого стейта
                     onSubmit={() => toast({ title: "da", status: "error", description: formState?.message })}
                 >
+                    <Input
+                        hidden
+                        defaultValue={session.data!.accessToken as string}
+                        name="token"
+                    ></Input>
                     <VStack>
                         <HStack w={"full"}>
                             <Text>ID</Text>

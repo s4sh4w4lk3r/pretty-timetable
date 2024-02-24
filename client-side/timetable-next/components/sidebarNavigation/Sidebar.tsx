@@ -3,19 +3,20 @@ import { Box, VStack, useColorModeValue } from "@chakra-ui/react";
 import React, { useState } from "react";
 import HamburgerMenuButton from "./HamburgerMenuButton";
 import SidebarItem from "./SidebarItem";
-import { InfoIcon } from "@chakra-ui/icons";
+import { LinkIcon, StarIcon, TimeIcon, WarningIcon } from "@chakra-ui/icons";
 
 export default function Sidebar() {
     const [isCollapsed, setIsCopplapsed] = useState(true);
     const headerBgColor = useColorModeValue("whiteAlpha.800", "blackAlpha.700");
-    const sideBarItems = (
+    const sideBarItems = items.map(i => (
         <SidebarItem
-            icon={<InfoIcon color={"purple.500"} />}
-            label="Главная"
-            path="/da"
+            key={i.path}
+            icon={i.icon}
+            label={i.label}
+            path={i.path}
             isCollapsed={isCollapsed}
         />
-    );
+    ));
     return (
         <Box
             pos={"fixed"}
@@ -35,10 +36,36 @@ export default function Sidebar() {
 
             <VStack
                 mt={14}
-                w={"full"}
+                alignItems={isCollapsed ? "center" : "stretch"}
+                px={2}
             >
                 {sideBarItems}
             </VStack>
         </Box>
     );
 }
+
+const items = [
+    {
+        label: "Главная",
+        path: "/",
+        icon: <StarIcon color={"purple.500"} />,
+    },
+
+    {
+        label: "Расписание занятий",
+        path: "/timetables",
+        icon: <LinkIcon color={"purple.500"} />,
+    },
+
+    {
+        label: "Расписание звонков",
+        path: "/lessontimes",
+        icon: <TimeIcon color={"purple.500"} />,
+    },
+    {
+        label: "Админка",
+        path: "/admin",
+        icon: <WarningIcon color={"purple.500"} />,
+    },
+] satisfies { label: string; path: string; icon: React.JSX.Element }[];

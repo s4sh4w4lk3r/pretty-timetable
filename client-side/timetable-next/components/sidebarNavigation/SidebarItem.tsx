@@ -9,6 +9,7 @@ export default function SidebarItem({ icon, label, path, isCollapsed }: { icon: 
             leftIcon={icon as ReactElement}
             variant={"ghost"}
             w={"full"}
+            justifyContent={"flex-start"}
         >
             {label}
         </Button>
