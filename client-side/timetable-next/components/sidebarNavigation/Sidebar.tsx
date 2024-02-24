@@ -4,10 +4,13 @@ import React, { useState } from "react";
 import HamburgerMenuButton from "./HamburgerMenuButton";
 import SidebarItem from "./SidebarItem";
 import { LinkIcon, StarIcon, TimeIcon, WarningIcon } from "@chakra-ui/icons";
+import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
     const [isCollapsed, setIsCopplapsed] = useState(true);
     const headerBgColor = useColorModeValue("whiteAlpha.800", "blackAlpha.700");
+    const pathname = usePathname();
+
     const sideBarItems = items.map(i => (
         <SidebarItem
             key={i.path}
@@ -15,6 +18,8 @@ export default function Sidebar() {
             label={i.label}
             path={i.path}
             isCollapsed={isCollapsed}
+            isActive={i.path === pathname}
+            onClick={() => setIsCopplapsed(true)}
         />
     ));
     return (
