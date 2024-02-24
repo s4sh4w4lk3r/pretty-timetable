@@ -6,12 +6,5 @@ import React from "react";
 export default function ThemeSwitchBtn() {
     const { toggleColorMode } = useColorMode();
     const modeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
-    return (
-        <Button
-            onClick={toggleColorMode}
-            ml={"auto"}
-        >
-            {modeIcon}
-        </Button>
-    );
+    return <Button onClick={toggleColorMode}>{modeIcon}</Button>;
 }

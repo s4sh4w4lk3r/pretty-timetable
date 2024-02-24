@@ -39,11 +39,7 @@ export default function Home() {
                             <Link href={"/timetables"}>
                                 <Button
                                     w={"100%"}
-                                    bgColor={"purple.500"}
-                                    color={"white"}
-                                    _hover={{
-                                        background: buttonColorOnHover,
-                                    }}
+                                    colorScheme="purple"
                                 >
                                     Расписание занятий
                                 </Button>
@@ -52,11 +48,7 @@ export default function Home() {
                             <Link href={"/lessontimes"}>
                                 <Button
                                     w={"100%"}
-                                    bgColor={"purple.500"}
-                                    color={"white"}
-                                    _hover={{
-                                        background: buttonColorOnHover,
-                                    }}
+                                    colorScheme="purple"
                                 >
                                     Расписание звонков
                                 </Button>

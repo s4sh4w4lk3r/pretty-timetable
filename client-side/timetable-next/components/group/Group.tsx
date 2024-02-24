@@ -1,5 +1,5 @@
 "use client";
-import { Button, Card, HStack, Menu, MenuButton, MenuItem, MenuList, Text, UseToastOptions, useToast } from "@chakra-ui/react";
+import { Button, Card, HStack, Menu, MenuButton, MenuItem, MenuList, Text, UseToastOptions, useColorModeValue, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -19,19 +19,25 @@ export default function Group(props: Props) {
     const { name, id } = props;
     const router = useRouter();
     const toast = useToast();
+    const cardBgColor = useColorModeValue("purple.300", "purple.400");
 
     return (
         <Card
             h={"50px"}
-            bgColor={"purple.400"}
+            bgColor={cardBgColor}
             justifyContent={"center"}
             p={5}
             w={"100%"}
         >
             <HStack justifyContent={"space-between"}>
-                <Text color={"white"}> {name}</Text>
+                <Text> {name}</Text>
                 <Menu>
-                    <MenuButton as={Button}>Выбрать</MenuButton>
+                    <MenuButton
+                        as={Button}
+                        colorScheme="purple"
+                    >
+                        Выбрать
+                    </MenuButton>
                     <MenuList>
                         <MenuItem
                             onClick={() => {

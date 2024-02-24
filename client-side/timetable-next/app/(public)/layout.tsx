@@ -1,6 +1,7 @@
+import HamburgerMenuButton from "@/components/menu/HamburgerMenuButton";
 import Header from "@/components/header/Header";
 import HeaderLink from "@/components/header/HeaderLink";
-import ThemeSwitchBtn from "@/components/header/ThemeSwitchBtn";
+import ThemeSwitchButton from "@/components/header/ThemeSwitchButton";
 import { publicLinks } from "@/components/header/links";
 import { Box, HStack } from "@chakra-ui/react";
 
@@ -19,8 +20,19 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
                     justifyContent={"center"}
                     p={5}
                 >
-                    <HStack ml={"auto"}>{linksElement}</HStack>
-                    <ThemeSwitchBtn />
+                    <Box
+                        pos={"fixed"}
+                        left={3}
+                    >
+                        <HamburgerMenuButton />
+                    </Box>
+
+                    <Box
+                        pos={"fixed"}
+                        right={3}
+                    >
+                        <ThemeSwitchButton />
+                    </Box>
                 </HStack>
             </Header>
 

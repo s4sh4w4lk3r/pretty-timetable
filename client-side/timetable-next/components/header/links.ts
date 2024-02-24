@@ -25,4 +25,8 @@ export const adminLinks: LinkType[] = [
         label: "Главная",
         path: "/admin",
     },
+    {
+        label: "Общая",
+        path: "/",
+    },
 ];
