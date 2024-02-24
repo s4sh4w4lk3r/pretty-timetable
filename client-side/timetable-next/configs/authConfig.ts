@@ -9,13 +9,17 @@ const authOptions: NextAuthOptions = {
             issuer: process.env.KEYCLOAK_ISSUER!,
         }),
     ],
-    // TODO : добавить роли в сессию
     // TODO : сделать логаут сессии в kc
-    // FIXME : не работает колбек после аутентификации, если фронт хостится на верселе, а кс в докере
 
     callbacks: {
         async session({ session, token }) {
             session.accessToken = token.accessToken as string;
+
+            if (session.accessToken) {
+                const rolesFromToken = JSON.parse(Buffer.from(session.accessToken?.split(".")[1], "base64").toString()).realm_access.roles;
+                session.roles = rolesFromToken;
+            }
+
             return session;
         },
 
@@ -27,5 +31,4 @@ const authOptions: NextAuthOptions = {
         },
     },
 };
-
 export default authOptions;

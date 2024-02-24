@@ -22,4 +22,3 @@ export default function Nav({ children }: { children?: ReactNode | ReactNode[] }
         </Box>
     );
 }
-// FIXME: сделать навигацию на мобилках в выезжаеющем меню

@@ -3,6 +3,7 @@ import Header from "@/components/header/Header";
 import HeaderLink from "@/components/header/HeaderLink";
 import ThemeSwitchButton from "@/components/header/ThemeSwitchButton";
 import { adminLinks } from "@/components/header/links";
+import AuthProvider from "@/utils/AuthProvider";
 import { Box, HStack } from "@chakra-ui/react";
 import React from "react";
 
@@ -14,7 +15,7 @@ export default function AdminLayout({ children }: Readonly<{ children: React.Rea
         />
     ));
     return (
-        <>
+        <AuthProvider>
             <Header>
                 <HStack
                     h={"full"}
@@ -37,7 +38,7 @@ export default function AdminLayout({ children }: Readonly<{ children: React.Rea
             >
                 {children}
             </Box>
-        </>
+        </AuthProvider>
     );
 }
 
