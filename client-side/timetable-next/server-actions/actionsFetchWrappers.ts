@@ -1,5 +1,7 @@
+import authOptions from "@/configs/authConfig";
 import { AdminZodFetchSchemas } from "@/fetching/zodFetchSchemas";
 import ServiceResult from "@/types/serviceResult";
+import { getServerSession } from "next-auth";
 import { SafeParseReturnType } from "zod";
 
 export interface ClientResult {
@@ -7,18 +9,28 @@ export interface ClientResult {
     message: string;
 }
 
-type PutParams<T> = { url: string; entity: T; authN: string; revalidateFn: () => void };
-type delParams = { url: string; id: number; authN: string; revalidateFn: () => void };
+type PutParams<T> = { url: string; entity: T; revalidateFn: () => void };
+type delParams = { url: string; id: number; revalidateFn: () => void };
 
 const msg = "Что-то пошло не так, смотрите логи на сервере.";
 
-export async function putEntity<T>({ url, entity, revalidateFn, authN }: PutParams<T>): Promise<ClientResult> {
+export async function putEntity<T>({ url, entity, revalidateFn }: PutParams<T>): Promise<ClientResult> {
+    const session = await getServerSession(authOptions);
+    console.log(session);
+
+    if (!session || !session.accessToken) {
+        return { success: false, message: "Сессия или токен доступа не получены." };
+    }
+    if (!session.roles?.includes("admin")) {
+        return { success: false, message: "Вы не являетесь админом." };
+    }
+
     try {
         const response = await fetch(url, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
-                "Authorization": `Bearer ${authN}`,
+                "Authorization": `Bearer ${session.accessToken}`,
             },
             body: JSON.stringify(entity),
         });
@@ -34,12 +46,21 @@ export async function putEntity<T>({ url, entity, revalidateFn, authN }: PutPara
     }
 }
 
-export async function deleteEntity({ url, id, revalidateFn, authN }: delParams): Promise<ClientResult> {
+export async function deleteEntity({ url, id, revalidateFn }: delParams): Promise<ClientResult> {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.accessToken) {
+        return { success: false, message: "Сессия или токен доступа не получены." };
+    }
+
+    if (!session.roles?.includes("admin")) {
+        return { success: false, message: "Вы не являетесь админом." };
+    }
+
     try {
         const response = await fetch(`${url}?id=${id}`, {
             method: "DELETE",
             headers: {
-                "Authorization": `Bearer ${authN}`,
+                "Authorization": `Bearer ${session.accessToken}`,
             },
         });
 
