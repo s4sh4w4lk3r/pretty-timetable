@@ -2,7 +2,7 @@ import { NextAuthOptions, TokenSet } from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
 import config from "./config";
 import { JWT } from "next-auth/jwt";
-import { requestRefreshOfAccessToken } from "@/utils/auth";
+import { requestRefreshOfAccessToken } from "@/utils/server/auth";
 
 const authOptions: NextAuthOptions = {
     providers: [
@@ -12,7 +12,6 @@ const authOptions: NextAuthOptions = {
             issuer: config.auth.keycloak.issuer,
         }),
     ],
-    // TODO : сделать логаут сессии в kc
 
     session: { maxAge: 60 * 30 },
 

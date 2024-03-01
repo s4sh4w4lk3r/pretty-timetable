@@ -1,4 +1,4 @@
-import LoginButton from "@/components/admin/LoginButtonHeader";
+import AccountButton from "@/components/admin/AccountButton";
 import Header from "@/components/header/Header";
 import HeaderLink from "@/components/header/HeaderLink";
 import ThemeSwitchButton from "@/components/header/ThemeSwitchButton";
@@ -28,7 +28,7 @@ export default function AdminLayout({ children }: Readonly<{ children: React.Rea
                         right={3}
                     >
                         <ThemeSwitchButton />
-                        <LoginButton />
+                        <AccountButton />
                     </HStack>
                 </HStack>
             </Header>
