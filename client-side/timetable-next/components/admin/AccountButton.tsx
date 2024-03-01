@@ -2,7 +2,7 @@
 import { signIn, useSession } from "next-auth/react";
 import React from "react";
 import { Button } from "@chakra-ui/react";
-import { federatedLogout } from "@/utils/auth";
+import { federatedLogout } from "@/utils/client/auth";
 
 export default function AccountButton() {
     const { status } = useSession();
