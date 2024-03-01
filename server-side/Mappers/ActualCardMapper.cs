@@ -1,7 +1,6 @@
 ﻿
 using Models.Request;
-using Repository.Entities.Timetable.Cards.Parts;
-
+using Repository.Entities.Timetable.Cards.Info;
 
 namespace Mappers
 {
@@ -13,15 +12,14 @@ namespace Mappers
             {
                 Id = model.Id,
                 SubGroup = (SubGroup)model.SubGroup,
-                CabinetId = model.CabinetId,
+                RoomId = model.RoomId,
                 SubjectId = model.SubjectId,
                 LessonTimeId = model.LessonTimeId,
                 TeacherId = model.TeacherId,
                 IsCanceled = model.IsCanceled,
                 IsModified = model.IsModified,
                 IsMoved = model.IsMoved,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                ModifiedAt = DateTime.UtcNow,
                 RelatedTimetableId = model.RelatedTimetableId,
                 Date = DateOnly.Parse(model.Date)
             };

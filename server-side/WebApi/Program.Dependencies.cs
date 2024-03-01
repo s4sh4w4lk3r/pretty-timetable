@@ -26,7 +26,7 @@ namespace WebApi
             builder.Services.AddScoped<IStableTimetableService, StableTimetableService>();
 
             builder.Services.AddScoped<ITeacherService, TeacherService>();
-            builder.Services.AddScoped<ICabinetService, CabinetService>();
+            builder.Services.AddScoped<IRoomService, RoomService>();
             builder.Services.AddScoped<ISubjectService, SubjectService>();
             builder.Services.AddScoped<ILessonTimeService, LessonTimeService>();
             builder.Services.AddScoped<IGroupService, GroupService>();

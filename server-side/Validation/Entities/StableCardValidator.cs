@@ -7,7 +7,7 @@ namespace Validation.Entities
     {
         public StableCardValidator()
         {
-            RuleFor(e => e.CabinetId).NotEmpty();
+            RuleFor(e => e.RoomId).NotEmpty();
             RuleFor(e => e.TeacherId).NotEmpty();
             RuleFor(e => e.LessonTimeId).NotEmpty();
             RuleFor(e => e.SubjectId).NotEmpty();

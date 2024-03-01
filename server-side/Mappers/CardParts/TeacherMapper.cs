@@ -1,5 +1,5 @@
 ﻿using Models.Request.CardParts;
-using Repository.Entities.Timetable.Cards.Parts;
+using Repository.Entities.Timetable.Cards.Info;
 
 namespace Mappers.CardParts
 {
@@ -13,8 +13,8 @@ namespace Mappers.CardParts
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Middlename = model.Middlename,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                ModifiedAt = DateTime.UtcNow,
+                AscId = model.AscId,
             };
         }
     }

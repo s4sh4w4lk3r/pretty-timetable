@@ -1,6 +1,4 @@
-﻿using GraphQL.EnumTypes;
-using GraphQL.ObjectTypes;
-using GraphQL.OperationTypes;
+﻿using GraphQL;
 using HotChocolate.Types;
 
 namespace WebApi
@@ -11,24 +9,15 @@ namespace WebApi
         {
             builder.Services
             .AddGraphQLServer()
-            .ModifyOptions(options => { options.DefaultBindingBehavior = BindingBehavior.Explicit; })
+            .ModifyOptions(options => { options.DefaultBindingBehavior = BindingBehavior.Implicit; })
 
             .AllowIntrospection(builder.Environment.IsDevelopment())
+            .ModifyRequestOptions(o => o.OnlyAllowPersistedQueries = !builder.Environment.IsDevelopment())
 
-            .AddQueryType<QueryType>()
+            .UsePersistedQueryPipeline()
+            .AddReadOnlyFileSystemQueryStorage("./../GraphQL/PersistedQueries")
 
-            .AddType<ActualTimetableType>()
-            .AddType<ActualCardType>()
-            .AddType<StableTimetableType>()
-            .AddType<StableCardType>()
-            .AddType<GroupType>()
-            .AddType<TeacherType>()
-            .AddType<SubjectType>()
-            .AddType<CabinetType>()
-            .AddType<LessonTimeType>()
-
-            .AddType<SubGroupType>()
-            .AddType<DayOfWeekType>()
+            .AddQueryType<Query>()
 
             .AddProjections()
             .AddFiltering()

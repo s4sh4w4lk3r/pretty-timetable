@@ -9,8 +9,7 @@ namespace Repository.Entities.Timetable
         public Group? Group { get; set; }
         public required int GroupId { get; set; }
         public required int WeekNumber { get; set; }
-        public required DateTime CreatedAt { get; init; }
-        public required DateTime UpdatedAt { get; set; }
+        public required DateTime ModifiedAt { get; set; }
         public ICollection<ActualCard>? Cards { get; set; }
     }
 }

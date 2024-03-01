@@ -1,5 +1,5 @@
 ﻿using Models.Request.CardParts;
-using Repository.Entities.Timetable.Cards.Parts;
+using Repository.Entities.Timetable.Cards.Info;
 
 namespace Mappers.CardParts
 {
@@ -13,8 +13,7 @@ namespace Mappers.CardParts
                 Number = model.Number,
                 StartsAt = TimeOnly.Parse(model.StartsAt),
                 EndsAt = TimeOnly.Parse(model.EndsAt),
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                ModifiedAt = DateTime.UtcNow
             };
         }
     }

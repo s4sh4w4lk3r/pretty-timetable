@@ -2,17 +2,10 @@ import { useQuery } from "@apollo/client";
 import { ALL_GROUPS } from "../../api/graphql/queries";
 import { SubGroup } from "../../api/graphql/__generated__/graphql";
 import { GroupType } from "../App";
-import { ImmerHook, Updater } from "use-immer";
+import { useImmer } from "use-immer";
 import styles from "./GroupSelector.module.css";
 
-type Props = {
-    groupState: ImmerHook<GroupType>;
-    setGroupSelectorIsActive: Updater<boolean>;
-};
-
-function determineSubgroup(
-    subGroupStr: string
-): SubGroup.FirstGroup | SubGroup.SecondGroup {
+function determineSubgroup(subGroupStr: string): SubGroup.FirstGroup | SubGroup.SecondGroup {
     switch (subGroupStr) {
         case "FIRST_GROUP":
             return SubGroup.FirstGroup;
@@ -26,12 +19,16 @@ function determineSubgroup(
 function saveGroupToLocalStorage(group: GroupType) {
     localStorage.setItem("group", JSON.stringify(group));
 }
-// FIXME : убрать стейт из гроуп селектора, сделать обычный метод пропсом.
+
+type Props = {
+    initialGroup: GroupType;
+    onGroupSave: (group: GroupType) => void;
+};
 export default function GroupSelector(props: Props) {
-    const { groupState, setGroupSelectorIsActive } = props;
+    const { onGroupSave, initialGroup } = props;
 
     const { data, loading, error } = useQuery(ALL_GROUPS);
-    const [group, setGroup] = groupState;
+    const [group, setGroup] = useImmer<GroupType>(initialGroup);
 
     if (loading) return <p>Загрзука...</p>;
     if (error) return <p>Ошибка : {error.message}</p>;
@@ -48,6 +45,7 @@ export default function GroupSelector(props: Props) {
             {g.name}
         </option>
     ));
+
     return (
         <div className={styles.groupSelector}>
             <select
@@ -77,7 +75,7 @@ export default function GroupSelector(props: Props) {
                 onClick={e => {
                     e.stopPropagation();
                     saveGroupToLocalStorage(group);
-                    setGroupSelectorIsActive(false);
+                    onGroupSave(group);
                 }}
             >
                 Сохранить

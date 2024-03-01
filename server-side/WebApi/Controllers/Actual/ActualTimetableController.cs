@@ -33,7 +33,7 @@ namespace WebApi.Controllers.Actual
         [HttpPost, Route("convert-from-stable"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> StableToActual(ActualTimetableModels.StableToActual stableToActualModel)
         {
-            var dates = stableToActualModel.Dates.Select(DateOnly.Parse);
+            var dates = stableToActualModel.Dates.Select(d => DateOnly.ParseExact(d, "dd.MM.yyyy"));
 
             var result = await actualTimetableService.ProjectStableToActualAsync(dates);
             if (result.Success is false)

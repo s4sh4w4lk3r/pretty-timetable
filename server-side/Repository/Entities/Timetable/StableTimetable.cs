@@ -7,8 +7,7 @@ namespace Repository.Entities.Timetable
         required public int Id { get; init; }
         public Group? Group { get; set; }
         required public int GroupId { get; set; }
-        required public DateTime CreatedAt { get; init; }
-        required public DateTime UpdatedAt { get; set; }
+        required public DateTime ModifiedAt { get; set; }
         public ICollection<StableCard>? Cards { get; set; }
     }
 }

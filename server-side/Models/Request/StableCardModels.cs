@@ -7,7 +7,7 @@
             public required int Id { get; init; }
             public required int TeacherId { get; set; }
             public required int SubjectId { get; set; }
-            public required int CabinetId { get; set; }
+            public required int RoomId { get; set; } 
             public required int LessonTimeId { get; set; }
             public required bool IsWeekEven { get; set; }
             public required int DayOfWeek { get; set; }

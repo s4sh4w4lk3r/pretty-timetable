@@ -1,4 +1,4 @@
-﻿using Repository.Entities.Timetable.Cards.Parts;
+﻿using Repository.Entities.Timetable.Cards.Info;
 
 namespace Services.Interfaces.CardParts
 {

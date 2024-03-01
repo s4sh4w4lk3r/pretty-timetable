@@ -16,7 +16,7 @@ namespace Services.AcutalTimetables
             var checkDatesResult = CheckDates(dates);
             if (checkDatesResult.Success is false || checkDatesResult.Value == -1)
             {
-                return ServiceResult.Fail("Невалидные даты были получены прожектором", checkDatesResult);
+                return ServiceResult.Fail("Невалидные даты были получены прожектором").AddInnerResult(checkDatesResult);
             }
 
 
@@ -28,8 +28,7 @@ namespace Services.AcutalTimetables
                     GroupId = timetable.Id,
                     WeekNumber = checkDatesResult.Value,
                     Cards = [],
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
+                    ModifiedAt = DateTime.UtcNow
                 };
 
                 foreach (var date in dates)
@@ -64,10 +63,10 @@ namespace Services.AcutalTimetables
 
             dates = dates.Distinct().Order();
 
-            if (dates.First() < DateOnly.FromDateTime(DateTime.UtcNow))
+/*            if (dates.First() < DateOnly.FromDateTime(DateTime.UtcNow))
             {
                 return ServiceResult<int>.Fail("Даты не долнжы указывать на прошедшее время.", WEEK_NUMBER_IF_ERROR);
-            }
+            }*/
 
             int weekNumber = ISOWeek.GetWeekOfYear(dates.First().ToDateTime(TimeOnly.MinValue));
 
@@ -93,15 +92,14 @@ namespace Services.AcutalTimetables
                 IsCanceled = false,
                 IsModified = false,
                 IsMoved = false,
-                CabinetId = stableCard.CabinetId,
+                RoomId = stableCard.RoomId,
                 LessonTimeId = stableCard.LessonTimeId,
                 SubGroup = stableCard.SubGroup,
                 SubjectId = stableCard.SubjectId,
                 TeacherId = stableCard.TeacherId,
                 RelatedTimetableId = relatedTimetableId,
                 Date = date,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                ModifiedAt = DateTime.UtcNow
             };
         }
     }

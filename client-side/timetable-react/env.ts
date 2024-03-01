@@ -1,28 +1,44 @@
-type Api = {
+interface Api {
     readonly restUrl: string;
     readonly graphqlUrl: string;
-};
+}
 
-type Auth = {
+interface Auth {
     readonly address: string;
     readonly realm: string;
     readonly clientId: string;
-};
+    readonly cookie: Cookie;
+}
 
-type EnvConfig = {
+interface Cookie {
+    readonly accessExpiresIn: number;
+    readonly refreshExpiresIn: number;
+    readonly isHttps: boolean;
+}
+
+interface EnvConfig {
+    readonly baseUrl: string;
     readonly api: Api;
     readonly auth: Auth;
-};
+}
 
 export default <EnvConfig>{
+    baseUrl: import.meta.env.VITE_baseUrl,
+
     api: {
-        restUrl: "http://localhost:5012",
-        graphqlUrl: "http://localhost:5012/graphql",
+        restUrl: `${import.meta.env.VITE_baseUrl}/api`,
+        graphqlUrl: `${import.meta.env.VITE_baseUrl}/api/graphql`,
     },
 
     auth: {
-        address: "http://localhost:8080",
+        address: `${import.meta.env.VITE_baseUrl}/auth/realms/timetable/`,
         clientId: "react",
         realm: "timetable",
+        cookie: {
+            // Expiring in days
+            accessExpiresIn: 1,
+            refreshExpiresIn: 30,
+            isHttps: false,
+        },
     },
 };

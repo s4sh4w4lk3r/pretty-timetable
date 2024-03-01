@@ -12,8 +12,7 @@ namespace Mappers
             {
                 Id = model.Id,
                 GroupId = model.GroupId,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                ModifiedAt = DateTime.UtcNow
             };
         }
     }

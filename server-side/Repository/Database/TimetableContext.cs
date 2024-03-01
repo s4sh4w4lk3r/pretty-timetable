@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Repository.Entities.Timetable;
 using Repository.Entities.Timetable.Cards;
-using Repository.Entities.Timetable.Cards.Parts;
+using Repository.Entities.Timetable.Cards.Info;
 using System.Reflection;
 using static Repository.Database.TimetableSchemaMethods;
 
@@ -25,7 +25,7 @@ namespace Repository.Database
             { options.MigrationsAssembly("WebApi"); });
         }
 
-        public DbSet<Cabinet> Cabinets => Set<Cabinet>();
+        public DbSet<Room> Cabinets => Set<Room>();
         public DbSet<LessonTime> LessonTimes => Set<LessonTime>();
         public DbSet<Teacher> Teachers => Set<Teacher>();
         public DbSet<Subject> Subjects => Set<Subject>();
@@ -43,7 +43,7 @@ namespace Repository.Database
                 modelBuilder.UseCollation(_configuration.Collation);
             }
 
-            modelBuilder.Entity<Cabinet>(ConfigureCabinet);
+            modelBuilder.Entity<Room>(ConfigureRoom);
             modelBuilder.Entity<LessonTime>(ConfigureLessonTime);
             modelBuilder.Entity<Teacher>(ConfigureTeacher);
             modelBuilder.Entity<Subject>(ConfigureSubject);
