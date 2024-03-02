@@ -32,7 +32,7 @@ export async function updateRoom(prevState: any, formData: FormData): Promise<Cl
         return { message: "check logs", success: false };
     }
 
-    const res = await putEntity({ url: baseApiUrl, entity: valResult.data, revalidateFn: revalidate, authN: "" });
+    const res = await putEntity({ url: baseApiUrl, entity: valResult.data, revalidateFn: revalidate });
     return res;
 }
 

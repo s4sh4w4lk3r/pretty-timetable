@@ -54,13 +54,8 @@ export default function RoomCard({ id, address, fullName, modifiedAt, number, as
                 <form
                     action={action}
                     //FIXME : в тосте испольузутся значение прошлого стейта
-                    onSubmit={() => toast({ title: "da", status: "error", description: formState?.message })}
+                    onSubmit={() => {}}
                 >
-                    <Input
-                        hidden
-                        defaultValue={session.data!.accessToken as string}
-                        name="token"
-                    ></Input>
                     <VStack>
                         <HStack w={"full"}>
                             <Text>ID</Text>
