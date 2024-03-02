@@ -1,10 +1,11 @@
 import { RevalidationTags } from "@/server-actions/revalidation";
 import { AdminZodFetchSchemas, PublicZodFetchShemas } from "./zodFetchSchemas";
 import config from "@/configs/config";
+import { AdminQueries, PublicQueries } from "./persistedQueries";
 
 export namespace AdminFetches {
     export async function getRooms() {
-        const query = "GetRooms";
+        const query = AdminQueries.AllRooms;
 
         const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}`, {
             method: "GET",
@@ -18,7 +19,7 @@ export namespace AdminFetches {
 
 export namespace PublicFetches {
     export async function getTimetable({ groupId, weekNumber }: { groupId: number; weekNumber: number }) {
-        const query = "GetActualTimetableByGroupId";
+        const query = PublicQueries.ActualTimetableByGroupWeek;
 
         const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}&variables={"groupId":${groupId},"weekNumber":${weekNumber}}`, {
             method: "GET",
@@ -30,7 +31,7 @@ export namespace PublicFetches {
     }
 
     export async function getLessonTimes() {
-        const query = "GetAllLessonTimes";
+        const query = PublicQueries.AllLessonTimes;
         const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}`, {
             method: "GET",
             next: { tags: [RevalidationTags.LessonTime] },
@@ -41,7 +42,7 @@ export namespace PublicFetches {
     }
 
     export async function getGroups() {
-        const query = "GetAllGroups";
+        const query = PublicQueries.AllGroups;
         const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}`, { method: "GET", next: { tags: [RevalidationTags.Group] } });
 
         const groups = await PublicZodFetchShemas.groupsSchema.parseAsync(await res.json());
