@@ -9,7 +9,19 @@ export const adminLinks: LinkType[] = [
         path: "/admin",
     },
     {
-        label: "Общая",
-        path: "/",
+        label: "Кабинеты",
+        path: "/admin/rooms",
+    },
+    {
+        label: "Преподы",
+        path: "/admin/teachers",
+    },
+    {
+        label: "Предметы",
+        path: "/admin/subjects",
+    },
+    {
+        label: "Расписание",
+        path: "/admin/timetables",
     },
 ];

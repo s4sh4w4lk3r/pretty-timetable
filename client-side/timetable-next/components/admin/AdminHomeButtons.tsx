@@ -26,7 +26,7 @@ export default function LoginButtonHome() {
     else
         return (
             <HStack gap={7}>
-                <Link href="/admin">
+                <Link href="/admin/timetables">
                     <Button
                         w={64}
                         bgColor={"purple.500"}
