@@ -1,11 +1,10 @@
 "use client";
-import { Button, Input, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { Center, Input } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { useImmer } from "use-immer";
-import RoomCard from "./room/RoomCard";
 import { z } from "zod";
 import { roomsSchema } from "@/fetching/admin/zodSchemas";
-import { ChevronDownIcon, ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 import genericSort from "@/utils/genericSort";
 
 type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
@@ -25,44 +24,72 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
         .filter(r => `${r.address} + ${r.ascId} + ${r.fullName} + ${r.id} + ${r.number} +`.toUpperCase().includes(sorting.searchQuery.toUpperCase()))
         .sort((a, b) => genericSort<RoomType>(sorting.sortingField, sorting.isAsc, a, b));
 
-    const roomsElement = localRooms.map(r => (
-        <RoomCard
-            {...r}
+    const trElements = localRooms.map(r => (
+        <Tr
             key={r.id}
-        ></RoomCard>
+            _hover={{ cursor: "pointer", color: "purple.300" }}
+        >
+            <Td>{r.id}</Td>
+            <Td>{r.number}</Td>
+            <Td>{r.fullName}</Td>
+        </Tr>
     ));
 
     return (
         <>
-            <Input
-                onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))}
-                mt={3}
-                w={["300px", null, "600px", null, null]}
-                placeholder="Поиск по всем полям"
-                ref={inputRef}
-            ></Input>
+            <Center>
+                <Input
+                    onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))}
+                    mt={3}
+                    w={["300px", null, "600px", null, null]}
+                    placeholder="Поиск по всем полям"
+                    ref={inputRef}
+                ></Input>
+            </Center>
 
-            <Menu>
-                <MenuButton
-                    as={Button}
-                    rightIcon={<ChevronDownIcon />}
-                >
-                    Сортировка
-                </MenuButton>
-                <MenuList>
-                    <MenuItem onClick={() => setSorting(draft => void (draft.sortingField = "id"))}>ID</MenuItem>
-                    <MenuItem onClick={() => setSorting(draft => void (draft.sortingField = "fullName"))}>Полн. имя</MenuItem>
-                    <MenuItem onClick={() => setSorting(draft => void (draft.sortingField = "number"))}>Номер кабинета</MenuItem>
-                    <MenuItem onClick={() => setSorting(draft => void (draft.sortingField = "address"))}>Корпус</MenuItem>
-                </MenuList>
-            </Menu>
+            <TableContainer>
+                <Table variant="simple">
+                    <Thead>
+                        <Tr>
+                            <Th
+                                _hover={{ cursor: "pointer", color: "purple.300" }}
+                                onClick={() =>
+                                    setSorting(draft => {
+                                        draft.sortingField = "id";
+                                        draft.isAsc = !draft.isAsc;
+                                    })
+                                }
+                            >
+                                Id
+                            </Th>
+                            <Th
+                                _hover={{ cursor: "pointer", color: "purple.300" }}
+                                onClick={() =>
+                                    setSorting(draft => {
+                                        draft.sortingField = "number";
+                                        draft.isAsc = !draft.isAsc;
+                                    })
+                                }
+                            >
+                                Краткое имя
+                            </Th>
+                            <Th
+                                _hover={{ cursor: "pointer", color: "purple.300" }}
+                                onClick={() =>
+                                    setSorting(draft => {
+                                        draft.sortingField = "fullName";
+                                        draft.isAsc = !draft.isAsc;
+                                    })
+                                }
+                            >
+                                Полное имя
+                            </Th>
+                        </Tr>
+                    </Thead>
 
-            <Button onClick={() => setSorting(draft => void (draft.isAsc = !draft.isAsc))}>
-                {sorting.isAsc ? <ArrowUpIcon boxSize={5} /> : <ArrowDownIcon boxSize={5} />}
-            </Button>
-
-            {JSON.stringify(sorting)}
-            {roomsElement}
+                    <Tbody>{trElements}</Tbody>
+                </Table>
+            </TableContainer>
         </>
     );
 }
