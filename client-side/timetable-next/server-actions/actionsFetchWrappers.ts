@@ -16,7 +16,6 @@ const msg = "Что-то пошло не так, смотрите логи на 
 
 export async function putEntity<T>({ url, entity, revalidateFn }: PutParams<T>): Promise<ClientResult> {
     const session = await getServerSession(authOptions);
-    console.log(session);
 
     if (!session || !session.accessToken) {
         return { success: false, message: "Сессия или токен доступа не получены." };
