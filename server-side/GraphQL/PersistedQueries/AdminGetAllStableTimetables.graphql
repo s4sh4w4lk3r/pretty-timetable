@@ -1,0 +1,10 @@
+query StableTimetables {
+    stableTimetables {
+        id
+        modifiedAt
+        group {
+            name
+            id
+        }
+    }
+}

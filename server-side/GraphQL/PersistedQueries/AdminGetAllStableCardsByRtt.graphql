@@ -1,0 +1,14 @@
+query StableCards($relatedTimetableId: Int) {
+    stableCards(where: { relatedTimetableId: { eq: $relatedTimetableId } }) {
+        id
+        teacherId
+        subjectId
+        roomId
+        lessonTimeId
+        isWeekEven
+        dayOfWeek
+        subGroup
+        relatedTimetableId
+        modifiedAt
+    }
+}

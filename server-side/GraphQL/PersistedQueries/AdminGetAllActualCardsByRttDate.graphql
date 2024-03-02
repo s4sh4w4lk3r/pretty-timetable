@@ -1,0 +1,16 @@
+query ActualCards($date: Date, $relatedTimetableId: Int) {
+    actualCards(where: { date: { eq: $date }, relatedTimetableId: { eq: $relatedTimetableId } }) {
+        id
+        relatedTimetableId
+        isMoved
+        isCanceled
+        isModified
+        date
+        lessonTimeId
+        roomId
+        teacherId
+        subjectId
+        modifiedAt
+        subGroup
+    }
+}
