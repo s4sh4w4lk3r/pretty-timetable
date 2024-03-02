@@ -2,7 +2,7 @@ import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
 import { getTimetable } from "@/fetching/public/requests";
 import { getDailyCards, getWeekNumber } from "@/utils/date";
-import { parseGroup } from "@/utils/groups";
+import parseGroup from "@/utils/parseGroup";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 import { notFound } from "next/navigation";
 
