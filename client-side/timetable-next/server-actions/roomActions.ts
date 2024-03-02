@@ -1,10 +1,10 @@
 "use server";
 
-import { AdminZodFetchSchemas } from "@/fetching/zodFetchSchemas";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
 import config from "@/configs/config";
 import { ClientResult, putEntity } from "./actionsFetchWrappers";
+import { serviceResultSchema, updateRoomSchema } from "@/fetching/admin/zodSchemas";
 
 const baseApiUrl = `${config.api.restBaseUrl}/room`;
 const revalidate = () => revalidateTag(RevalidationTags.Room);
@@ -19,13 +19,13 @@ export async function createRoom(params: { address: string; number: string; full
     });
     revalidate();
 
-    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    const result = serviceResultSchema.safeParse(await res.json());
     return result.success ? result.data : result.error;
 }
 
 export async function updateRoom(prevState: any, formData: FormData): Promise<ClientResult> {
     const rawFormData = Object.fromEntries(formData.entries());
-    const valResult = AdminZodFetchSchemas.updateRoomSchema.safeParse(rawFormData);
+    const valResult = updateRoomSchema.safeParse(rawFormData);
 
     if (!valResult.success) {
         console.error(valResult.error.flatten());
@@ -42,6 +42,6 @@ export async function deleteRoom({ id }: { id: number }) {
     });
     revalidate();
 
-    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    const result = serviceResultSchema.safeParse(await res.json());
     return result.success ? result.data : result.error;
 }

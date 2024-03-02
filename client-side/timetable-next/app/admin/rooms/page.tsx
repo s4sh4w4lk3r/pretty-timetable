@@ -1,10 +1,10 @@
 import RoomCard from "@/components/admin/room/RoomCard";
+import { getRooms } from "@/fetching/admin/requests";
 import { Center, VStack } from "@chakra-ui/react";
 import React from "react";
-import { AdminFetches } from "@/fetching/fetchRequests";
 
 export default async function RoomsAdmin() {
-    const rooms = await AdminFetches.getRooms();
+    const rooms = await getRooms();
     return (
         <Center>
             <VStack

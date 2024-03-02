@@ -1,10 +1,10 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
+import { getTimetable } from "@/fetching/public/requests";
 import { getDailyCards, getWeekNumber } from "@/utils/date";
 import { parseGroup } from "@/utils/groups";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 import { notFound } from "next/navigation";
-import { PublicFetches } from "@/fetching/fetchRequests";
 
 type Props = {
     params: { groupid: string };
@@ -17,7 +17,7 @@ export default async function Timetable({ params, searchParams }: Props) {
         notFound();
     }
 
-    const timetable = await PublicFetches.getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
+    const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
     if (!timetable || !timetable.cards) {
         notFound();
     }
@@ -74,7 +74,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
         return null;
     }
 
-    const timetable = await PublicFetches.getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
+    const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
 
     if (!timetable) {
         return null;

@@ -1,10 +1,10 @@
 import LessonTime from "@/components/lessontime/LessonTime";
 import alertNoData from "@/components/miscellaneous/alertNoData";
-import { PublicFetches } from "@/fetching/fetchRequests";
+import { getLessonTimes } from "@/fetching/public/requests";
 import { Text, VStack } from "@chakra-ui/react";
 
 export default async function LessonTimes() {
-    const lessontimes = await PublicFetches.getLessonTimes();
+    const lessontimes = await getLessonTimes();
     if (!lessontimes) {
         return alertNoData;
     }

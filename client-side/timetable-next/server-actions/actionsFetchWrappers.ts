@@ -1,5 +1,5 @@
 import authOptions from "@/configs/authConfig";
-import { AdminZodFetchSchemas } from "@/fetching/zodFetchSchemas";
+import { serviceResultSchema } from "@/fetching/admin/zodSchemas";
 import ServiceResult from "@/types/serviceResult";
 import { getServerSession } from "next-auth";
 import { SafeParseReturnType } from "zod";
@@ -39,7 +39,7 @@ export async function putEntity<T>({ url, entity, revalidateFn }: PutParams<T>):
             return await handleBadStatusCode(response);
         }
 
-        const responseParsed = AdminZodFetchSchemas.serviceResultSchema.safeParse(await response.json());
+        const responseParsed = serviceResultSchema.safeParse(await response.json());
         return handleOkStatusCode({ responseParsed: responseParsed, revalidateFn: revalidateFn });
     } catch (error) {
         return handleFetchException(error);
@@ -68,7 +68,7 @@ export async function deleteEntity({ url, id, revalidateFn }: delParams): Promis
             return await handleBadStatusCode(response);
         }
 
-        const responseParsed = AdminZodFetchSchemas.serviceResultSchema.safeParse(await response.json());
+        const responseParsed = serviceResultSchema.safeParse(await response.json());
         return handleOkStatusCode({ responseParsed: responseParsed, revalidateFn: revalidateFn });
     } catch (error) {
         return handleFetchException(error);
@@ -78,7 +78,7 @@ export async function deleteEntity({ url, id, revalidateFn }: delParams): Promis
 async function handleBadStatusCode(response: Response): Promise<ClientResult> {
     switch (response.status) {
         case 400:
-            const responseParsed = AdminZodFetchSchemas.serviceResultSchema.safeParse(await response.json());
+            const responseParsed = serviceResultSchema.safeParse(await response.json());
 
             if (responseParsed.success) {
                 console.error(responseParsed.data);

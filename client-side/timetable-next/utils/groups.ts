@@ -1,6 +1,4 @@
-import { PublicZodFetchShemas } from "@/fetching/zodFetchSchemas";
-
-import subgroupSchema = PublicZodFetchShemas.subgroupsSchema;
+import { subgroupsSchema } from "@/fetching/public/zodSchemas";
 export function parseGroup(groupId: string, subgroup?: string) {
     const groupIdNumeric = Number.parseInt(groupId);
 
@@ -8,8 +6,8 @@ export function parseGroup(groupId: string, subgroup?: string) {
         return null;
     }
 
-    if (subgroup === "first") return { groupId: groupIdNumeric, subgroup: subgroupSchema.enum.FIRST_GROUP };
-    if (subgroup === "second") return { groupId: groupIdNumeric, subgroup: subgroupSchema.enum.SECOND_GROUP };
+    if (subgroup === "first") return { groupId: groupIdNumeric, subgroup: subgroupsSchema.enum.FIRST_GROUP };
+    if (subgroup === "second") return { groupId: groupIdNumeric, subgroup: subgroupsSchema.enum.SECOND_GROUP };
 
-    return { groupId: groupIdNumeric, subgroup: subgroupSchema.enum.ALL };
+    return { groupId: groupIdNumeric, subgroup: subgroupsSchema.enum.ALL };
 }

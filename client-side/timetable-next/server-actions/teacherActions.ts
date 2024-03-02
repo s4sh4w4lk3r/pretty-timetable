@@ -1,6 +1,6 @@
 "use server";
 
-import { AdminZodFetchSchemas } from "@/fetching/zodFetchSchemas";
+import { serviceResultSchema } from "@/fetching/admin/zodSchemas";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
 import config from "@/configs/config";
@@ -17,7 +17,7 @@ export async function createTeacher(params: { lastname: string; firstname: strin
     });
     revalidate();
 
-    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    const result = serviceResultSchema.safeParse(await res.json());
     return result.success ? result.data : result.error;
 }
 
@@ -31,7 +31,7 @@ export async function updateTeacher(params: { id: number; lastname: string; firs
     });
     revalidate();
 
-    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    const result = serviceResultSchema.safeParse(await res.json());
     return result.success ? result.data : result.error;
 }
 
@@ -41,6 +41,6 @@ export async function deleteTeacher({ id }: { id: number }) {
     });
     revalidate();
 
-    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
+    const result = serviceResultSchema.safeParse(await res.json());
     return result.success ? result.data : result.error;
 }

@@ -1,9 +1,9 @@
 import GroupList from "@/components/group/GroupList";
 import alertNoData from "@/components/miscellaneous/alertNoData";
-import { PublicFetches } from "@/fetching/fetchRequests";
+import { getGroups } from "@/fetching/public/requests";
 
 export default async function Timetables() {
-    const groups = await PublicFetches.getGroups();
+    const groups = await getGroups();
     if (!groups) {
         return alertNoData;
     }
