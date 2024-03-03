@@ -41,5 +41,3 @@ export default function AdminLayout({ children }: Readonly<{ children: React.Rea
         </AuthProvider>
     );
 }
-
-// TODO: попробовать сделать переиспользуемые адмнинские компоненеты.

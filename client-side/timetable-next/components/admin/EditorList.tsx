@@ -1,5 +1,5 @@
 "use client";
-import { Center, HStack, Input, VStack, useDisclosure, Text, UseDisclosureProps, UseDisclosureReturn } from "@chakra-ui/react";
+import { Center, HStack, Input, VStack, useDisclosure, Text, UseDisclosureReturn } from "@chakra-ui/react";
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from "@chakra-ui/react";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Updater, useImmer } from "use-immer";
@@ -25,9 +25,6 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => inputRef.current?.focus(), []);
     const disclosure = useDisclosure();
-
-    // TODO хуякнуть сюда общее модальное окно, которое будет получать
-    // айдишник кабинета и из массива подсасывать данные, а потом по формам раскидывать
 
     const localRooms = rooms
         .filter(r => `${r.address} + ${r.ascId} + ${r.fullName} + ${r.id} + ${r.number} +`.toUpperCase().includes(sorting.searchQuery.toUpperCase()))
@@ -85,14 +82,10 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
                 onSubmit={() => {}}
             >
                 <VStack>
-                    <HStack w={"full"}>
-                        <Text>ID</Text>
-                        <Input
-                            defaultValue={selectedRoom.id}
-                            name="id"
-                            readOnly
-                        ></Input>
-                    </HStack>
+                    <EditorFormReadonlyFields
+                        id={selectedRoom.id}
+                        modifiedAt={selectedRoom.modifiedAt}
+                    />
 
                     <HStack w={"full"}>
                         <Text>Имя (сокр.)</Text>
@@ -125,6 +118,7 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
                             name="ascId"
                         ></Input>
                     </HStack>
+
                     <SubmitButton>Сохранить</SubmitButton>
                 </VStack>
                 {!formState?.success === true ? formState?.message : "OK"}
@@ -178,5 +172,25 @@ function EditorTable({ children, setSorting }: { setSorting: Updater<SortingType
                 <Tbody>{children}</Tbody>
             </Table>
         </TableContainer>
+    );
+}
+
+function EditorFormReadonlyFields({ id, modifiedAt }: { id: number; modifiedAt: Date }) {
+    return (
+        <HStack w={"full"}>
+            <Text>ID</Text>
+            <Input
+                defaultValue={id}
+                name="id"
+                readOnly
+            ></Input>
+
+            <Text>Изменен</Text>
+            <Input
+                defaultValue={modifiedAt.toLocaleString("ru-ru")}
+                name="modifiedAt"
+                readOnly
+            ></Input>
+        </HStack>
     );
 }
