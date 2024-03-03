@@ -1,11 +1,15 @@
 "use client";
-import { Center, Input } from "@chakra-ui/react";
+import { Center, HStack, Input, VStack, useDisclosure, Text, UseDisclosureProps, UseDisclosureReturn } from "@chakra-ui/react";
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
-import { useImmer } from "use-immer";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { Updater, useImmer } from "use-immer";
 import { z } from "zod";
 import { roomsSchema } from "@/fetching/admin/zodSchemas";
 import genericSort from "@/utils/genericSort";
+import EditorModal from "./EditorModal";
+import SubmitButton from "./SubmitButton";
+import { useFormState } from "react-dom";
+import { updateRoom } from "@/server-actions/roomActions";
 
 type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
 type SortingType = {
@@ -16,9 +20,14 @@ type SortingType = {
 
 export default function EditorList({ rooms }: { rooms: RoomType[] }) {
     const [sorting, setSorting] = useImmer<SortingType>({ isAsc: true, searchQuery: "", sortingField: "id" });
+    const [selectedRoom, setSelectedRoom] = useState<RoomType>({ id: 0, address: "", fullName: "", number: "", ascId: "", modifiedAt: new Date() });
 
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => inputRef.current?.focus(), []);
+    const disclosure = useDisclosure();
+
+    // TODO хуякнуть сюда общее модальное окно, которое будет получать
+    // айдишник кабинета и из массива подсасывать данные, а потом по формам раскидывать
 
     const localRooms = rooms
         .filter(r => `${r.address} + ${r.ascId} + ${r.fullName} + ${r.id} + ${r.number} +`.toUpperCase().includes(sorting.searchQuery.toUpperCase()))
@@ -28,6 +37,10 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
         <Tr
             key={r.id}
             _hover={{ cursor: "pointer", color: "purple.300" }}
+            onClick={() => {
+                setSelectedRoom(r);
+                disclosure.onOpen();
+            }}
         >
             <Td>{r.id}</Td>
             <Td>{r.number}</Td>
@@ -47,49 +60,123 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
                 ></Input>
             </Center>
 
-            <TableContainer>
-                <Table variant="simple">
-                    <Thead>
-                        <Tr>
-                            <Th
-                                _hover={{ cursor: "pointer", color: "purple.300" }}
-                                onClick={() =>
-                                    setSorting(draft => {
-                                        draft.sortingField = "id";
-                                        draft.isAsc = !draft.isAsc;
-                                    })
-                                }
-                            >
-                                Id
-                            </Th>
-                            <Th
-                                _hover={{ cursor: "pointer", color: "purple.300" }}
-                                onClick={() =>
-                                    setSorting(draft => {
-                                        draft.sortingField = "number";
-                                        draft.isAsc = !draft.isAsc;
-                                    })
-                                }
-                            >
-                                Краткое имя
-                            </Th>
-                            <Th
-                                _hover={{ cursor: "pointer", color: "purple.300" }}
-                                onClick={() =>
-                                    setSorting(draft => {
-                                        draft.sortingField = "fullName";
-                                        draft.isAsc = !draft.isAsc;
-                                    })
-                                }
-                            >
-                                Полное имя
-                            </Th>
-                        </Tr>
-                    </Thead>
+            <EditorTable setSorting={setSorting}> {trElements}</EditorTable>
 
-                    <Tbody>{trElements}</Tbody>
-                </Table>
-            </TableContainer>
+            <Modal
+                disclosure={disclosure}
+                key={selectedRoom.id}
+                selectedRoom={selectedRoom}
+            ></Modal>
         </>
+    );
+}
+
+function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; selectedRoom: RoomType }) {
+    const [formState, action] = useFormState(updateRoom, null);
+
+    return (
+        <EditorModal
+            {...disclosure}
+            size={"xl"}
+        >
+            <form
+                action={action}
+                //FIXME : в тосте испольузутся значение прошлого стейта
+                onSubmit={() => {}}
+            >
+                <VStack>
+                    <HStack w={"full"}>
+                        <Text>ID</Text>
+                        <Input
+                            defaultValue={selectedRoom.id}
+                            name="id"
+                            readOnly
+                        ></Input>
+                    </HStack>
+
+                    <HStack w={"full"}>
+                        <Text>Имя (сокр.)</Text>
+                        <Input
+                            defaultValue={selectedRoom.number}
+                            name="number"
+                        ></Input>
+                    </HStack>
+
+                    <HStack w={"full"}>
+                        <Text>Корпус</Text>
+                        <Input
+                            defaultValue={selectedRoom.address}
+                            name="address"
+                        ></Input>
+                    </HStack>
+
+                    <HStack w={"full"}>
+                        <Text>Имя (полн.)</Text>
+                        <Input
+                            defaultValue={selectedRoom.fullName}
+                            name="fullName"
+                        ></Input>
+                    </HStack>
+
+                    <HStack w={"full"}>
+                        <Text>AscID</Text>
+                        <Input
+                            defaultValue={selectedRoom.ascId!}
+                            name="ascId"
+                        ></Input>
+                    </HStack>
+                    <SubmitButton>Сохранить</SubmitButton>
+                </VStack>
+                {!formState?.success === true ? formState?.message : "OK"}
+            </form>
+        </EditorModal>
+    );
+}
+
+function EditorTable({ children, setSorting }: { setSorting: Updater<SortingType>; children: ReactNode | ReactNode[] }) {
+    return (
+        <TableContainer>
+            <Table variant="simple">
+                <Thead>
+                    <Tr>
+                        <Th
+                            _hover={{ cursor: "pointer", color: "purple.300" }}
+                            onClick={() =>
+                                setSorting(draft => {
+                                    draft.sortingField = "id";
+                                    draft.isAsc = !draft.isAsc;
+                                })
+                            }
+                        >
+                            Id
+                        </Th>
+                        <Th
+                            _hover={{ cursor: "pointer", color: "purple.300" }}
+                            onClick={() =>
+                                setSorting(draft => {
+                                    draft.sortingField = "number";
+                                    draft.isAsc = !draft.isAsc;
+                                })
+                            }
+                        >
+                            Краткое имя
+                        </Th>
+                        <Th
+                            _hover={{ cursor: "pointer", color: "purple.300" }}
+                            onClick={() =>
+                                setSorting(draft => {
+                                    draft.sortingField = "fullName";
+                                    draft.isAsc = !draft.isAsc;
+                                })
+                            }
+                        >
+                            Полное имя
+                        </Th>
+                    </Tr>
+                </Thead>
+
+                <Tbody>{children}</Tbody>
+            </Table>
+        </TableContainer>
     );
 }
