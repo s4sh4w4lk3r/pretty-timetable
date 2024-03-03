@@ -11,17 +11,13 @@ export interface ClientResult {
 
 type PutParams<T> = { url: string; entity: T; revalidateFn: () => void };
 type delParams = { url: string; id: number; revalidateFn: () => void };
+type CheckIsAuthorizedParams = { success: false, description: string } |  { success: true, token: string }
 
 const msg = "Что-то пошло не так, смотрите логи на сервере.";
 
-export async function putEntity<T>({ url, entity, revalidateFn }: PutParams<T>): Promise<ClientResult> {
-    const session = await getServerSession(authOptions);
-
-    if (!session || !session.accessToken) {
-        return { success: false, message: "Сессия или токен доступа не получены." };
-    }
-    if (!session.roles?.includes("admin")) {
-        return { success: false, message: "Вы не являетесь админом." };
+    const auth =  await checkIsAuthorized();
+    if (!auth.success) {
+        return auth;
     }
 
     try {
@@ -29,7 +25,7 @@ export async function putEntity<T>({ url, entity, revalidateFn }: PutParams<T>):
             method: "PUT",
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
-                "Authorization": `Bearer ${session.accessToken}`,
+                "Authorization": `Bearer ${auth.token}`,
             },
             body: JSON.stringify(entity),
         });
@@ -45,21 +41,16 @@ export async function putEntity<T>({ url, entity, revalidateFn }: PutParams<T>):
     }
 }
 
-export async function deleteEntity({ url, id, revalidateFn }: delParams): Promise<ClientResult> {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.accessToken) {
-        return { success: false, message: "Сессия или токен доступа не получены." };
-    }
-
-    if (!session.roles?.includes("admin")) {
-        return { success: false, message: "Вы не являетесь админом." };
+    const auth = await checkIsAuthorized();
+    if (!auth.success) {
+        return auth;
     }
 
     try {
         const response = await fetch(`${url}?id=${id}`, {
             method: "DELETE",
             headers: {
-                "Authorization": `Bearer ${session.accessToken}`,
+                "Authorization": `Bearer ${auth.token}`,
             },
         });
 
@@ -128,5 +119,15 @@ function handleOkStatusCode({
 
 function handleFetchException(error: unknown) {
     console.error(error);
-    return { message: msg, success: false };
+async function checkIsAuthorized(): Promise<CheckIsAuthorizedParams> {
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session.accessToken) {
+        return { success: false, description: "Сессия или токен доступа не получены." };
+    }
+    if (!session.roles?.includes("admin")) {
+        return { success: false, description: "Вы не являетесь админом." };
+}
+
+    return { success: true, token: session.accessToken };
 }
