@@ -1,17 +1,16 @@
 import authOptions from "@/configs/authConfig";
 import { serviceResultSchema } from "@/fetching/admin/zodSchemas";
+import ServiceResult from "@/types/serviceResult";
 import { getServerSession } from "next-auth";
 import { SafeParseReturnType } from "zod";
 
-type FetchWrapperResult<T> = T extends undefined | never | null
-    ? { success: boolean; description: string }
-    : { success: boolean; description: string; value?: T };
-type PutParams<T> = { url: string; entity: T; revalidateFn: () => void };
+type FetchWrapperResult = { success: boolean; description: string; value?: unknown };
+type PutParams = { url: string; entity: unknown; revalidateFn: () => void };
 type DelParams = { url: string; id: number; revalidateFn: () => void };
-type HandleOkStatusCodeParams<T> = { responseParsed: SafeParseReturnType<FetchWrapperResult<T>, FetchWrapperResult<T>>; revalidateFn: () => void };
+type HandleOkStatusCodeParams = { responseParsed: SafeParseReturnType<ServiceResult, ServiceResult>; revalidateFn: () => void };
 type CheckIsAuthorizedParams = { success: false; description: string } | { success: true; token: string };
 
-export async function putEntity<T>({ url, entity, revalidateFn }: PutParams<T>): Promise<FetchWrapperResult<T | null>> {
+export async function putEntity({ url, entity, revalidateFn }: PutParams): Promise<FetchWrapperResult> {
     const auth = await checkIsAuthorized();
     if (!auth.success) {
         return auth;
@@ -35,7 +34,11 @@ export async function putEntity<T>({ url, entity, revalidateFn }: PutParams<T>):
         return handleFetchException(error);
     }
 }
-export async function deleteEntity({ url, id, revalidateFn }: DelParams): Promise<FetchWrapperResult<undefined>> {
+export async function deleteEntity({ url, id, revalidateFn }: DelParams): Promise<FetchWrapperResult> {
+    if (!Number.isSafeInteger(id)) {
+        return { success: false, description: "Значение Id должно быть числом." };
+    }
+
     const auth = await checkIsAuthorized();
     if (!auth.success) {
         return auth;
@@ -58,20 +61,20 @@ export async function deleteEntity({ url, id, revalidateFn }: DelParams): Promis
     }
 }
 
-function handleOkStatusCode<T>({ responseParsed, revalidateFn }: HandleOkStatusCodeParams<T>): FetchWrapperResult<T | undefined> {
+function handleOkStatusCode({ responseParsed, revalidateFn }: HandleOkStatusCodeParams): FetchWrapperResult {
     const zodIsValid = responseParsed.success;
     const apiIsSuccess = zodIsValid ? responseParsed.data.success : false;
 
     if (zodIsValid && apiIsSuccess) {
         revalidateFn();
-        return { description: responseParsed.data.description, success: true, value: responseParsed.data.value as T } satisfies FetchWrapperResult<T>;
+        return { success: true, description: responseParsed.data.description, value: responseParsed.data.value };
     } else {
         if (!zodIsValid) console.error(responseParsed.error.flatten());
         return { success: false, description: "Получен неожиданный ответ от API." };
     }
 }
 
-async function handleBadStatusCode(response: Response): Promise<FetchWrapperResult<null>> {
+async function handleBadStatusCode(response: Response): Promise<FetchWrapperResult> {
     try {
         console.error({ statusCode: response.status, json: await response.json() });
     } catch {
@@ -81,7 +84,7 @@ async function handleBadStatusCode(response: Response): Promise<FetchWrapperResu
     }
 }
 
-function handleFetchException(error: unknown): FetchWrapperResult<undefined> {
+function handleFetchException(error: unknown): FetchWrapperResult {
     console.error(error);
     return { success: false, description: "Произошла ошибка на сервере во время выполнения запроса." };
 }
