@@ -1,15 +1,30 @@
 "use client";
-import { Center, HStack, Input, VStack, useDisclosure, Text, UseDisclosureReturn } from "@chakra-ui/react";
+import {
+    Center,
+    HStack,
+    Input,
+    VStack,
+    useDisclosure,
+    Text,
+    UseDisclosureReturn,
+    useToast,
+    Button,
+    MenuItem,
+    Menu,
+    MenuButton,
+    MenuList,
+    Select,
+} from "@chakra-ui/react";
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from "@chakra-ui/react";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ChangeEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { Updater, useImmer } from "use-immer";
 import { z } from "zod";
 import { roomsSchema } from "@/fetching/admin/zodSchemas";
 import genericSort from "@/utils/genericSort";
 import EditorModal from "./EditorModal";
 import SubmitButton from "./SubmitButton";
-import { useFormState } from "react-dom";
-import { updateRoom } from "@/server-actions/roomActions";
+import { deleteRoom, updateRoom } from "@/server-actions/roomActions";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
 type SortingType = {
@@ -22,8 +37,6 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
     const [sorting, setSorting] = useImmer<SortingType>({ isAsc: true, searchQuery: "", sortingField: "id" });
     const [selectedRoom, setSelectedRoom] = useState<RoomType>({ id: 0, address: "", fullName: "", number: "", ascId: "", modifiedAt: new Date() });
 
-    const inputRef = useRef<HTMLInputElement>(null);
-    useEffect(() => inputRef.current?.focus(), []);
     const disclosure = useDisclosure();
 
     const localRooms = rooms
@@ -47,16 +60,7 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
 
     return (
         <>
-            <Center>
-                <Input
-                    onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))}
-                    mt={3}
-                    w={["300px", null, "600px", null, null]}
-                    placeholder="Поиск по всем полям"
-                    ref={inputRef}
-                ></Input>
-            </Center>
-
+            <SearchBar onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))} />
             <EditorTable setSorting={setSorting}> {trElements}</EditorTable>
 
             <Modal
@@ -69,7 +73,10 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
 }
 
 function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; selectedRoom: RoomType }) {
-    const [formState, action] = useFormState(updateRoom, null);
+    const toast = useToast({ duration: 5000, isClosable: true });
+    const successfulToast = (message: string) => toast({ status: "success", title: "Данные сохранены", description: message });
+    const failedToast = (message: string) => toast({ status: "error", title: "Не удалось выполнить операцию", description: message });
+    const loadingToast = () => toast({ status: "loading", title: "Сохранение данных" });
 
     return (
         <EditorModal
@@ -77,9 +84,13 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
             size={"xl"}
         >
             <form
-                action={action}
-                //FIXME : в тосте испольузутся значение прошлого стейта
-                onSubmit={() => {}}
+                onSubmit={async e => {
+                    e.preventDefault();
+                    const toastId = loadingToast();
+                    const result = await updateRoom(new FormData(e.currentTarget));
+                    result.success ? successfulToast(result.message) : failedToast(result.message);
+                    toast.close(toastId);
+                }}
             >
                 <VStack>
                     <EditorFormReadonlyFields
@@ -88,7 +99,7 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
                     />
 
                     <HStack w={"full"}>
-                        <Text>Имя (сокр.)</Text>
+                        <Text>Номер каб.</Text>
                         <Input
                             defaultValue={selectedRoom.number}
                             name="number"
@@ -97,12 +108,16 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
 
                     <HStack w={"full"}>
                         <Text>Корпус</Text>
-                        <Input
+
+                        <Select
                             defaultValue={selectedRoom.address}
                             name="address"
-                        ></Input>
+                        >
+                            <option value="Аккадемика Миллионщикова">Академика Миллионщикова</option>
+                            <option value="Судостроительная ул.">Судостроительная ул.</option>
+                            <option value="Коломенская набережная">Коломенская набережная</option>
+                        </Select>
                     </HStack>
-
                     <HStack w={"full"}>
                         <Text>Имя (полн.)</Text>
                         <Input
@@ -119,9 +134,24 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
                         ></Input>
                     </HStack>
 
-                    <SubmitButton>Сохранить</SubmitButton>
+                    <HStack
+                        mt={2}
+                        w={"full"}
+                        justifyContent={"space-around"}
+                    >
+                        <Button
+                            colorScheme="red"
+                            onClick={async () => {
+                                const res = await deleteRoom({ id: selectedRoom.id });
+                                res.success ? successfulToast(res.message) : failedToast(res.message);
+                            }}
+                        >
+                            Удалить
+                        </Button>
+
+                        <SubmitButton>Сохранить</SubmitButton>
+                    </HStack>
                 </VStack>
-                {!formState?.success === true ? formState?.message : "OK"}
             </form>
         </EditorModal>
     );
@@ -153,7 +183,7 @@ function EditorTable({ children, setSorting }: { setSorting: Updater<SortingType
                                 })
                             }
                         >
-                            Краткое имя
+                            Номер кабинета
                         </Th>
                         <Th
                             _hover={{ cursor: "pointer", color: "purple.300" }}
@@ -164,7 +194,7 @@ function EditorTable({ children, setSorting }: { setSorting: Updater<SortingType
                                 })
                             }
                         >
-                            Полное имя
+                            Полное название
                         </Th>
                     </Tr>
                 </Thead>
@@ -192,5 +222,22 @@ function EditorFormReadonlyFields({ id, modifiedAt }: { id: number; modifiedAt: 
                 readOnly
             ></Input>
         </HStack>
+    );
+}
+
+function SearchBar({ onChange }: { onChange: (e: ChangeEvent<HTMLInputElement>) => void }) {
+    const inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => inputRef.current?.focus(), []);
+
+    return (
+        <Center>
+            <Input
+                onChange={onChange}
+                mt={3}
+                w={"lg"}
+                placeholder="Поиск по всем полям"
+                ref={inputRef}
+            ></Input>
+        </Center>
     );
 }
