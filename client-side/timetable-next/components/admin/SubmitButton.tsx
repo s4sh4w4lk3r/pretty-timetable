@@ -9,10 +9,10 @@ export default function SubmitButton({ children }: { children?: ReactNode }) {
         <Button
             type="submit"
             disabled={pending}
-            bgColor={pending ? "purple.600" : "purple.500"}
+            colorScheme="purple"
             _hover={{ backgroundColor: "purple.600" }}
         >
-            {pending ? <Spinner></Spinner> : children}
+            {pending ? <Spinner /> : children}
         </Button>
     );
 }
