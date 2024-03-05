@@ -1,4 +1,4 @@
-import ServiceResult from "@/types/serviceResult";
+import ServiceResult from "@/types/result";
 import { z } from "zod";
 
 export const roomsSchema = z.object({

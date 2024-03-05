@@ -1,6 +1,6 @@
 import authOptions from "@/configs/authConfig";
 import { serviceResultSchema } from "@/fetching/admin/zodSchemas";
-import ServiceResult from "@/types/serviceResult";
+import ServiceResult from "@/types/result";
 import { getServerSession } from "next-auth";
 import { SafeParseReturnType } from "zod";
 
