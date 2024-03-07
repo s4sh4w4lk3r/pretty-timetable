@@ -4,13 +4,13 @@ import { Tr, Th, Td } from "@chakra-ui/react";
 import { useState } from "react";
 import { useImmer } from "use-immer";
 import { z } from "zod";
-import { roomsSchema } from "@/fetching/admin/zodSchemas";
+import { getRoomsSchema } from "@/fetching/admin/zodSchemas";
 import genericSort from "@/utils/genericSort";
 import EditorTable from "../EditorTable";
 import SearchBar from "../SearchBar";
 import RoomModal from "./RoomModal";
 
-type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
+type RoomType = z.infer<typeof getRoomsSchema.shape.data.shape.rooms.element>;
 type SortingType = {
     searchQuery: string;
     isAsc: boolean;
@@ -18,7 +18,7 @@ type SortingType = {
 };
 const hover = { cursor: "pointer", color: "purple.300" };
 
-export default function EditorList({ rooms }: { rooms: RoomType[] }) {
+export default function RoomEditor({ rooms }: { rooms: RoomType[] }) {
     const [sorting, setSorting] = useImmer<SortingType>({ isAsc: true, searchQuery: "", sortingField: "id" });
     const initialRoom = { id: 0, address: "", fullName: "", number: "", ascId: "", modifiedAt: new Date() };
     const [selectedRoom, setSelectedRoom] = useState<RoomType>(initialRoom);

@@ -1,7 +1,7 @@
 import ServiceResult from "@/types/result";
 import { z } from "zod";
 
-export const roomsSchema = z.object({
+export const getRoomsSchema = z.object({
     data: z.object({
         rooms: z
             .object({
