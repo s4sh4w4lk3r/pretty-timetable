@@ -68,12 +68,12 @@ export default function RoomEditor({ rooms }: { rooms: RoomType[] }) {
 
             <Th
                 _hover={hover}
-                onClick={() =>
-                    setSorting(draft => {
-                        draft.sortingField = "number";
-                        draft.isAsc = !draft.isAsc;
-                    })
-                }
+                // onClick={() =>
+                //     setSorting(draft => {
+                //         draft.sortingField = "number";
+                //         draft.isAsc = !draft.isAsc;
+                //     })
+                // }
             >
                 Последнее изменение
             </Th>
