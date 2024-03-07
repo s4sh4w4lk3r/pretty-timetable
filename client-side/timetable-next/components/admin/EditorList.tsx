@@ -1,8 +1,8 @@
 "use client";
 import { Center, HStack, Input, VStack, useDisclosure, Text, UseDisclosureReturn, useToast, Button, Select } from "@chakra-ui/react";
-import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from "@chakra-ui/react";
-import { ReactNode, useState } from "react";
-import { Updater, useImmer } from "use-immer";
+import { Tr, Th, Td } from "@chakra-ui/react";
+import { useState } from "react";
+import { useImmer } from "use-immer";
 import { z } from "zod";
 import { roomsSchema } from "@/fetching/admin/zodSchemas";
 import genericSort from "@/utils/genericSort";
@@ -10,6 +10,7 @@ import EditorModal from "./EditorModal";
 import { deleteRoom, updateRoom } from "@/server-actions/roomActions";
 import ReadonlyEditorInputs from "./ReadonlyEditorInputs";
 import SearchBar from "./SearchBar";
+import EditorTable from "./EditorTable";
 
 type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
 type SortingType = {
@@ -21,14 +22,52 @@ type SortingType = {
 export default function EditorList({ rooms }: { rooms: RoomType[] }) {
     const [sorting, setSorting] = useImmer<SortingType>({ isAsc: true, searchQuery: "", sortingField: "id" });
     const [selectedRoom, setSelectedRoom] = useState<RoomType>({ id: 0, address: "", fullName: "", number: "", ascId: "", modifiedAt: new Date() });
-
     const disclosure = useDisclosure();
+    const hover = { cursor: "pointer", color: "purple.300" };
 
     const localRooms = rooms
         .filter(r => `${r.address} + ${r.ascId} + ${r.fullName} + ${r.id} + ${r.number} +`.toUpperCase().includes(sorting.searchQuery.toUpperCase()))
         .sort((a, b) => genericSort<RoomType>(sorting.sortingField, sorting.isAsc, a, b));
 
-    const trElements = localRooms.map(r => (
+    const tableHeaders = (
+        <>
+            <Th
+                _hover={hover}
+                onClick={() =>
+                    setSorting(draft => {
+                        draft.sortingField = "id";
+                        draft.isAsc = !draft.isAsc;
+                    })
+                }
+            >
+                Id
+            </Th>
+            <Th
+                _hover={hover}
+                onClick={() =>
+                    setSorting(draft => {
+                        draft.sortingField = "number";
+                        draft.isAsc = !draft.isAsc;
+                    })
+                }
+            >
+                Номер кабинета
+            </Th>
+            <Th
+                _hover={hover}
+                onClick={() =>
+                    setSorting(draft => {
+                        draft.sortingField = "fullName";
+                        draft.isAsc = !draft.isAsc;
+                    })
+                }
+            >
+                Полное название
+            </Th>
+        </>
+    );
+
+    const tableBody = localRooms.map(r => (
         <Tr
             key={r.id}
             _hover={{ cursor: "pointer", color: "purple.300" }}
@@ -49,7 +88,7 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
                 <SearchBar onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))} />
             </Center>
 
-            <EditorTable setSorting={setSorting}> {trElements}</EditorTable>
+            <EditorTable tableHeaders={tableHeaders}> {tableBody}</EditorTable>
 
             <Modal
                 disclosure={disclosure}
@@ -64,7 +103,7 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
     const toast = useToast({ duration: 5000, isClosable: true });
     const successfulToast = (message: string) => toast({ status: "success", title: "Данные сохранены", description: message });
     const failedToast = (message: string) => toast({ status: "error", title: "Не удалось выполнить операцию", description: message });
-    const loadingToast = () => toast({ status: "loading", title: "Сохранение данных" });
+    const loadingToast = (title: string) => toast({ status: "loading", title: title });
 
     return (
         <EditorModal
@@ -74,7 +113,7 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
             <form
                 onSubmit={async e => {
                     e.preventDefault();
-                    const toastId = loadingToast();
+                    const toastId = loadingToast("Сохранение данных...");
                     const result = await updateRoom(new FormData(e.currentTarget));
                     result.success ? successfulToast(result.message) : failedToast(result.message);
                     toast.close(toastId);
@@ -147,55 +186,5 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
                 </VStack>
             </form>
         </EditorModal>
-    );
-}
-
-function EditorTable({ children, setSorting }: { setSorting: Updater<SortingType>; children: ReactNode | ReactNode[] }) {
-    const hover = { cursor: "pointer", color: "purple.300" };
-
-    return (
-        <TableContainer>
-            <Table variant="simple">
-                <Thead>
-                    <Tr>
-                        <Th
-                            _hover={hover}
-                            onClick={() =>
-                                setSorting(draft => {
-                                    draft.sortingField = "id";
-                                    draft.isAsc = !draft.isAsc;
-                                })
-                            }
-                        >
-                            Id
-                        </Th>
-                        <Th
-                            _hover={hover}
-                            onClick={() =>
-                                setSorting(draft => {
-                                    draft.sortingField = "number";
-                                    draft.isAsc = !draft.isAsc;
-                                })
-                            }
-                        >
-                            Номер кабинета
-                        </Th>
-                        <Th
-                            _hover={hover}
-                            onClick={() =>
-                                setSorting(draft => {
-                                    draft.sortingField = "fullName";
-                                    draft.isAsc = !draft.isAsc;
-                                })
-                            }
-                        >
-                            Полное название
-                        </Th>
-                    </Tr>
-                </Thead>
-
-                <Tbody>{children}</Tbody>
-            </Table>
-        </TableContainer>
     );
 }
