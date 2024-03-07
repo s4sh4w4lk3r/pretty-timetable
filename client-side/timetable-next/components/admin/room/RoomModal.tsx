@@ -89,7 +89,7 @@ export default function RoomModal({ disclosure, selectedRoom }: { disclosure: Us
                             type="submit"
                             colorScheme="blue"
                         >
-                            Отправить
+                            Сохранить
                         </Button>
                     </HStack>
                 </VStack>

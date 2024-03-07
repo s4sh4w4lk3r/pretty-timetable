@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 export default function EditorTable({ children, tableHeaders }: { tableHeaders: ReactNode; children: ReactNode | ReactNode[] }) {
     return (
-        <TableContainer>
+        <TableContainer w={"full"}>
             <Table variant="simple">
                 <Thead>
                     <Tr>{tableHeaders}</Tr>

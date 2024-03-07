@@ -1,5 +1,5 @@
 "use client";
-import { Center, useDisclosure } from "@chakra-ui/react";
+import { VStack, useDisclosure } from "@chakra-ui/react";
 import { Tr, Th, Td } from "@chakra-ui/react";
 import { useState } from "react";
 import { useImmer } from "use-immer";
@@ -40,6 +40,19 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
             >
                 Id
             </Th>
+
+            <Th
+                _hover={hover}
+                onClick={() =>
+                    setSorting(draft => {
+                        draft.sortingField = "fullName";
+                        draft.isAsc = !draft.isAsc;
+                    })
+                }
+            >
+                Корпус
+            </Th>
+
             <Th
                 _hover={hover}
                 onClick={() =>
@@ -51,16 +64,17 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
             >
                 Номер кабинета
             </Th>
+
             <Th
                 _hover={hover}
                 onClick={() =>
                     setSorting(draft => {
-                        draft.sortingField = "fullName";
+                        draft.sortingField = "number";
                         draft.isAsc = !draft.isAsc;
                     })
                 }
             >
-                Полное название
+                Последнее изменение
             </Th>
         </>
     );
@@ -75,18 +89,18 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
             }}
         >
             <Td>{r.id}</Td>
+            <Td>{r.address}</Td>
             <Td>{r.number}</Td>
-            <Td>{r.fullName}</Td>
+            <Td>{r.modifiedAt.toLocaleString("ru-ru")}</Td>
         </Tr>
     ));
 
     return (
         <>
-            <Center>
+            <VStack>
                 <SearchBar onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))} />
-            </Center>
-
-            <EditorTable tableHeaders={tableHeaders}> {tableBody}</EditorTable>
+                <EditorTable tableHeaders={tableHeaders}> {tableBody}</EditorTable>
+            </VStack>
 
             <RoomModal
                 disclosure={disclosure}
