@@ -6,7 +6,7 @@ import ReadonlyEditorInputs from "../ReadonlyEditorInputs";
 import { z } from "zod";
 import { roomsSchema } from "@/fetching/admin/zodSchemas";
 
-export type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
+type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
 
 export default function RoomModal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; selectedRoom: RoomType }) {
     const toast = useToast({ duration: 5000, isClosable: true });

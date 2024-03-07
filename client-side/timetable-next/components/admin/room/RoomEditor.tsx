@@ -1,5 +1,5 @@
 "use client";
-import { VStack, useDisclosure } from "@chakra-ui/react";
+import { Button, HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import { Tr, Th, Td } from "@chakra-ui/react";
 import { useState } from "react";
 import { useImmer } from "use-immer";
@@ -10,7 +10,7 @@ import EditorTable from "../EditorTable";
 import SearchBar from "../SearchBar";
 import RoomModal from "./RoomModal";
 
-export type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
+type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
 type SortingType = {
     searchQuery: string;
     isAsc: boolean;
@@ -20,7 +20,8 @@ const hover = { cursor: "pointer", color: "purple.300" };
 
 export default function EditorList({ rooms }: { rooms: RoomType[] }) {
     const [sorting, setSorting] = useImmer<SortingType>({ isAsc: true, searchQuery: "", sortingField: "id" });
-    const [selectedRoom, setSelectedRoom] = useState<RoomType>({ id: 0, address: "", fullName: "", number: "", ascId: "", modifiedAt: new Date() });
+    const initialRoom = { id: 0, address: "", fullName: "", number: "", ascId: "", modifiedAt: new Date() };
+    const [selectedRoom, setSelectedRoom] = useState<RoomType>(initialRoom);
     const disclosure = useDisclosure();
 
     const localRooms = rooms
@@ -104,7 +105,19 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
                 mx={"auto"}
                 mt={20}
             >
-                <SearchBar onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))} />
+                <HStack mt={3}>
+                    <SearchBar onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))} />
+                    <Button
+                        colorScheme="green"
+                        onClick={() => {
+                            setSelectedRoom(initialRoom);
+                            disclosure.onOpen();
+                        }}
+                    >
+                        Добавить
+                    </Button>
+                </HStack>
+
                 <EditorTable tableHeaders={tableHeaders}> {tableBody}</EditorTable>
             </VStack>
 
