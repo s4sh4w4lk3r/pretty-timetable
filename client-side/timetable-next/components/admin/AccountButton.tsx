@@ -10,7 +10,7 @@ export default function AccountButton() {
     return status === "authenticated" ? <LogoutButton /> : <LoginButton />;
 }
 
-export function LoginButton() {
+function LoginButton() {
     return (
         <Button
             onClick={() => {
@@ -22,7 +22,7 @@ export function LoginButton() {
     );
 }
 
-export function LogoutButton() {
+function LogoutButton() {
     return (
         <Button
             onClick={() => {
