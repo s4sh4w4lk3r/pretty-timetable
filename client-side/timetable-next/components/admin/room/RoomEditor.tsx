@@ -25,7 +25,7 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
 
     const localRooms = rooms
         .filter(r => `${r.address} + ${r.ascId} + ${r.fullName} + ${r.id} + ${r.number} +`.toUpperCase().includes(sorting.searchQuery.toUpperCase()))
-        .sort((a, b) => genericSort<RoomType>(sorting.sortingField, sorting.isAsc, a, b));
+        .sort((a, b) => genericSort(sorting.sortingField, sorting.isAsc, a, b));
 
     const tableHeaders = (
         <>
@@ -97,7 +97,13 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
 
     return (
         <>
-            <VStack>
+            <VStack
+                borderWidth={"1px"}
+                borderRadius={"md"}
+                maxW={"8xl"}
+                mx={"auto"}
+                mt={20}
+            >
                 <SearchBar onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))} />
                 <EditorTable tableHeaders={tableHeaders}> {tableBody}</EditorTable>
             </VStack>

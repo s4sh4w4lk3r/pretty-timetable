@@ -49,7 +49,7 @@ export default function RoomModal({ disclosure, selectedRoom }: { disclosure: Us
                             defaultValue={selectedRoom.address}
                             name="address"
                         >
-                            <option value="Аккадемика Миллионщикова">Академика Миллионщикова</option>
+                            <option value="Аккадемика Миллионщикова">Аккадемика Миллионщикова</option>
                             <option value="Судостроительная ул.">Судостроительная ул.</option>
                             <option value="Коломенская набережная">Коломенская набережная</option>
                         </Select>
