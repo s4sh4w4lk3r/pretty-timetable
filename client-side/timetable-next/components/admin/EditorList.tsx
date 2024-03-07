@@ -1,20 +1,5 @@
 "use client";
-import {
-    Center,
-    HStack,
-    Input,
-    VStack,
-    useDisclosure,
-    Text,
-    UseDisclosureReturn,
-    useToast,
-    Button,
-    MenuItem,
-    Menu,
-    MenuButton,
-    MenuList,
-    Select,
-} from "@chakra-ui/react";
+import { Center, HStack, Input, VStack, useDisclosure, Text, UseDisclosureReturn, useToast, Button, Select } from "@chakra-ui/react";
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from "@chakra-ui/react";
 import { ChangeEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { Updater, useImmer } from "use-immer";
@@ -22,9 +7,7 @@ import { z } from "zod";
 import { roomsSchema } from "@/fetching/admin/zodSchemas";
 import genericSort from "@/utils/genericSort";
 import EditorModal from "./EditorModal";
-import SubmitButton from "./SubmitButton";
 import { deleteRoom, updateRoom } from "@/server-actions/roomActions";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 
 type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
 type SortingType = {
@@ -149,7 +132,12 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
                             Удалить
                         </Button>
 
-                        <SubmitButton>Сохранить</SubmitButton>
+                        <Button
+                            type="submit"
+                            colorScheme="blue"
+                        >
+                            Отправить
+                        </Button>
                     </HStack>
                 </VStack>
             </form>
