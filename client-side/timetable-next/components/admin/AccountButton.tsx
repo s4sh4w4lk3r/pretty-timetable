@@ -16,6 +16,7 @@ function LoginButton() {
             onClick={() => {
                 signIn("keycloak");
             }}
+            colorScheme="blue"
         >
             Войти
         </Button>
@@ -28,6 +29,7 @@ function LogoutButton() {
             onClick={() => {
                 federatedLogout();
             }}
+            colorScheme="red"
         >
             Выйти
         </Button>
