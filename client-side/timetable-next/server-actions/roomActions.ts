@@ -39,7 +39,11 @@ export async function updateRoom(formData: FormData): Promise<ClientResult<Updat
     }
 
     const res = await putEntity({ url: baseApiUrl, entity: valResult.data, revalidateFn: revalidate });
-    return { success: true, message: res.description, value: (res.value as number) && 0 };
+    if (!res.success) {
+        return { success: false, message: res.description, errors: {} };
+    } else {
+        return { success: true, message: res.description, value: (res.value as number) && 0 };
+    }
 }
 
 export async function deleteRoom({ id }: { id: number }): Promise<ClientResult<null, null>> {
