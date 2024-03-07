@@ -36,4 +36,4 @@ export async function deleteSubject({ id }: { id: number }): Promise<ClientResul
     }
 }
 
-// проверить методы
+// TODO проверить методы

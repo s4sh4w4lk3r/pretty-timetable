@@ -47,7 +47,7 @@ export const getSubjectsSchema = z.object({
 });
 
 export const putSubjectSchema = z.object({
-    id: z.number(),
-    name: z.string(),
+    id: z.coerce.number(),
+    name: z.string().trim().min(1),
     ascId: z.string().nullish(),
 });
