@@ -32,3 +32,22 @@ export const putRoomSchema = z.object({
     fullName: z.string().trim().min(1),
     ascId: z.string().nullish(),
 });
+
+export const getSubjectsSchema = z.object({
+    data: z.object({
+        subjects: z.array(
+            z.object({
+                id: z.number(),
+                name: z.string(),
+                modifiedAt: z.coerce.date(),
+                ascId: z.string().nullish(),
+            })
+        ),
+    }),
+});
+
+export const putSubjectSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    ascId: z.string().nullish(),
+});

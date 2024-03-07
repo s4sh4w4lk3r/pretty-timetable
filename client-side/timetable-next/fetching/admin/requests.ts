@@ -10,8 +10,8 @@ export async function getRooms() {
         cache: "no-store",
     });
 
-    const rooms = getRoomsSchema.parse(await res.json());
-    return rooms.data.rooms;
+    const root = getRoomsSchema.parse(await res.json());
+    return root.data.rooms;
 }
 
 export async function getSubjects() {
@@ -22,6 +22,6 @@ export async function getSubjects() {
         cache: "no-store",
     });
 
-    const subjects = getSubjectsSchema.parse(await res.json());
-    return subjects.data;
+    const root = getSubjectsSchema.parse(await res.json());
+    return root.data.subjects;
 }
