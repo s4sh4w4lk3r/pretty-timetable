@@ -1,13 +1,15 @@
 "use client";
 import { Center, HStack, Input, VStack, useDisclosure, Text, UseDisclosureReturn, useToast, Button, Select } from "@chakra-ui/react";
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from "@chakra-ui/react";
-import { ChangeEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useState } from "react";
 import { Updater, useImmer } from "use-immer";
 import { z } from "zod";
 import { roomsSchema } from "@/fetching/admin/zodSchemas";
 import genericSort from "@/utils/genericSort";
 import EditorModal from "./EditorModal";
 import { deleteRoom, updateRoom } from "@/server-actions/roomActions";
+import ReadonlyEditorInputs from "./ReadonlyEditorInputs";
+import SearchBar from "./SearchBar";
 
 type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
 type SortingType = {
@@ -43,7 +45,10 @@ export default function EditorList({ rooms }: { rooms: RoomType[] }) {
 
     return (
         <>
-            <SearchBar onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))} />
+            <Center>
+                <SearchBar onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))} />
+            </Center>
+
             <EditorTable setSorting={setSorting}> {trElements}</EditorTable>
 
             <Modal
@@ -76,7 +81,7 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
                 }}
             >
                 <VStack>
-                    <EditorFormReadonlyFields
+                    <ReadonlyEditorInputs
                         id={selectedRoom.id}
                         modifiedAt={selectedRoom.modifiedAt}
                     />
@@ -146,13 +151,15 @@ function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; 
 }
 
 function EditorTable({ children, setSorting }: { setSorting: Updater<SortingType>; children: ReactNode | ReactNode[] }) {
+    const hover = { cursor: "pointer", color: "purple.300" };
+
     return (
         <TableContainer>
             <Table variant="simple">
                 <Thead>
                     <Tr>
                         <Th
-                            _hover={{ cursor: "pointer", color: "purple.300" }}
+                            _hover={hover}
                             onClick={() =>
                                 setSorting(draft => {
                                     draft.sortingField = "id";
@@ -163,7 +170,7 @@ function EditorTable({ children, setSorting }: { setSorting: Updater<SortingType
                             Id
                         </Th>
                         <Th
-                            _hover={{ cursor: "pointer", color: "purple.300" }}
+                            _hover={hover}
                             onClick={() =>
                                 setSorting(draft => {
                                     draft.sortingField = "number";
@@ -174,7 +181,7 @@ function EditorTable({ children, setSorting }: { setSorting: Updater<SortingType
                             Номер кабинета
                         </Th>
                         <Th
-                            _hover={{ cursor: "pointer", color: "purple.300" }}
+                            _hover={hover}
                             onClick={() =>
                                 setSorting(draft => {
                                     draft.sortingField = "fullName";
@@ -190,42 +197,5 @@ function EditorTable({ children, setSorting }: { setSorting: Updater<SortingType
                 <Tbody>{children}</Tbody>
             </Table>
         </TableContainer>
-    );
-}
-
-function EditorFormReadonlyFields({ id, modifiedAt }: { id: number; modifiedAt: Date }) {
-    return (
-        <HStack w={"full"}>
-            <Text>ID</Text>
-            <Input
-                defaultValue={id}
-                name="id"
-                readOnly
-            ></Input>
-
-            <Text>Изменен</Text>
-            <Input
-                defaultValue={modifiedAt.toLocaleString("ru-ru")}
-                name="modifiedAt"
-                readOnly
-            ></Input>
-        </HStack>
-    );
-}
-
-function SearchBar({ onChange }: { onChange: (e: ChangeEvent<HTMLInputElement>) => void }) {
-    const inputRef = useRef<HTMLInputElement>(null);
-    useEffect(() => inputRef.current?.focus(), []);
-
-    return (
-        <Center>
-            <Input
-                onChange={onChange}
-                mt={3}
-                w={"lg"}
-                placeholder="Поиск по всем полям"
-                ref={inputRef}
-            ></Input>
-        </Center>
     );
 }
