@@ -3,7 +3,7 @@
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
 import config from "@/configs/config";
-import { serviceResultSchema, updateRoomSchema } from "@/fetching/admin/zodSchemas";
+import { putRoomSchema } from "@/fetching/admin/zodSchemas";
 import { deleteEntity, putEntity } from "./actionsFetchWrappers";
 import { ClientResult } from "@/types/result";
 
@@ -17,23 +17,9 @@ type UpdateRoomFields = {
     ascId?: string[] | undefined;
 };
 
-export async function createRoom(params: { address: string; number: string; fullName: string }) {
-    const res = await fetch(baseApiUrl, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({ id: 0, ...params }),
-    });
-    revalidate();
-
-    const result = serviceResultSchema.safeParse(await res.json());
-    return result.success ? result.data : result.error;
-}
-
-export async function updateRoom(formData: FormData): Promise<ClientResult<UpdateRoomFields, number>> {
+export async function putRoom(formData: FormData): Promise<ClientResult<UpdateRoomFields, number>> {
     const rawFormData = Object.fromEntries(formData.entries());
-    const valResult = updateRoomSchema.safeParse(rawFormData);
+    const valResult = putRoomSchema.safeParse(rawFormData);
     if (!valResult.success) {
         return { success: false, message: "Ошибка валидации", errors: valResult.error.flatten().fieldErrors };
     }

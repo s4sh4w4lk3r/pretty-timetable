@@ -1,5 +1,5 @@
 "use client";
-import { updateRoom, deleteRoom } from "@/server-actions/roomActions";
+import { putRoom, deleteRoom } from "@/server-actions/roomActions";
 import { UseDisclosureReturn, useToast, VStack, HStack, Input, Select, Button, Text } from "@chakra-ui/react";
 import EditorModal from "../EditorModal";
 import ReadonlyEditorInputs from "../ReadonlyEditorInputs";
@@ -23,7 +23,7 @@ export default function RoomModal({ disclosure, selectedRoom }: { disclosure: Us
                 onSubmit={async e => {
                     e.preventDefault();
                     const toastId = loadingToast("Сохранение данных...");
-                    const result = await updateRoom(new FormData(e.currentTarget));
+                    const result = await putRoom(new FormData(e.currentTarget));
                     result.success ? successfulToast(result.message) : failedToast(result.message);
                     toast.close(toastId);
                 }}

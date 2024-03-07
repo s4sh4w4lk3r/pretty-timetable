@@ -25,7 +25,7 @@ export const serviceResultSchema: z.ZodSchema<ServiceResult> = z.lazy(() =>
     })
 );
 
-export const updateRoomSchema = z.object({
+export const putRoomSchema = z.object({
     id: z.coerce.number(),
     address: z.string().trim().min(1),
     number: z.string().trim().min(1),
