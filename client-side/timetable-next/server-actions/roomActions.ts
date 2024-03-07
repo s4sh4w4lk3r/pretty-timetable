@@ -6,18 +6,14 @@ import config from "@/configs/config";
 import { putRoomSchema } from "@/fetching/admin/zodSchemas";
 import { deleteEntity, putEntity } from "./actionsFetchWrappers";
 import { ClientResult } from "@/types/result";
+import { z } from "zod";
 
 const baseApiUrl = `${config.api.restBaseUrl}/room`;
 const revalidate = () => revalidateTag(RevalidationTags.Room);
-type UpdateRoomFields = {
-    number?: string[] | undefined;
-    id?: string[] | undefined;
-    address?: string[] | undefined;
-    fullName?: string[] | undefined;
-    ascId?: string[] | undefined;
-};
 
-export async function putRoom(formData: FormData): Promise<ClientResult<UpdateRoomFields, number>> {
+type RoomErrorsFieldType = ErrorFieldsType<z.infer<typeof putRoomSchema>>;
+
+export async function putRoom(formData: FormData): Promise<ClientResult<RoomErrorsFieldType, number>> {
     const rawFormData = Object.fromEntries(formData.entries());
     const valResult = putRoomSchema.safeParse(rawFormData);
     if (!valResult.success) {
