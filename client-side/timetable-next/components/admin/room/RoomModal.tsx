@@ -1,105 +1,14 @@
 "use client";
-import { Center, HStack, Input, VStack, useDisclosure, Text, UseDisclosureReturn, useToast, Button, Select } from "@chakra-ui/react";
-import { Tr, Th, Td } from "@chakra-ui/react";
-import { useState } from "react";
-import { useImmer } from "use-immer";
+import { updateRoom, deleteRoom } from "@/server-actions/roomActions";
+import { UseDisclosureReturn, useToast, VStack, HStack, Input, Select, Button, Text } from "@chakra-ui/react";
+import EditorModal from "../EditorModal";
+import ReadonlyEditorInputs from "../ReadonlyEditorInputs";
 import { z } from "zod";
 import { roomsSchema } from "@/fetching/admin/zodSchemas";
-import genericSort from "@/utils/genericSort";
-import EditorModal from "./EditorModal";
-import { deleteRoom, updateRoom } from "@/server-actions/roomActions";
-import ReadonlyEditorInputs from "./ReadonlyEditorInputs";
-import SearchBar from "./SearchBar";
-import EditorTable from "./EditorTable";
 
-type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
-type SortingType = {
-    searchQuery: string;
-    isAsc: boolean;
-    sortingField: keyof RoomType;
-};
+export type RoomType = z.infer<typeof roomsSchema.shape.data.shape.rooms.element>;
 
-export default function EditorList({ rooms }: { rooms: RoomType[] }) {
-    const [sorting, setSorting] = useImmer<SortingType>({ isAsc: true, searchQuery: "", sortingField: "id" });
-    const [selectedRoom, setSelectedRoom] = useState<RoomType>({ id: 0, address: "", fullName: "", number: "", ascId: "", modifiedAt: new Date() });
-    const disclosure = useDisclosure();
-    const hover = { cursor: "pointer", color: "purple.300" };
-
-    const localRooms = rooms
-        .filter(r => `${r.address} + ${r.ascId} + ${r.fullName} + ${r.id} + ${r.number} +`.toUpperCase().includes(sorting.searchQuery.toUpperCase()))
-        .sort((a, b) => genericSort<RoomType>(sorting.sortingField, sorting.isAsc, a, b));
-
-    const tableHeaders = (
-        <>
-            <Th
-                _hover={hover}
-                onClick={() =>
-                    setSorting(draft => {
-                        draft.sortingField = "id";
-                        draft.isAsc = !draft.isAsc;
-                    })
-                }
-            >
-                Id
-            </Th>
-            <Th
-                _hover={hover}
-                onClick={() =>
-                    setSorting(draft => {
-                        draft.sortingField = "number";
-                        draft.isAsc = !draft.isAsc;
-                    })
-                }
-            >
-                Номер кабинета
-            </Th>
-            <Th
-                _hover={hover}
-                onClick={() =>
-                    setSorting(draft => {
-                        draft.sortingField = "fullName";
-                        draft.isAsc = !draft.isAsc;
-                    })
-                }
-            >
-                Полное название
-            </Th>
-        </>
-    );
-
-    const tableBody = localRooms.map(r => (
-        <Tr
-            key={r.id}
-            _hover={{ cursor: "pointer", color: "purple.300" }}
-            onClick={() => {
-                setSelectedRoom(r);
-                disclosure.onOpen();
-            }}
-        >
-            <Td>{r.id}</Td>
-            <Td>{r.number}</Td>
-            <Td>{r.fullName}</Td>
-        </Tr>
-    ));
-
-    return (
-        <>
-            <Center>
-                <SearchBar onChange={e => setSorting(draft => void (draft.searchQuery = e.target.value))} />
-            </Center>
-
-            <EditorTable tableHeaders={tableHeaders}> {tableBody}</EditorTable>
-
-            <Modal
-                disclosure={disclosure}
-                key={selectedRoom.id}
-                selectedRoom={selectedRoom}
-            ></Modal>
-        </>
-    );
-}
-
-function Modal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; selectedRoom: RoomType }) {
+export default function RoomModal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; selectedRoom: RoomType }) {
     const toast = useToast({ duration: 5000, isClosable: true });
     const successfulToast = (message: string) => toast({ status: "success", title: "Данные сохранены", description: message });
     const failedToast = (message: string) => toast({ status: "error", title: "Не удалось выполнить операцию", description: message });
