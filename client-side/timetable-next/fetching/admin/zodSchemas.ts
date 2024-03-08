@@ -51,3 +51,26 @@ export const putSubjectSchema = z.object({
     name: z.string().trim().min(1),
     ascId: z.string().nullish(),
 });
+
+export const getTeachersSchema = z.object({
+    data: z.object({
+        teachers: z.array(
+            z.object({
+                id: z.number(),
+                lastname: z.string(),
+                firstname: z.string(),
+                middlename: z.string(),
+                ascId: z.string().nullish(),
+                modifiedAt: z.coerce.date(),
+            })
+        ),
+    }),
+});
+
+export const putTeacherSchema = z.object({
+    id: z.coerce.number(),
+    lastname: z.string(),
+    firstname: z.string(),
+    middlename: z.string(),
+    ascId: z.string().nullish(),
+});

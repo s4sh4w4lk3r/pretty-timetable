@@ -1,6 +1,6 @@
 import config from "@/configs/config";
 import { AdminQueries } from "../persistedQueries";
-import { getRoomsSchema, getSubjectsSchema } from "./zodSchemas";
+import { getRoomsSchema, getSubjectsSchema, getTeachersSchema } from "./zodSchemas";
 
 export async function getRooms() {
     const query = AdminQueries.AllRooms;
@@ -24,4 +24,16 @@ export async function getSubjects() {
 
     const root = getSubjectsSchema.parse(await res.json());
     return root.data.subjects;
+}
+
+export async function getTeachers() {
+    const query = AdminQueries.AllTeachers;
+
+    const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}`, {
+        method: "GET",
+        cache: "no-store",
+    });
+
+    const root = getTeachersSchema.parse(await res.json());
+    return root.data.teachers;
 }
