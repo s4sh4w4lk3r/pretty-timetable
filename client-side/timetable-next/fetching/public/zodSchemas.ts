@@ -24,6 +24,7 @@ export const actualTimetablesSchema = z.object({
                                     id: z.number(),
                                     firstname: z.string(),
                                     lastname: z.string(),
+                                    middlename: z.string().optional(),
                                 }),
 
                                 subject: z.object({ name: z.string(), id: z.number() }),

@@ -17,6 +17,7 @@ query ActualTimetables($groupId: Int!, $weekNumber: Int!) {
                 id
                 firstname
                 lastname
+                middlename
             }
             subject {
                 name

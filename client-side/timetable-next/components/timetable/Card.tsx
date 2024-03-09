@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Badge, Card as ChakraCard, HStack, StackDivider, VStack, useColorModeValue } from "@chakra-ui/react";
-import { defineHintsRequired } from "@/utils/cardHints";
+import { defineHintsRequired } from "@/utils/card";
 import { durationToTimeOnly } from "@/utils/date";
 
 type ChangesType = {
