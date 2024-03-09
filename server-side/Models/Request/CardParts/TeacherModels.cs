@@ -9,7 +9,7 @@ namespace Models.Request.CardParts
             public int Id { get; init; }
             [Required] public required string Lastname { get; init; }
             [Required] public required string Firstname { get; init; }
-            [Required] public required string Middlename { get; init; }
+            public required string Middlename { get; init; }
             public string AscId { get; init; } = string.Empty;
 
         }
