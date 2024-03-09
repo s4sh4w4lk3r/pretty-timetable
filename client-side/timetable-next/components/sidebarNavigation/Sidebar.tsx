@@ -14,6 +14,7 @@ export default function Sidebar() {
 
     useEffect(() => {
         const handleWindowResize = () => setIsMobile(window.innerWidth < 768);
+        handleWindowResize();
         window.addEventListener("resize", handleWindowResize);
         return () => window.removeEventListener("resize", handleWindowResize);
     }, []);
