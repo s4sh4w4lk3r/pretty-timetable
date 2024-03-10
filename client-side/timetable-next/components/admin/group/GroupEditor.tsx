@@ -6,19 +6,19 @@ import { z } from "zod";
 import EditorModal from "../EditorModal";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import EditorTable from "../EditorTable";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { deleteGroup, putGroup } from "@/server-actions/groupActions";
+import useToasts from "@/utils/client/useToasts";
 
 type GroupType = z.infer<typeof groupsSchema.shape.data.shape.groups.element>;
 export default function GroupEdtior({ groups }: { groups: GroupType[] }) {
     const [query, setQuery] = useState("");
-    const [group, setGroup] = useState<GroupType>({ id: 0, name: "" });
     const disclosure = useDisclosure();
     const router = useRouter();
-    const toast = useToast({ duration: 5000, isClosable: true });
-    const successfulToast = (message: string) => toast({ status: "success", title: "Данные сохранены", description: message });
-    const failedToast = (message: string) => toast({ status: "error", title: "Не удалось выполнить операцию", description: message });
-    const loadingToast = (title: string) => toast({ status: "loading", title: title });
+    const groupIdFromPath: number = Number.parseInt(usePathname().split("/")[3]);
+    const groupFromPath = groupIdFromPath ? groups.find(g => g.id === groupIdFromPath) : undefined;
+    const [group, setGroup] = useState<GroupType>(groupFromPath ? groupFromPath : { id: 0, name: "" });
+    const { toast, successfulToast, failedToast, loadingToast } = useToasts();
 
     const localGroups = groups.filter(g => g.name.toLowerCase().includes(query.toLowerCase())).sort();
 

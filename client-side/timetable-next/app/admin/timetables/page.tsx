@@ -1,8 +1,10 @@
-import TimetableTabs from "@/components/admin/timetables/tabs/TimetableTabs";
-import { getGroups } from "@/fetching/public/requests";
+import { Center, Text } from "@chakra-ui/react";
 import React from "react";
 
-export default async function AdminTimetables() {
-    const groups = await getGroups();
-    return <TimetableTabs groups={groups}></TimetableTabs>;
+export default function Page() {
+    return (
+        <Center mt={24}>
+            <Text fontSize={"3xl"}>Выберите группу</Text>
+        </Center>
+    );
 }
