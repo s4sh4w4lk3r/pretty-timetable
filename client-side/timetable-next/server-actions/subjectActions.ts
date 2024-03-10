@@ -35,5 +35,3 @@ export async function deleteSubject({ id }: { id: number }): Promise<ClientResul
         return { success: true, message: res.description, value: null };
     }
 }
-
-// TODO проверить методы

@@ -1,17 +1,24 @@
 "use client";
 import { groupsSchema } from "@/fetching/public/zodSchemas";
-import { Button, HStack, Input, Td, Text, Th, Tr, VStack, useDisclosure } from "@chakra-ui/react";
+import { Button, HStack, Input, Td, Text, Th, Tr, VStack, useDisclosure, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { z } from "zod";
 import EditorModal from "../EditorModal";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import EditorTable from "../EditorTable";
+import { useRouter } from "next/navigation";
+import { deleteGroup, putGroup } from "@/server-actions/groupActions";
 
 type GroupType = z.infer<typeof groupsSchema.shape.data.shape.groups.element>;
-export default function GroupEdtior({ groups, onGroupSelected }: { groups: GroupType[]; onGroupSelected: (groupId: number) => void }) {
+export default function GroupEdtior({ groups }: { groups: GroupType[] }) {
     const [query, setQuery] = useState("");
-    const [group, setGroup] = useState<GroupType>(groups[0] ? groups[0] : { id: 0, name: "" });
+    const [group, setGroup] = useState<GroupType>({ id: 0, name: "" });
     const disclosure = useDisclosure();
+    const router = useRouter();
+    const toast = useToast({ duration: 5000, isClosable: true });
+    const successfulToast = (message: string) => toast({ status: "success", title: "Данные сохранены", description: message });
+    const failedToast = (message: string) => toast({ status: "error", title: "Не удалось выполнить операцию", description: message });
+    const loadingToast = (title: string) => toast({ status: "loading", title: title });
 
     const localGroups = groups.filter(g => g.name.toLowerCase().includes(query.toLowerCase())).sort();
 
@@ -21,8 +28,8 @@ export default function GroupEdtior({ groups, onGroupSelected }: { groups: Group
             _hover={{ cursor: "pointer", color: "purple.300" }}
             onClick={() => {
                 setGroup({ id: g.id, name: g.name });
-                onGroupSelected(g.id);
                 disclosure.onClose();
+                router.push(`/admin/timetables/${g.id}/actual`);
             }}
         >
             <Td>{g.id}</Td>
@@ -35,7 +42,10 @@ export default function GroupEdtior({ groups, onGroupSelected }: { groups: Group
                     <Button
                         onClick={async e => {
                             e.stopPropagation();
-                            // await deleteGroup();
+                            const toastId = loadingToast("Сохранение...");
+                            const res = await deleteGroup({ id: g.id });
+                            res.success ? successfulToast(res.message) : failedToast(res.message);
+                            toast.close(toastId);
                         }}
                         variant={"ghost"}
                         size={"xs"}
@@ -52,14 +62,21 @@ export default function GroupEdtior({ groups, onGroupSelected }: { groups: Group
 
     return (
         <>
-            <Text>Выбрана группа {group.name}</Text>
-            <Button
-                onClick={() => {
-                    disclosure.onOpen();
-                }}
+            <HStack
+                w={"full"}
+                justifyContent={"center"}
+                mb={2}
             >
-                Изменить
-            </Button>
+                <Text fontSize={"xl"}>{group.name ? group.name : "Группа не выбрана"}</Text>
+                <Button
+                    colorScheme="purple"
+                    onClick={() => {
+                        disclosure.onOpen();
+                    }}
+                >
+                    Изменить
+                </Button>
+            </HStack>
 
             <EditorModal
                 {...disclosure}
@@ -77,7 +94,10 @@ export default function GroupEdtior({ groups, onGroupSelected }: { groups: Group
                         colorScheme="green"
                         size={"md"}
                         onClick={async () => {
-                            // await putGroup();
+                            const toastId = loadingToast("Сохранение...");
+                            const res = await putGroup({ name: query });
+                            res.success ? successfulToast(res.message) : failedToast(res.message);
+                            toast.close(toastId);
                         }}
                     >
                         <AddIcon />

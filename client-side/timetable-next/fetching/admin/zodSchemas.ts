@@ -74,3 +74,9 @@ export const putTeacherSchema = z.object({
     middlename: z.string(),
     ascId: z.string().nullish(),
 });
+
+export const putGroupSchema = z.object({
+    id: z.coerce.number(),
+    name: z.string().trim().min(1),
+    ascId: z.string().nullish(),
+});
