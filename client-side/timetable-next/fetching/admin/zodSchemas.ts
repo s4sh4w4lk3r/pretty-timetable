@@ -80,3 +80,15 @@ export const putGroupSchema = z.object({
     name: z.string().trim().min(1),
     ascId: z.string().nullish(),
 });
+
+export const getWeekNumbersSchema = z.object({
+    data: z.object({
+        weekNumbers: z.array(
+            z.object({
+                weekNumber: z.number(),
+                startWeek: z.string(),
+                endWeek: z.string(),
+            })
+        ),
+    }),
+});

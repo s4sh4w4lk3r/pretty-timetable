@@ -14,4 +14,5 @@ export enum AdminQueries {
     AllStableTimetables = "AdminGetAllStableTimetables",
     AllSubjects = "AdminGetAllSubjects",
     AllTeachers = "AdminGetAllTeachers",
+    WeekNumbers = "AdminGetWeekNumbers",
 }

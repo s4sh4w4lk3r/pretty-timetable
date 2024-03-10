@@ -2,6 +2,7 @@
 using Repository.Entities.Timetable;
 using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable.Cards.Info;
+using System.Globalization;
 
 namespace GraphQL
 {
@@ -16,5 +17,21 @@ namespace GraphQL
         [UseProjection][UseFiltering][UseSorting] public IQueryable<ActualTimetable> GetActualTimetables([Service(ServiceKind.Synchronized)] TimetableContext context) => context.ActualTimetables;
         [UseProjection][UseFiltering][UseSorting] public IQueryable<StableCard> GetStableCards([Service(ServiceKind.Synchronized)] TimetableContext context) => context.StableCards;
         [UseProjection][UseFiltering][UseSorting] public IQueryable<StableTimetable> GetStableTimetables([Service(ServiceKind.Synchronized)] TimetableContext context) => context.StableTimetables;
+        public IEnumerable<WeekPeriod> GetWeekNumbers([Service(ServiceKind.Synchronized)] TimetableContext context)
+        {
+            var weekNumbers = context.ActualTimetables.Select(at => at.WeekNumber).Distinct().ToList();
+            var year = DateTime.Now.Year;
+            var culture = new CultureInfo("ru");
+
+            var weekPeriods = weekNumbers.Select(wn =>
+                new WeekPeriod(WeekNumber: wn,
+                StartWeek: DateOnly.FromDateTime(ISOWeek.ToDateTime(year, wn, DayOfWeek.Monday)).ToString(culture),
+                EndWeek: DateOnly.FromDateTime(ISOWeek.ToDateTime(year, wn, DayOfWeek.Sunday)).ToString(culture)))
+                .OrderBy(e => e.WeekNumber).ToList();
+
+            return weekPeriods;
+        }
+
+        public record WeekPeriod(int WeekNumber, string StartWeek, string EndWeek);
     }
 }

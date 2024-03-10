@@ -1,0 +1,7 @@
+﻿query WeekNumbers {
+    weekNumbers {
+        weekNumber
+        startWeek
+        endWeek
+    }
+}
