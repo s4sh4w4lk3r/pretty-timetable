@@ -1,17 +1,15 @@
-import { Button, HStack, Input, VStack, useToast, Text, UseDisclosureReturn } from "@chakra-ui/react";
+import { Button, HStack, Input, VStack, Text, UseDisclosureReturn } from "@chakra-ui/react";
 import React from "react";
 import { z } from "zod";
 import EditorModal from "../EditorModal";
 import ReadonlyEditorInputs from "../ReadonlyEditorInputs";
 import { getTeachersSchema } from "@/fetching/admin/zodSchemas";
 import { deleteTeacher, putTeacher } from "@/server-actions/teacherActions";
+import useToasts from "@/utils/client/useToasts";
 
 type TeacherType = z.infer<typeof getTeachersSchema.shape.data.shape.teachers.element>;
 export default function TeacherModal({ disclosure, selectedTeacher }: { disclosure: UseDisclosureReturn; selectedTeacher: TeacherType }) {
-    const toast = useToast({ duration: 5000, isClosable: true });
-    const successfulToast = (message: string) => toast({ status: "success", title: "Данные сохранены", description: message });
-    const failedToast = (message: string) => toast({ status: "error", title: "Не удалось выполнить операцию", description: message });
-    const loadingToast = (title: string) => toast({ status: "loading", title: title });
+    const { toast, successfulToast, failedToast, loadingToast } = useToasts();
 
     return (
         <EditorModal

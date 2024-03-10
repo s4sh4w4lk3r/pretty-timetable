@@ -1,18 +1,16 @@
 "use client";
-import { UseDisclosureReturn, useToast, VStack, HStack, Input, Button, Text } from "@chakra-ui/react";
+import { UseDisclosureReturn, VStack, HStack, Input, Button, Text } from "@chakra-ui/react";
 import EditorModal from "../EditorModal";
 import ReadonlyEditorInputs from "../ReadonlyEditorInputs";
 import { z } from "zod";
 import { getSubjectsSchema } from "@/fetching/admin/zodSchemas";
 import { deleteSubject, putSubject } from "@/server-actions/subjectActions";
+import useToasts from "@/utils/client/useToasts";
 
 type SubjectType = z.infer<typeof getSubjectsSchema.shape.data.shape.subjects.element>;
 
 export default function SubjectModal({ disclosure, selectedSubject }: { disclosure: UseDisclosureReturn; selectedSubject: SubjectType }) {
-    const toast = useToast({ duration: 5000, isClosable: true });
-    const successfulToast = (message: string) => toast({ status: "success", title: "Данные сохранены", description: message });
-    const failedToast = (message: string) => toast({ status: "error", title: "Не удалось выполнить операцию", description: message });
-    const loadingToast = (title: string) => toast({ status: "loading", title: title });
+    const { toast, successfulToast, failedToast, loadingToast } = useToasts();
 
     return (
         <EditorModal

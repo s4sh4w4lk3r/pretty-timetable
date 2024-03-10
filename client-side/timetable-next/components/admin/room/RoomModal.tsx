@@ -5,14 +5,12 @@ import EditorModal from "../EditorModal";
 import ReadonlyEditorInputs from "../ReadonlyEditorInputs";
 import { z } from "zod";
 import { getRoomsSchema } from "@/fetching/admin/zodSchemas";
+import useToasts from "@/utils/client/useToasts";
 
 type RoomType = z.infer<typeof getRoomsSchema.shape.data.shape.rooms.element>;
 
 export default function RoomModal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; selectedRoom: RoomType }) {
-    const toast = useToast({ duration: 5000, isClosable: true });
-    const successfulToast = (message: string) => toast({ status: "success", title: "Данные сохранены", description: message });
-    const failedToast = (message: string) => toast({ status: "error", title: "Не удалось выполнить операцию", description: message });
-    const loadingToast = (title: string) => toast({ status: "loading", title: title });
+    const { toast, successfulToast, failedToast, loadingToast } = useToasts();
 
     return (
         <EditorModal
