@@ -1,5 +1,5 @@
-﻿query WeekNumbers {
-    weekNumbers {
+﻿query WeekNumbers($groupId: Int!) {
+    weekNumbers(groupId: $groupId) {
         weekNumber
         startWeek
         endWeek

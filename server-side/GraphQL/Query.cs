@@ -17,9 +17,9 @@ namespace GraphQL
         [UseProjection][UseFiltering][UseSorting] public IQueryable<ActualTimetable> GetActualTimetables([Service(ServiceKind.Synchronized)] TimetableContext context) => context.ActualTimetables;
         [UseProjection][UseFiltering][UseSorting] public IQueryable<StableCard> GetStableCards([Service(ServiceKind.Synchronized)] TimetableContext context) => context.StableCards;
         [UseProjection][UseFiltering][UseSorting] public IQueryable<StableTimetable> GetStableTimetables([Service(ServiceKind.Synchronized)] TimetableContext context) => context.StableTimetables;
-        public IEnumerable<WeekPeriod> GetWeekNumbers([Service(ServiceKind.Synchronized)] TimetableContext context)
+        public IEnumerable<WeekPeriod> GetWeekNumbers([Service(ServiceKind.Synchronized)] TimetableContext context, int groupId)
         {
-            var weekNumbers = context.ActualTimetables.Select(at => at.WeekNumber).Distinct().ToList();
+            var weekNumbers = context.ActualTimetables.Where(at=>at.GroupId == groupId).Select(at => at.WeekNumber).Distinct().ToList();
             var year = DateTime.Now.Year;
             var culture = new CultureInfo("ru");
 

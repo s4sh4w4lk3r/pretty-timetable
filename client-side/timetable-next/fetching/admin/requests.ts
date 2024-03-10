@@ -38,10 +38,10 @@ export async function getTeachers() {
     return root.data.teachers;
 }
 
-export async function getWeekNumbers() {
+export async function getWeekNumbers({ groupId }: { groupId: number }) {
     const query = AdminQueries.WeekNumbers;
 
-    const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}`, {
+    const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}&variables={"groupId": ${groupId}}`, {
         method: "GET",
         cache: "no-store",
     });
