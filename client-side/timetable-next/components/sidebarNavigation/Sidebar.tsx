@@ -39,6 +39,7 @@ export default function Sidebar() {
             zIndex={"200"}
             top={0}
             borderRightWidth={"2px"}
+            as={"aside"}
         >
             <HamburgerMenuButton
                 onClick={() => {
@@ -51,6 +52,7 @@ export default function Sidebar() {
                 mt={14}
                 alignItems={isCollapsed ? "center" : "stretch"}
                 px={2}
+                as={"nav"}
             >
                 {sideBarItems}
             </VStack>
