@@ -10,6 +10,7 @@ import { z } from "zod";
 type GroupType = z.infer<typeof groupsSchema.shape.data.shape.groups.element>;
 export default function TimetableTabs({ groups }: { groups: GroupType[] }) {
     const [groupId, setGroupId] = useState(0);
+
     return (
         <>
             <GroupEditor

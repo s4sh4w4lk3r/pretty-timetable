@@ -4,14 +4,13 @@ import { Button, HStack, Input, Td, Text, Th, Tr, VStack, useDisclosure } from "
 import React, { useState } from "react";
 import { z } from "zod";
 import EditorModal from "../EditorModal";
-import { useImmer } from "use-immer";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import EditorTable from "../EditorTable";
 
 type GroupType = z.infer<typeof groupsSchema.shape.data.shape.groups.element>;
-export default function GroupSelector({ groups, onGroupSelected }: { groups: GroupType[]; onGroupSelected: (groupId: number) => void }) {
+export default function GroupEdtior({ groups, onGroupSelected }: { groups: GroupType[]; onGroupSelected: (groupId: number) => void }) {
     const [query, setQuery] = useState("");
-    const [group, setGroup] = useImmer<GroupType>({ id: 0, name: "" });
+    const [group, setGroup] = useState<GroupType>(groups[0] ? groups[0] : { id: 0, name: "" });
     const disclosure = useDisclosure();
 
     const localGroups = groups.filter(g => g.name.toLowerCase().includes(query.toLowerCase())).sort();
