@@ -4,13 +4,13 @@ import { Tr, Th, Td } from "@chakra-ui/react";
 import { useState } from "react";
 import { useImmer } from "use-immer";
 import { z } from "zod";
-import { getSubjectsSchema } from "@/fetching/admin/zodSchemas";
 import genericSort from "@/utils/genericSort";
 import EditorTable from "../EditorTable";
 import SearchBar from "../SearchBar";
 import SubjectModal from "./SubjectModal";
+import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
 
-type SubjectType = z.infer<typeof getSubjectsSchema.shape.data.shape.subjects.element>;
+type SubjectType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.subjects.element>;
 type SortingType = {
     searchQuery: string;
     isAsc: boolean;

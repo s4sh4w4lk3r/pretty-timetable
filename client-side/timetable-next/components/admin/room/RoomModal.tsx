@@ -1,13 +1,13 @@
 "use client";
 import { putRoom, deleteRoom } from "@/server-actions/roomActions";
-import { UseDisclosureReturn, useToast, VStack, HStack, Input, Select, Button, Text } from "@chakra-ui/react";
+import { UseDisclosureReturn, VStack, HStack, Input, Select, Button, Text } from "@chakra-ui/react";
 import EditorModal from "../EditorModal";
 import ReadonlyEditorInputs from "../ReadonlyEditorInputs";
 import { z } from "zod";
-import { getRoomsSchema } from "@/fetching/admin/zodSchemas";
 import useToasts from "@/utils/client/useToasts";
+import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
 
-type RoomType = z.infer<typeof getRoomsSchema.shape.data.shape.rooms.element>;
+type RoomType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.rooms.element>;
 
 export default function RoomModal({ disclosure, selectedRoom }: { disclosure: UseDisclosureReturn; selectedRoom: RoomType }) {
     const { toast, successfulToast, failedToast, loadingToast } = useToasts();

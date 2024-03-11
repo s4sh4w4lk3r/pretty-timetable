@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { getTeachersSchema } from "@/fetching/admin/zodSchemas";
 import { z } from "zod";
 import { Button, HStack, Td, Th, Tr, VStack, useDisclosure } from "@chakra-ui/react";
 import { useImmer } from "use-immer";
@@ -8,8 +7,9 @@ import genericSort from "@/utils/genericSort";
 import EditorTable from "../EditorTable";
 import SearchBar from "../SearchBar";
 import TeacherModal from "./TeacherModal";
+import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
 
-type TeacherType = z.infer<typeof getTeachersSchema.shape.data.shape.teachers.element>;
+type TeacherType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.teachers.element>;
 type SortingType = {
     searchQuery: string;
     isAsc: boolean;

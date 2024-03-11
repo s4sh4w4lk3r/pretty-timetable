@@ -47,22 +47,3 @@ export const actualTimetablesSchema = z.object({
         ),
     }),
 });
-
-export const groupsSchema = z.object({
-    data: z.object({
-        groups: z.array(z.object({ id: z.number(), name: z.string() })),
-    }),
-});
-
-export const lessonTimesSchema = z.object({
-    data: z.object({
-        lessonTimes: z.array(
-            z.object({
-                id: z.number(),
-                number: z.number(),
-                startsAt: z.string(),
-                endsAt: z.string(),
-            })
-        ),
-    }),
-});

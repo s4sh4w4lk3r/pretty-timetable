@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-export const highLevelDataSchema = z.object({
+export const getHighLevelDataSchema = z.object({
     data: z.object({
         subjects: z.array(
             z.object({
                 id: z.number(),
                 name: z.string().trim().min(1),
-                ascId: z.string().optional(),
+                ascId: z.string().nullish(),
                 modifiedAt: z.coerce.date(),
             })
         ),
@@ -17,7 +17,7 @@ export const highLevelDataSchema = z.object({
                 firstname: z.string().trim().min(1),
                 lastname: z.string().trim().min(1),
                 middlename: z.string(),
-                ascId: z.string().optional(),
+                ascId: z.string().nullish(),
                 modifiedAt: z.coerce.date(),
             })
         ),
@@ -28,7 +28,7 @@ export const highLevelDataSchema = z.object({
                 number: z.string().trim().min(1),
                 address: z.string().trim().min(1),
                 fullName: z.string().trim().min(1),
-                ascId: z.string().optional(),
+                ascId: z.string().nullish(),
                 modifiedAt: z.coerce.date(),
             })
         ),
@@ -47,7 +47,7 @@ export const highLevelDataSchema = z.object({
             z.object({
                 id: z.number(),
                 name: z.string().trim().min(1),
-                ascId: z.string().optional(),
+                ascId: z.string().nullish(),
                 modifiedAt: z.coerce.date(),
             })
         ),

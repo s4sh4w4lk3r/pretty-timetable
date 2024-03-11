@@ -4,13 +4,13 @@ import { Tr, Th, Td } from "@chakra-ui/react";
 import { useState } from "react";
 import { useImmer } from "use-immer";
 import { z } from "zod";
-import { getRoomsSchema } from "@/fetching/admin/zodSchemas";
 import genericSort from "@/utils/genericSort";
 import EditorTable from "../EditorTable";
 import SearchBar from "../SearchBar";
 import RoomModal from "./RoomModal";
+import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
 
-type RoomType = z.infer<typeof getRoomsSchema.shape.data.shape.rooms.element>;
+type RoomType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.rooms.element>;
 type SortingType = {
     searchQuery: string;
     isAsc: boolean;

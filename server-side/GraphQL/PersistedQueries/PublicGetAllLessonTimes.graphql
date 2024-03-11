@@ -1,8 +1,0 @@
-﻿query LessonTimes {
-    lessonTimes {
-        id
-        number
-        startsAt
-        endsAt
-    }
-}

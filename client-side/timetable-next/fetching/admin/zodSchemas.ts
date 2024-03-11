@@ -1,21 +1,6 @@
 import ServiceResult from "@/types/result";
 import { z } from "zod";
 
-export const getRoomsSchema = z.object({
-    data: z.object({
-        rooms: z
-            .object({
-                id: z.number(),
-                address: z.string(),
-                number: z.string(),
-                fullName: z.string(),
-                ascId: z.string().nullish(),
-                modifiedAt: z.coerce.date(),
-            })
-            .array(),
-    }),
-});
-
 export const serviceResultSchema: z.ZodSchema<ServiceResult> = z.lazy(() =>
     z.object({
         success: z.boolean(),
@@ -33,38 +18,10 @@ export const putRoomSchema = z.object({
     ascId: z.string().nullish(),
 });
 
-export const getSubjectsSchema = z.object({
-    data: z.object({
-        subjects: z.array(
-            z.object({
-                id: z.number(),
-                name: z.string(),
-                modifiedAt: z.coerce.date(),
-                ascId: z.string().nullish(),
-            })
-        ),
-    }),
-});
-
 export const putSubjectSchema = z.object({
     id: z.coerce.number(),
     name: z.string().trim().min(1),
     ascId: z.string().nullish(),
-});
-
-export const getTeachersSchema = z.object({
-    data: z.object({
-        teachers: z.array(
-            z.object({
-                id: z.number(),
-                lastname: z.string(),
-                firstname: z.string(),
-                middlename: z.string(),
-                ascId: z.string().nullish(),
-                modifiedAt: z.coerce.date(),
-            })
-        ),
-    }),
 });
 
 export const putTeacherSchema = z.object({

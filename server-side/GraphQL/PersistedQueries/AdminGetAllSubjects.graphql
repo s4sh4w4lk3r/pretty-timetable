@@ -1,8 +1,0 @@
-query Subjects {
-    subjects {
-        id
-        name
-        modifiedAt
-        ascId
-    }
-}

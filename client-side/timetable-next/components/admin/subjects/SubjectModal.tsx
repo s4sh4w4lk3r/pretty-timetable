@@ -3,11 +3,11 @@ import { UseDisclosureReturn, VStack, HStack, Input, Button, Text } from "@chakr
 import EditorModal from "../EditorModal";
 import ReadonlyEditorInputs from "../ReadonlyEditorInputs";
 import { z } from "zod";
-import { getSubjectsSchema } from "@/fetching/admin/zodSchemas";
 import { deleteSubject, putSubject } from "@/server-actions/subjectActions";
 import useToasts from "@/utils/client/useToasts";
+import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
 
-type SubjectType = z.infer<typeof getSubjectsSchema.shape.data.shape.subjects.element>;
+type SubjectType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.subjects.element>;
 
 export default function SubjectModal({ disclosure, selectedSubject }: { disclosure: UseDisclosureReturn; selectedSubject: SubjectType }) {
     const { toast, successfulToast, failedToast, loadingToast } = useToasts();

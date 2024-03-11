@@ -1,6 +1,5 @@
 "use client";
-import { groupsSchema } from "@/fetching/public/zodSchemas";
-import { Button, HStack, Input, Td, Text, Th, Tr, VStack, useDisclosure, useToast } from "@chakra-ui/react";
+import { Button, HStack, Input, Td, Text, Th, Tr, VStack, useDisclosure } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { z } from "zod";
 import EditorModal from "../EditorModal";
@@ -9,15 +8,16 @@ import EditorTable from "../EditorTable";
 import { usePathname, useRouter } from "next/navigation";
 import { deleteGroup, putGroup } from "@/server-actions/groupActions";
 import useToasts from "@/utils/client/useToasts";
+import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
 
-type GroupType = z.infer<typeof groupsSchema.shape.data.shape.groups.element>;
+type GroupType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.groups.element>;
 export default function GroupEdtior({ groups }: { groups: GroupType[] }) {
     const [query, setQuery] = useState("");
     const disclosure = useDisclosure();
     const router = useRouter();
     const groupIdFromPath: number = Number.parseInt(usePathname().split("/")[3]);
     const groupFromPath = groupIdFromPath ? groups.find(g => g.id === groupIdFromPath) : undefined;
-    const [group, setGroup] = useState<GroupType>(groupFromPath ? groupFromPath : { id: 0, name: "" });
+    const [group, setGroup] = useState<GroupType>(groupFromPath ? groupFromPath : { id: 0, name: "", modifiedAt: new Date() });
     const { toast, successfulToast, failedToast, loadingToast } = useToasts();
 
     const localGroups = groups.filter(g => g.name.toLowerCase().includes(query.toLowerCase())).sort();
@@ -27,7 +27,7 @@ export default function GroupEdtior({ groups }: { groups: GroupType[] }) {
             key={g.id}
             _hover={{ cursor: "pointer", color: "purple.300" }}
             onClick={() => {
-                setGroup({ id: g.id, name: g.name });
+                setGroup(g);
                 disclosure.onClose();
                 router.push(`/admin/timetables/${g.id}/actual`);
             }}

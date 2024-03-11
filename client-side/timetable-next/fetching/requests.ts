@@ -1,7 +1,7 @@
 import "server-only";
 import { SharedQueries } from "./persistedQueries";
 import { RevalidationTags } from "@/server-actions/revalidation";
-import { highLevelDataSchema } from "./zodSchemas";
+import { getHighLevelDataSchema } from "./zodSchemas";
 import config from "@/configs/config";
 
 export async function getHighLevelData() {
@@ -14,6 +14,6 @@ export async function getHighLevelData() {
         },
     });
 
-    const timetables = await highLevelDataSchema.parseAsync(await res.json());
+    const timetables = await getHighLevelDataSchema.parseAsync(await res.json());
     return timetables.data;
 }
