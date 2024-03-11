@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Repository\Repository.csproj" />
-    <ProjectReference Include="..\TelegramBot\TelegramBot.csproj" />
     <ProjectReference Include="..\Validation\Validation.csproj" />
   </ItemGroup>
 
