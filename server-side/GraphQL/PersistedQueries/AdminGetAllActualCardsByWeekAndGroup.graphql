@@ -1,0 +1,22 @@
+﻿query ActualCards($groupId: Int!, $weekNumber: Int!) {
+    actualCards(
+        where: {
+            relatedTimetable: {
+                weekNumber: { eq: $weekNumber }
+                groupId: { eq: $groupId }
+            }
+        }
+    ) {
+        id
+        subjectId
+        lessonTimeId
+        roomId
+        teacherId
+        subGroup
+        date
+        isMoved
+        isCanceled
+        isModified
+        modifiedAt
+    }
+}

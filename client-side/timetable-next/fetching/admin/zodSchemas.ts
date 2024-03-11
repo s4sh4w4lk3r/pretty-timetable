@@ -92,3 +92,23 @@ export const getWeekNumbersSchema = z.object({
         ),
     }),
 });
+
+export const getAllActualCardsByGroupAndWeekSchema = z.object({
+    data: z.object({
+        actualCards: z.array(
+            z.object({
+                id: z.number(),
+                subjectId: z.number(),
+                lessonTimeId: z.number(),
+                roomId: z.number(),
+                teacherId: z.number(),
+                subGroup: z.string(),
+                date: z.string(),
+                isMoved: z.boolean(),
+                isCanceled: z.boolean(),
+                isModified: z.boolean(),
+                modifiedAt: z.string(),
+            })
+        ),
+    }),
+});

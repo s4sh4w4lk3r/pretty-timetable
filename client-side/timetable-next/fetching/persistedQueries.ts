@@ -5,6 +5,7 @@ export enum PublicQueries {
 }
 
 export enum AdminQueries {
+    AdminGetAllActualCardsByWeekAndGroup = "AdminGetAllActualCardsByWeekAndGroup",
     AllLessonTimes = "AdminGetAllLessonTimes",
     AllRooms = "AdminGetAllRooms",
     AllSubjects = "AdminGetAllSubjects",
