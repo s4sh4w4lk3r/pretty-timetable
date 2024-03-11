@@ -8,5 +8,5 @@ export enum AdminQueries {
 }
 
 export enum SharedQueries {
-    HighLevelData = "HighLevelData",
+    HighLevelData = "SharedGetHighLevelData",
 }
