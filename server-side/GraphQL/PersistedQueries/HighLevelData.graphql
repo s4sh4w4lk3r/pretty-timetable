@@ -22,6 +22,7 @@
         modifiedAt
     }
     lessonTimes {
+        id
         number
         startsAt
         endsAt

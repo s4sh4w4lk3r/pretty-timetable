@@ -35,9 +35,10 @@ export const highLevelDataSchema = z.object({
 
         lessonTimes: z.array(
             z.object({
-                endsAt: z.string().trim().min(1),
-                startsAt: z.string().trim().min(1),
+                id: z.number(),
                 number: z.number(),
+                startsAt: z.string().trim().min(1),
+                endsAt: z.string().trim().min(1),
                 modifiedAt: z.coerce.date(),
             })
         ),
