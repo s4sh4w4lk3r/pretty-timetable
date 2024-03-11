@@ -11,3 +11,7 @@ export enum AdminQueries {
     AllTeachers = "AdminGetAllTeachers",
     WeekNumbers = "AdminGetWeekNumbers",
 }
+
+export enum SharedQueries {
+    HighLevelData = "HighLevelData",
+}
