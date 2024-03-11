@@ -1,9 +1,9 @@
-import { actualTimetablesSchema, subgroupsSchema } from "@/fetching/public/zodSchemas";
+import { getActualTimetableSchema, subgroupsSchema } from "@/fetching/zodSchemas";
 import moment from "moment";
 import { z } from "zod";
 
 type subgroupType = z.infer<typeof subgroupsSchema>;
-type ActualCardType = z.infer<typeof actualTimetablesSchema.shape.data.shape.actualTimetables.element.shape.cards.element>;
+type ActualCardType = z.infer<typeof getActualTimetableSchema.shape.cards.element>;
 
 export function getWeekNumber(date: Date) {
     date.setHours(0, 0, 0, 0);

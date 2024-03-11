@@ -1,4 +1,5 @@
-import { subgroupsSchema } from "@/fetching/public/zodSchemas";
+import { subgroupsSchema } from "@/fetching/zodSchemas";
+
 export default function parseGroup(groupId: string, subgroup?: string) {
     const groupIdNumeric = Number.parseInt(groupId);
 

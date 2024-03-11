@@ -53,3 +53,52 @@ export const getHighLevelDataSchema = z.object({
         ),
     }),
 });
+
+export const subgroupsSchema = z.enum(["ALL", "FIRST_GROUP", "SECOND_GROUP"]);
+
+export const getActualTimetableIdsOnlySchema = z.object({
+    data: z.object({
+        actualTimetables: z.array(
+            z.object({
+                id: z.number(),
+                groupId: z.number(),
+                weekNumber: z.number(),
+                cards: z.array(
+                    z.object({
+                        id: z.number(),
+                        teacherId: z.number(),
+                        subjectId: z.number(),
+                        roomId: z.number(),
+                        lessonTimeId: z.number(),
+                        date: z.string(),
+                        isModified: z.boolean(),
+                        isCanceled: z.boolean(),
+                        isMoved: z.boolean(),
+                        subGroup: z.string(),
+                        modifiedAt: z.coerce.date(),
+                    })
+                ),
+            })
+        ),
+    }),
+});
+
+export const getActualTimetableSchema = z.object({
+    group: getHighLevelDataSchema.shape.data.shape.groups.element,
+
+    cards: z.array(
+        z.object({
+            id: z.number(),
+            teacher: getHighLevelDataSchema.shape.data.shape.teachers.element,
+            subject: getHighLevelDataSchema.shape.data.shape.subjects.element,
+            room: getHighLevelDataSchema.shape.data.shape.rooms.element,
+            lessonTime: getHighLevelDataSchema.shape.data.shape.lessonTimes.element,
+            date: z.string(),
+            isModified: z.boolean(),
+            isCanceled: z.boolean(),
+            isMoved: z.boolean(),
+            subGroup: subgroupsSchema,
+            modifiedAt: z.coerce.string(),
+        })
+    ),
+});

@@ -1,6 +1,6 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { getGroups, getTimetable } from "@/fetching/public/requests";
+import { getActualTimetable, getHighLevelData } from "@/fetching/requests";
 import { getTeacherName } from "@/utils/card";
 import { getDailyCards, getWeekNumber } from "@/utils/date";
 import parseGroup from "@/utils/parseGroup";
@@ -13,8 +13,8 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-    const groups = await getGroups();
-    const fetchPromises = groups.map(g => getTimetable({ groupId: g.id, weekNumber: getWeekNumber(new Date()) }));
+    const groups = (await getHighLevelData()).groups;
+    const fetchPromises = groups.map(g => getActualTimetable({ groupId: g.id, weekNumber: getWeekNumber(new Date()) }));
 
     const slugs = groups.map(g => ({
         groupid: g.id.toString(),
@@ -30,21 +30,19 @@ export default async function Timetable({ params, searchParams }: Props) {
         notFound();
     }
 
-    const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
-    if (!timetable || !timetable.cards) {
-        notFound();
-    }
+    const timetable = await getActualTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
+    timetable && !timetable.cards ? notFound() : null;
 
     const { cards } = timetable;
     const dailyCards = getDailyCards(cards, group.subgroup);
     const cardBoxes = dailyCards.map(dc => {
         const cardsElement = dc.cards.map(c => {
-            const { id, cabinet, lessonTime, subject, teacher, date } = c;
+            const { id, room, lessonTime, subject, teacher, date } = c;
             return (
                 <Card
                     id={id}
                     key={id}
-                    cabinet={cabinet.number}
+                    cabinet={room.number}
                     lessonTime={lessonTime}
                     subject={subject.name}
                     teacher={getTeacherName({ ...teacher })}
@@ -87,7 +85,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
         return null;
     }
 
-    const timetable = await getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
+    const timetable = await getActualTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
 
     if (!timetable) {
         return null;
