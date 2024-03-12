@@ -1,0 +1,10 @@
+query {
+    teachers {
+        id
+        lastname
+        firstname
+        middlename
+        ascId
+        modifiedAt
+    }
+}

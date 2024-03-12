@@ -94,13 +94,13 @@ export async function getActualTimetable({ groupId, weekNumber }: { groupId: num
     ]);
 
     const tt = {
-        group: groups.find(g => g.id === idsOnly.groupId)!,
+        group: groups.find(g => g.id === idsOnly.groupId),
         cards: idsOnly.cards.map(card => ({
             id: card.id,
-            teacher: teachers.find(t => t.id === card.teacherId)!,
-            subject: subjects.find(t => t.id === card.subjectId)!,
-            room: rooms.find(t => t.id === card.roomId)!,
-            lessonTime: lessonTimes.find(t => t.id === card.lessonTimeId)!,
+            teacher: teachers.find(t => t.id === card.teacherId),
+            subject: subjects.find(t => t.id === card.subjectId),
+            room: rooms.find(t => t.id === card.roomId),
+            lessonTime: lessonTimes.find(t => t.id === card.lessonTimeId),
             date: card.date,
             isModified: card.isModified,
             isCanceled: card.isCanceled,

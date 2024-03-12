@@ -1,0 +1,10 @@
+query {
+    rooms {
+        id
+        number
+        address
+        fullName
+        ascId
+        modifiedAt
+    }
+}

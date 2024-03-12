@@ -1,0 +1,8 @@
+﻿query {
+    subjects {
+        id
+        name
+        ascId
+        modifiedAt
+    }
+}
