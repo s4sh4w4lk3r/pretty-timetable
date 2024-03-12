@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Badge, Card as ChakraCard, HStack, StackDivider, VStack, useColorModeValue } from "@chakra-ui/react";
-import { defineHintsRequired } from "@/utils/card";
+import { defineHintsRequired, getStatusHighlighting } from "@/utils/card";
 import { durationToTimeOnly } from "@/utils/date";
 
 type ChangesType = {
@@ -18,7 +18,7 @@ type Props = {
         startsAt: string;
         endsAt: string;
     };
-    cabinet: string;
+    room: string;
     changes: ChangesType;
     date: any;
 };
@@ -42,28 +42,8 @@ function getBadges(changes: ChangesType) {
     }
 }
 
-function getStatusHighlighting(params: { isNow: boolean; isPending: boolean }, colorMode: "dark" | "light") {
-    const { isNow, isPending } = params;
-
-    if (colorMode === "dark") {
-        if (isNow) return "green.400";
-
-        if (isPending) return "cyan.500";
-
-        return "pink.200";
-    }
-
-    if (colorMode === "light") {
-        if (isNow) return "green.400";
-
-        if (isPending) return "cyan.500";
-
-        return "pink.500";
-    }
-}
-
 export default function Card(props: Props) {
-    const { cabinet, lessonTime, subject, teacher, changes, date } = props;
+    const { room: cabinet, lessonTime, subject, teacher, changes, date } = props;
 
     const badge = getBadges(changes);
 
