@@ -46,7 +46,7 @@ export async function getActualTimetable({ groupId, weekNumber }: { groupId: num
 async function getActualTimetableIdsOnly({ groupId, weekNumber }: { groupId: number; weekNumber: number }) {
     const query = SharedQueries.GetActualTimetableByGroupAndWeek;
 
-    const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}&variables={"weekNumber":9,"groupId":12}`, {
+    const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}&variables={"weekNumber":${weekNumber},"groupId":${groupId}}`, {
         method: "GET",
         next: {
             tags: [RevalidationTags.Group, RevalidationTags.LessonTime, RevalidationTags.Room, RevalidationTags.Subject, RevalidationTags.Teacher],
