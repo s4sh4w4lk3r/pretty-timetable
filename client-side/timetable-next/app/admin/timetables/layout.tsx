@@ -1,10 +1,9 @@
 import GroupEditor from "@/components/admin/group/GroupEditor";
-import { getGroups } from "@/fetching/public/requests";
+import { getAllGroups } from "@/fetching/requests";
 import { VStack } from "@chakra-ui/react";
-import React from "react";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-    const groups = await getGroups();
+    const groups = await getAllGroups();
     return (
         <VStack
             mt={20}

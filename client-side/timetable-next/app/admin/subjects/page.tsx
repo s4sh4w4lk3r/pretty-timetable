@@ -1,7 +1,7 @@
 import SubjectEditor from "@/components/admin/subjects/SubjectEditor";
-import { getSubjects } from "@/fetching/admin/requests";
+import { getAllSubjects } from "@/fetching/requests";
 
 export default async function SubjectsAdmin() {
-    const subjects = await getSubjects();
+    const subjects = await getAllSubjects();
     return <SubjectEditor subjects={subjects}></SubjectEditor>;
 }

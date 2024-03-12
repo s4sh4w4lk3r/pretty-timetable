@@ -1,11 +1,7 @@
 import GroupList from "@/components/group/GroupList";
-import alertNoData from "@/components/miscellaneous/alertNoData";
-import { getGroups } from "@/fetching/public/requests";
+import { getAllGroups } from "@/fetching/requests";
 
 export default async function Timetables() {
-    const groups = await getGroups();
-    if (!groups) {
-        return alertNoData;
-    }
+    const groups = await getAllGroups();
     return <GroupList groups={groups}></GroupList>;
 }

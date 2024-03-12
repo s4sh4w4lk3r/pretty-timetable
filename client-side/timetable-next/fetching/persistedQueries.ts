@@ -5,6 +5,10 @@ export enum AdminQueries {
 }
 
 export enum SharedQueries {
-    HighLevelData = "SharedGetHighLevelData",
+    GetAllSubjects = "SharedGetAllSubjects",
+    GetAllTeachers = "SharedGetAllTeachers",
+    GetAllRooms = "SharedGetAllRooms",
+    GetAllLessonTimes = "SharedGetAllLessonTimes",
+    GetAllGroups = "SharedGetAllGroups",
     GetActualTimetableByGroupAndWeek = "SharedGetActualTimetableByGroupAndWeek",
 }

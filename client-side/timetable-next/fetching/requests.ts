@@ -1,37 +1,106 @@
 import "server-only";
 import { SharedQueries } from "./persistedQueries";
 import { RevalidationTags } from "@/server-actions/revalidation";
+import { getAllGroupsSchema, getAllLessonTimesSchema, getAllRoomsSchema, getAllSubjectsSchema, getAllTeachersSchema } from "./zodSchemas";
 import { getActualTimetableIdsOnlySchema, getActualTimetableSchema, getActualTimetableWeekDaysSchema } from "./zodSchemas";
 import config from "@/configs/config";
 import { distinctDates, getDayOfWeek } from "@/utils/date";
 
-export async function getHighLevelData() {
-    const query = SharedQueries.HighLevelData;
+export async function getAllSubjects() {
+    const query = SharedQueries.GetAllSubjects;
 
     const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}`, {
         method: "GET",
         next: {
-            tags: [RevalidationTags.Group, RevalidationTags.LessonTime, RevalidationTags.Room, RevalidationTags.Subject, RevalidationTags.Teacher],
+            tags: [RevalidationTags.Subject],
         },
     });
 
-    const timetables = await getHighLevelDataSchema.parseAsync(await res.json());
-    return timetables.data;
+    const timetables = await getAllSubjectsSchema.parseAsync(await res.json());
+    return timetables.data.subjects;
 }
 
+export async function getAllTeachers() {
+    const query = SharedQueries.GetAllTeachers;
+
+    const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}`, {
+        method: "GET",
+        next: {
+            tags: [RevalidationTags.Teacher],
+        },
+    });
+
+    const timetables = await getAllTeachersSchema.parseAsync(await res.json());
+    return timetables.data.teachers;
+}
+
+export async function getAllRooms() {
+    const query = SharedQueries.GetAllRooms;
+
+    const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}`, {
+        method: "GET",
+        next: {
+            tags: [RevalidationTags.Room],
+        },
+    });
+
+    const timetables = await getAllRoomsSchema.parseAsync(await res.json());
+    return timetables.data.rooms;
+}
+
+export async function getAllLessonTimes() {
+    const query = SharedQueries.GetAllLessonTimes;
+
+    const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}`, {
+        method: "GET",
+        next: {
+            tags: [RevalidationTags.LessonTime],
+        },
+    });
+
+    const timetables = await getAllLessonTimesSchema.parseAsync(await res.json());
+    return timetables.data.lessonTimes;
+}
+
+export async function getAllGroups() {
+    const query = SharedQueries.GetAllGroups;
+
+    const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}`, {
+        method: "GET",
+        next: {
+            tags: [RevalidationTags.Group],
+        },
+    });
+
+    const timetables = await getAllGroupsSchema.parseAsync(await res.json());
+    return timetables.data.groups;
+}
+/////////////////////////
 export async function getActualTimetable({ groupId, weekNumber }: { groupId: number; weekNumber: number }) {
-    const getHighLevelDataPromise = getHighLevelData();
+    const getAllGroupsPromise = getAllGroups();
+    const getAllSubjectsPromise = getAllSubjects();
+    const getAllTeachersPromise = getAllTeachers();
+    const getAllLessonTimesPromise = getAllLessonTimes();
+    const getAllRoomsPromise = getAllRooms();
     const getIdsOnlyPromise = getActualTimetableIdsOnly({ groupId, weekNumber });
-    const [highLevelData, idsOnly] = await Promise.all([getHighLevelDataPromise, getIdsOnlyPromise]);
+
+    const [groups, subjects, teachers, lessonTimes, rooms, idsOnly] = await Promise.all([
+        getAllGroupsPromise,
+        getAllSubjectsPromise,
+        getAllTeachersPromise,
+        getAllLessonTimesPromise,
+        getAllRoomsPromise,
+        getIdsOnlyPromise,
+    ]);
 
     const tt = {
-        group: highLevelData.groups.find(g => g.id === idsOnly.groupId)!,
+        group: groups.find(g => g.id === idsOnly.groupId)!,
         cards: idsOnly.cards.map(card => ({
             id: card.id,
-            teacher: highLevelData.teachers.find(t => t.id === card.teacherId)!,
-            subject: highLevelData.subjects.find(t => t.id === card.subjectId)!,
-            room: highLevelData.rooms.find(t => t.id === card.roomId)!,
-            lessonTime: highLevelData.lessonTimes.find(t => t.id === card.lessonTimeId)!,
+            teacher: teachers.find(t => t.id === card.teacherId)!,
+            subject: subjects.find(t => t.id === card.subjectId)!,
+            room: rooms.find(t => t.id === card.roomId)!,
+            lessonTime: lessonTimes.find(t => t.id === card.lessonTimeId)!,
             date: card.date,
             isModified: card.isModified,
             isCanceled: card.isCanceled,

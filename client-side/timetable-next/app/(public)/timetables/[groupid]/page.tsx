@@ -1,6 +1,6 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { getActualTimetable, getActualTimetableWeekDays, getHighLevelData } from "@/fetching/requests";
+import { getActualTimetable, getActualTimetableWeekDays, getAllGroups } from "@/fetching/requests";
 import { getTeacherName } from "@/utils/card";
 import { getWeekNumber } from "@/utils/date";
 import parseGroup from "@/utils/parseGroup";
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-    const groups = (await getHighLevelData()).groups;
+    const groups = await getAllGroups();
     const fetchPromises = groups.map(g => getActualTimetable({ groupId: g.id, weekNumber: getWeekNumber(new Date()) }));
 
     const slugs = groups.map(g => ({
