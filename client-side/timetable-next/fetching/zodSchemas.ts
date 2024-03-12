@@ -102,3 +102,23 @@ export const getActualTimetableSchema = z.object({
         })
     ),
 });
+
+export const getActualTimetableWeekDaysSchema = z.object({
+    group: z.object({
+        id: z.number(),
+        name: z.string(),
+        ascId: z.string(),
+        modifiedAt: z.coerce.date(),
+    }),
+
+    timetableFiltered: z.array(
+        z.object({
+            dayOfWeek: z.object({
+                dayOfWeek: z.number().min(0).max(6),
+                short: z.string().min(1),
+                long: z.string().min(1),
+            }),
+            cards: getActualTimetableSchema.shape.cards,
+        })
+    ),
+});

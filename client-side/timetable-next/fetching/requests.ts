@@ -1,8 +1,9 @@
 import "server-only";
 import { SharedQueries } from "./persistedQueries";
 import { RevalidationTags } from "@/server-actions/revalidation";
-import { getActualTimetableIdsOnlySchema, getActualTimetableSchema, getHighLevelDataSchema } from "./zodSchemas";
+import { getActualTimetableIdsOnlySchema, getActualTimetableSchema, getActualTimetableWeekDaysSchema, getHighLevelDataSchema } from "./zodSchemas";
 import config from "@/configs/config";
+import { distinctDates, getDayOfWeek } from "@/utils/date";
 
 export async function getHighLevelData() {
     const query = SharedQueries.HighLevelData;
@@ -41,6 +42,23 @@ export async function getActualTimetable({ groupId, weekNumber }: { groupId: num
     };
 
     return getActualTimetableSchema.parse(tt);
+}
+
+export async function getActualTimetableWeekDays({ groupId, weekNumber }: { groupId: number; weekNumber: number }) {
+    const tt = await getActualTimetable({ groupId, weekNumber });
+    const datesDistincted = distinctDates(tt.cards);
+
+    const timetableFiltered = datesDistincted.map(date => {
+        const cardsFiltred = tt.cards
+            .filter(c => new Date(c.date).getTime() === date.getTime())
+            .sort((card1, card2) => (card1.lessonTime.number > card2.lessonTime.number ? 1 : -1));
+
+        return { dayOfWeek: getDayOfWeek(date), cards: cardsFiltred };
+    });
+
+    const result = { group: tt.group, timetableFiltered: timetableFiltered };
+
+    return getActualTimetableWeekDaysSchema.parse(result);
 }
 
 async function getActualTimetableIdsOnly({ groupId, weekNumber }: { groupId: number; weekNumber: number }) {

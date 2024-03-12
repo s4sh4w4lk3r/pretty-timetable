@@ -1,9 +1,10 @@
-import { getActualTimetableSchema, subgroupsSchema } from "@/fetching/zodSchemas";
+import { getActualTimetableWeekDaysSchema, subgroupsSchema } from "@/fetching/zodSchemas";
+import DayOfWeek from "@/types/DayOfWeek";
 import moment from "moment";
 import { z } from "zod";
 
 type subgroupType = z.infer<typeof subgroupsSchema>;
-type ActualCardType = z.infer<typeof getActualTimetableSchema.shape.cards.element>;
+type ActualCardType = z.infer<typeof getActualTimetableWeekDaysSchema.shape.timetableFiltered.element.shape.cards.element>;
 
 export function getWeekNumber(date: Date) {
     date.setHours(0, 0, 0, 0);
@@ -35,4 +36,12 @@ export function distinctDates(cards: ActualCardType[]) {
 
 export function durationToTimeOnly(duration: string) {
     return moment.utc(moment.duration(duration).asMilliseconds()).format("H:mm");
+}
+
+export function getDayOfWeek(date: Date): { dayOfWeek: DayOfWeek; short: string; long: string } {
+    return {
+        dayOfWeek: date.getUTCDay(),
+        short: date.toLocaleString("RU-ru", { weekday: "short" }).toUpperCase(),
+        long: date.toLocaleString("RU-ru", { weekday: "long" }).toUpperCase(),
+    };
 }
