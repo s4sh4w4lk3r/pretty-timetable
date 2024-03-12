@@ -1,6 +1,6 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { getActualTimetable, getActualTimetableWeekDays, getAllGroups } from "@/fetching/requests";
+import { getActualTimetable, getActualTimetableWeekDays } from "@/fetching/requests";
 import { getTeacherName } from "@/utils/card";
 import { getWeekNumber } from "@/utils/date";
 import parseGroup from "@/utils/parseGroup";
@@ -12,17 +12,17 @@ type Props = {
     searchParams: { subgroup: string | undefined };
 };
 
-export async function generateStaticParams() {
-    const groups = await getAllGroups();
-    const fetchPromises = groups.map(g => getActualTimetable({ groupId: g.id, weekNumber: getWeekNumber(new Date()) }));
+// export async function generateStaticParams() {
+//     const groups = await getAllGroups();
+//     const fetchPromises = groups.map(g => getActualTimetable({ groupId: g.id, weekNumber: getWeekNumber(new Date()) }));
 
-    const slugs = groups.map(g => ({
-        groupid: g.id.toString(),
-    }));
+//     const slugs = groups.map(g => ({
+//         groupid: g.id.toString(),
+//     }));
 
-    await Promise.all(fetchPromises);
-    return slugs;
-}
+//     await Promise.all(fetchPromises);
+//     return slugs;
+// }
 
 export default async function Timetable({ params, searchParams }: Props) {
     const group = parseGroup(params.groupid, searchParams.subgroup);
