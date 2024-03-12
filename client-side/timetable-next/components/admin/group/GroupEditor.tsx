@@ -8,9 +8,9 @@ import EditorTable from "../EditorTable";
 import { usePathname, useRouter } from "next/navigation";
 import { deleteGroup, putGroup } from "@/server-actions/groupActions";
 import useToasts from "@/utils/client/useToasts";
-import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
+import { getAllGroupsSchema } from "@/fetching/zodSchemas";
 
-type GroupType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.groups.element>;
+type GroupType = z.infer<typeof getAllGroupsSchema.shape.data.shape.groups.element>;
 export default function GroupEdtior({ groups }: { groups: GroupType[] }) {
     const [query, setQuery] = useState("");
     const disclosure = useDisclosure();

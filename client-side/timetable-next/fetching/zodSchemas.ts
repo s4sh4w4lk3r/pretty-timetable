@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const getHighLevelDataSchema = z.object({
+export const getAllSubjectsSchema = z.object({
     data: z.object({
         subjects: z.array(
             z.object({
@@ -10,7 +10,11 @@ export const getHighLevelDataSchema = z.object({
                 modifiedAt: z.coerce.date(),
             })
         ),
+    }),
+});
 
+export const getAllTeachersSchema = z.object({
+    data: z.object({
         teachers: z.array(
             z.object({
                 id: z.number(),
@@ -21,7 +25,11 @@ export const getHighLevelDataSchema = z.object({
                 modifiedAt: z.coerce.date(),
             })
         ),
+    }),
+});
 
+export const getAllRoomsSchema = z.object({
+    data: z.object({
         rooms: z.array(
             z.object({
                 id: z.number(),
@@ -32,7 +40,11 @@ export const getHighLevelDataSchema = z.object({
                 modifiedAt: z.coerce.date(),
             })
         ),
+    }),
+});
 
+export const getAllLessonTimesSchema = z.object({
+    data: z.object({
         lessonTimes: z.array(
             z.object({
                 id: z.number(),
@@ -42,7 +54,11 @@ export const getHighLevelDataSchema = z.object({
                 modifiedAt: z.coerce.date(),
             })
         ),
+    }),
+});
 
+export const getAllGroupsSchema = z.object({
+    data: z.object({
         groups: z.array(
             z.object({
                 id: z.number(),
@@ -54,6 +70,7 @@ export const getHighLevelDataSchema = z.object({
     }),
 });
 
+/////////////////////////////////////////////////////////////////////////////////////
 export const subgroupsSchema = z.enum(["ALL", "FIRST_GROUP", "SECOND_GROUP"]);
 
 export const getActualTimetableIdsOnlySchema = z.object({
@@ -84,15 +101,15 @@ export const getActualTimetableIdsOnlySchema = z.object({
 });
 
 export const getActualTimetableSchema = z.object({
-    group: getHighLevelDataSchema.shape.data.shape.groups.element,
+    group: getAllGroupsSchema.shape.data.shape.groups.element,
 
     cards: z.array(
         z.object({
             id: z.number(),
-            teacher: getHighLevelDataSchema.shape.data.shape.teachers.element,
-            subject: getHighLevelDataSchema.shape.data.shape.subjects.element,
-            room: getHighLevelDataSchema.shape.data.shape.rooms.element,
-            lessonTime: getHighLevelDataSchema.shape.data.shape.lessonTimes.element,
+            teacher: getAllTeachersSchema.shape.data.shape.teachers.element,
+            subject: getAllSubjectsSchema.shape.data.shape.subjects.element,
+            room: getAllRoomsSchema.shape.data.shape.rooms.element,
+            lessonTime: getAllLessonTimesSchema.shape.data.shape.lessonTimes.element,
             date: z.string(),
             isModified: z.boolean(),
             isCanceled: z.boolean(),

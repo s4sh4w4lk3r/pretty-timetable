@@ -1,7 +1,7 @@
 import "server-only";
 import { SharedQueries } from "./persistedQueries";
 import { RevalidationTags } from "@/server-actions/revalidation";
-import { getActualTimetableIdsOnlySchema, getActualTimetableSchema, getActualTimetableWeekDaysSchema, getHighLevelDataSchema } from "./zodSchemas";
+import { getActualTimetableIdsOnlySchema, getActualTimetableSchema, getActualTimetableWeekDaysSchema } from "./zodSchemas";
 import config from "@/configs/config";
 import { distinctDates, getDayOfWeek } from "@/utils/date";
 

@@ -8,9 +8,9 @@ import genericSort from "@/utils/genericSort";
 import EditorTable from "../EditorTable";
 import SearchBar from "../SearchBar";
 import SubjectModal from "./SubjectModal";
-import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
+import { getAllSubjectsSchema } from "@/fetching/zodSchemas";
 
-type SubjectType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.subjects.element>;
+type SubjectType = z.infer<typeof getAllSubjectsSchema.shape.data.shape.subjects.element>;
 type SortingType = {
     searchQuery: string;
     isAsc: boolean;

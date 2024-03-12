@@ -7,9 +7,9 @@ import genericSort from "@/utils/genericSort";
 import EditorTable from "../EditorTable";
 import SearchBar from "../SearchBar";
 import TeacherModal from "./TeacherModal";
-import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
+import { getAllTeachersSchema } from "@/fetching/zodSchemas";
 
-type TeacherType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.teachers.element>;
+type TeacherType = z.infer<typeof getAllTeachersSchema.shape.data.shape.teachers.element>;
 type SortingType = {
     searchQuery: string;
     isAsc: boolean;

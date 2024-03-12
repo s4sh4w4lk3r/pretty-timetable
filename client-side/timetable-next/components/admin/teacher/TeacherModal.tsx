@@ -5,9 +5,9 @@ import EditorModal from "../EditorModal";
 import ReadonlyEditorInputs from "../ReadonlyEditorInputs";
 import { deleteTeacher, putTeacher } from "@/server-actions/teacherActions";
 import useToasts from "@/utils/client/useToasts";
-import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
+import { getAllTeachersSchema } from "@/fetching/zodSchemas";
 
-type TeacherType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.teachers.element>;
+type TeacherType = z.infer<typeof getAllTeachersSchema.shape.data.shape.teachers.element>;
 export default function TeacherModal({ disclosure, selectedTeacher }: { disclosure: UseDisclosureReturn; selectedTeacher: TeacherType }) {
     const { toast, successfulToast, failedToast, loadingToast } = useToasts();
 

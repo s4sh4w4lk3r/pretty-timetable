@@ -8,9 +8,9 @@ import genericSort from "@/utils/genericSort";
 import EditorTable from "../EditorTable";
 import SearchBar from "../SearchBar";
 import RoomModal from "./RoomModal";
-import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
+import { getAllRoomsSchema } from "@/fetching/zodSchemas";
 
-type RoomType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.rooms.element>;
+type RoomType = z.infer<typeof getAllRoomsSchema.shape.data.shape.rooms.element>;
 type SortingType = {
     searchQuery: string;
     isAsc: boolean;

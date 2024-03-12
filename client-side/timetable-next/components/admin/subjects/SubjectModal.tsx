@@ -5,9 +5,9 @@ import ReadonlyEditorInputs from "../ReadonlyEditorInputs";
 import { z } from "zod";
 import { deleteSubject, putSubject } from "@/server-actions/subjectActions";
 import useToasts from "@/utils/client/useToasts";
-import { getHighLevelDataSchema } from "@/fetching/zodSchemas";
+import { getAllSubjectsSchema } from "@/fetching/zodSchemas";
 
-type SubjectType = z.infer<typeof getHighLevelDataSchema.shape.data.shape.subjects.element>;
+type SubjectType = z.infer<typeof getAllSubjectsSchema.shape.data.shape.subjects.element>;
 
 export default function SubjectModal({ disclosure, selectedSubject }: { disclosure: UseDisclosureReturn; selectedSubject: SubjectType }) {
     const { toast, successfulToast, failedToast, loadingToast } = useToasts();
