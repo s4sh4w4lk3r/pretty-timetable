@@ -1,7 +1,7 @@
-import ActualCardEditor from "@/components/admin/timetables/ActualCardEditor";
-import WeekDaysBar from "@/components/admin/timetables/WeekDaysBar";
+import ActualTimetableEditor from "@/components/admin/timetables/actual/ActualTimetableEditor";
 import WeekSelector from "@/components/admin/timetables/WeekSelector";
-import { getAllActualCardsByGroupAndWeek, getWeekNumbers } from "@/fetching/admin/requests";
+import { getWeekNumbers } from "@/fetching/admin/requests";
+import { getActualTimetableWeekDays } from "@/fetching/requests";
 import { HStack, StackDivider, VStack } from "@chakra-ui/react";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -12,32 +12,25 @@ export default async function AdminActualTimetable({ params, searchParams }: Pro
     Number.isSafeInteger(groupIdInt) ? null : notFound();
 
     const weekNumbers = await getWeekNumbers({ groupId: groupIdInt });
-    const actualCards = Number.isSafeInteger(weekNumberInt)
-        ? await getAllActualCardsByGroupAndWeek({ groupId: groupIdInt, weekNumber: weekNumberInt })
+    const actualTimetable = Number.isSafeInteger(weekNumberInt)
+        ? await getActualTimetableWeekDays({ groupId: groupIdInt, weekNumber: weekNumberInt })
         : null;
 
     return (
         <VStack w={"full"}>
             <WeekSelector weekNumbers={weekNumbers} />
 
-            {actualCards ? (
+            {actualTimetable ? (
                 <HStack
                     justifyContent={"space-around"}
                     w={"full"}
                     divider={<StackDivider />}
                 >
-                    <WeekDaysBar></WeekDaysBar>
-
                     <VStack
                         alignItems={"stretch"}
                         gap={4}
                     >
-                        {actualCards.map(ac => (
-                            <ActualCardEditor
-                                key={ac.id}
-                                {...ac}
-                            />
-                        ))}
+                        <ActualTimetableEditor timetableFiltered={actualTimetable.timetableFiltered} />
                     </VStack>
                 </HStack>
             ) : null}
