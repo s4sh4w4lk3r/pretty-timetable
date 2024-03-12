@@ -1,8 +1,8 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { getActualTimetable, getHighLevelData } from "@/fetching/requests";
+import { getActualTimetable, getActualTimetableWeekDays, getHighLevelData } from "@/fetching/requests";
 import { getTeacherName } from "@/utils/card";
-import { getDailyCards, getWeekNumber } from "@/utils/date";
+import { getWeekNumber } from "@/utils/date";
 import parseGroup from "@/utils/parseGroup";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 import { notFound } from "next/navigation";
@@ -30,31 +30,30 @@ export default async function Timetable({ params, searchParams }: Props) {
         notFound();
     }
 
-    const timetable = await getActualTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
-    timetable && !timetable.cards ? notFound() : null;
+    const timetable = await getActualTimetableWeekDays({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
 
-    const { cards } = timetable;
-    const dailyCards = getDailyCards(cards, group.subgroup);
-    const cardBoxes = dailyCards.map(dc => {
-        const cardsElement = dc.cards.map(c => {
-            const { id, room, lessonTime, subject, teacher, date } = c;
-            return (
-                <Card
-                    id={id}
-                    key={id}
-                    cabinet={room.number}
-                    lessonTime={lessonTime}
-                    subject={subject.name}
-                    teacher={getTeacherName({ ...teacher })}
-                    changes={{ ...c }}
-                    date={date}
-                />
-            );
-        });
+    const cardBoxes = timetable.timetableFiltered.map(tt => {
+        const cardsElement = tt.cards
+            .filter(c => (group.subgroup !== "ALL" ? c.subGroup === "ALL" || c.subGroup === group.subgroup : c))
+            .map(c => {
+                const { id, room, lessonTime, subject, teacher, date } = c;
+                return (
+                    <Card
+                        id={id}
+                        key={id}
+                        room={room.number}
+                        lessonTime={lessonTime}
+                        subject={subject.name}
+                        teacher={getTeacherName({ ...teacher })}
+                        changes={{ ...c }}
+                        date={date}
+                    />
+                );
+            });
         return (
             <CardBox
-                key={dc.dayOfWeek}
-                dayOfWeek={dc.dayOfWeek}
+                key={tt.dayOfWeek.dayOfWeek}
+                dayOfWeek={tt.dayOfWeek.long}
                 doesHighlight={false}
             >
                 {cardsElement}
