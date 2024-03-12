@@ -91,7 +91,7 @@ export const getActualTimetableIdsOnlySchema = z.object({
                         isModified: z.boolean(),
                         isCanceled: z.boolean(),
                         isMoved: z.boolean(),
-                        subGroup: z.string(),
+                        subGroup: subgroupsSchema,
                         modifiedAt: z.coerce.date(),
                     })
                 ),
@@ -115,7 +115,7 @@ export const getActualTimetableSchema = z.object({
             isCanceled: z.boolean(),
             isMoved: z.boolean(),
             subGroup: subgroupsSchema,
-            modifiedAt: z.coerce.string(),
+            modifiedAt: z.coerce.date(),
         })
     ),
 });
