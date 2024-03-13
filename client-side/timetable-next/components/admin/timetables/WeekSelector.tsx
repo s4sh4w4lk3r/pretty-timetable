@@ -21,6 +21,7 @@ export default function WeekSelector({ weekNumbers }: { weekNumbers: WeekType[] 
         <Select
             onChange={e => (e.target.value ? router.push(`actual?weeknumber=${e.target.value}`) : null)}
             placeholder="Выберите неделю"
+            name="weekSelector"
         >
             {weekNumberOptions}
         </Select>

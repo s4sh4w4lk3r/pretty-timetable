@@ -1,62 +1,32 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
-import { RevalidationTags } from "./revalidation";
+import { revalidatePath } from "next/cache";
 import config from "@/configs/config";
-import { serviceResultSchema } from "@/fetching/admin/zodSchemas";
+import { ClientResult } from "@/types/result";
+import { deleteEntity, putEntity } from "./actionsFetchWrappers";
+import { putActualCardSchema } from "@/fetching/admin/zodSchemas";
+import { z } from "zod";
 
 const baseApiUrl = `${config.api.restBaseUrl}/actual/card`;
-const revalidate = () => revalidateTag(RevalidationTags.ActualCard);
+const revalidate = (groupId: string | number) => revalidatePath(`/timetables/${groupId}`);
 
-export async function createActualCard(params: {
-    cabinetId: number;
-    isCanceled: boolean;
-    isModified: boolean;
-    isMoved: boolean;
-    lessonTimeId: number;
-    subGroup: number;
-    subjectId: number;
-    teacherId: number;
-    relatedTimetableId: number;
-    date: string;
-}) {
-    const res = await fetch(baseApiUrl, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({ id: 0, ...params }),
-    });
-    revalidate();
+type ActualCardErrorsFieldType = ErrorFieldsType<z.infer<typeof putActualCardSchema>>;
+type PutProps = { groupId: number; formData: FormData };
+export async function putActualCard({ formData, groupId }: PutProps): Promise<ClientResult<ActualCardErrorsFieldType, number>> {
+    const rawFormData = Object.fromEntries(formData.entries());
+    const valResult = putActualCardSchema.safeParse(rawFormData);
+    console.log(valResult);
 
-    const result = await serviceResultSchema.safeParseAsync(await res.json());
-    return result.success ? result.data : result.error;
-}
+    if (!valResult.success) {
+        return { success: false, message: "Ошибка валидации", errors: valResult.error.flatten().fieldErrors };
+    }
 
-export async function updateActualCard(params: {
-    id: number;
-    cabinetId: number;
-    isCanceled: boolean;
-    isModified: boolean;
-    isMoved: boolean;
-    lessonTimeId: number;
-    subGroup: number;
-    subjectId: number;
-    teacherId: number;
-    relatedTimetableId: number;
-    date: string;
-}) {
-    const res = await fetch(baseApiUrl, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify(params),
-    });
-    revalidate();
-
-    const result = serviceResultSchema.safeParse(await res.json());
-    return result.success ? result.data : result.error;
+    const res = await putEntity({ url: baseApiUrl, entity: valResult.data, revalidateFn: revalidate.bind(null, groupId) });
+    if (!res.success) {
+        return { success: false, message: res.description, errors: {} };
+    } else {
+        return { success: true, message: res.description, value: (res.value as number) && 0 };
+    }
 }
 
 export async function deleteActualCard({ id }: { id: number }) {
