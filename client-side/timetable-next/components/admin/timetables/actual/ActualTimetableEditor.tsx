@@ -68,6 +68,7 @@ export default function ActualTimetableEditor({ actualTimetable, lessonTimeOptio
 
     const weekDaysButtons = timetableFiltered.map(x => (
         <WeekDayButton
+            isActive={selectedWeekday === x.dayOfWeek.dayOfWeek}
             name={x.dayOfWeek.long}
             key={x.dayOfWeek.dayOfWeek}
             onClick={() => {
