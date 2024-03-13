@@ -36,7 +36,7 @@ const initialCard: CardType = {
 
 export default function ActualTimetableEditor({ actualTimetable, lessonTimeOptions, roomOptions, subjectOptions, teacherOptions }: Props) {
     const { group, timetableFiltered } = actualTimetable;
-    const [selectedWeekday, setSelectedWeekday] = useState(0);
+    const [selectedWeekday, setSelectedWeekday] = useState(1); // 1 - это понедельник
     const [selectedCard, setSelectedCard] = useImmer<CardType>(initialCard);
     const disclosure = useDisclosure();
 
