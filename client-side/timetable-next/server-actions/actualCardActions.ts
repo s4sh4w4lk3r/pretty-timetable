@@ -29,12 +29,11 @@ export async function putActualCard({ formData, groupId }: PutProps): Promise<Cl
     }
 }
 
-export async function deleteActualCard({ id }: { id: number }) {
-    const res = await fetch(`${baseApiUrl}?id=${id}`, {
-        method: "DELETE",
-    });
-    revalidate();
-
-    const result = serviceResultSchema.safeParse(await res.json());
-    return result.success ? result.data : result.error;
+export async function deleteActualCard({ cardId, groupId }: { cardId: number; groupId: number }): Promise<ClientResult<null, null>> {
+    const res = await deleteEntity({ url: baseApiUrl, id: cardId, revalidateFn: revalidate.bind(null, groupId) });
+    if (!res.success) {
+        return { success: false, message: res.description, errors: null };
+    } else {
+        return { success: true, message: res.description, value: null };
+    }
 }
