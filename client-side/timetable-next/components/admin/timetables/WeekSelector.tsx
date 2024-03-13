@@ -1,7 +1,7 @@
 "use client";
 import { getWeekNumbersSchema } from "@/fetching/admin/zodSchemas";
 import { Select } from "@chakra-ui/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { z } from "zod";
 
@@ -9,6 +9,7 @@ type WeekType = z.infer<typeof getWeekNumbersSchema.shape.data.shape.weekNumbers
 export default function WeekSelector({ weekNumbers }: { weekNumbers: WeekType[] }) {
     const groupId = usePathname().split("/").at(3);
     const router = useRouter();
+    const weekNumber = useSearchParams().get("weeknumber");
 
     const weekNumberOptions = weekNumbers.map(w => (
         <option
@@ -25,6 +26,7 @@ export default function WeekSelector({ weekNumbers }: { weekNumbers: WeekType[] 
             placeholder="Выберите неделю"
             name="weekSelector"
             maxW={"900px"}
+            defaultValue={weekNumber ? weekNumber : undefined}
         >
             {weekNumberOptions}
         </Select>
