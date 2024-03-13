@@ -1,6 +1,5 @@
 import ServiceResult from "@/types/result";
 import { z } from "zod";
-import { subgroupsSchema } from "../zodSchemas";
 
 export const serviceResultSchema: z.ZodSchema<ServiceResult> = z.lazy(() =>
     z.object({
@@ -53,11 +52,17 @@ export const getWeekNumbersSchema = z.object({
 
 export const putActualCardSchema = z.object({
     id: z.coerce.number(),
-    subjectId: z.coerce.number(),
-    teacherId: z.coerce.number(),
-    roomId: z.coerce.number(),
-    lessonTimeId: z.coerce.number(),
-    subgroup: subgroupsSchema,
+    subjectId: z.coerce.number().positive(),
+    teacherId: z.coerce.number().positive(),
+    roomId: z.coerce.number().positive(),
+    lessonTimeId: z.coerce.number().positive(),
+    relatedTimetableId: z.coerce.number().positive(),
+    date: z
+        .string()
+        .trim()
+        .min(1)
+        .transform(arg => arg.split("-").reverse().join("-")),
+    subgroup: z.coerce.number().gte(0).lte(4),
     isModified: z.coerce.boolean(),
     isMoved: z.coerce.boolean(),
     isCanceled: z.coerce.boolean(),

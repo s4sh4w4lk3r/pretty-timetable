@@ -76,7 +76,7 @@ function handleOkStatusCode({ responseParsed, revalidateFn }: HandleOkStatusCode
 
 async function handleBadStatusCode(response: Response): Promise<FetchWrapperResult> {
     try {
-        console.error({ statusCode: response.status, json: await response.json() });
+        console.error({ statusCode: response.status, json: JSON.stringify(await response.json()) });
     } catch {
         console.error({ statusCode: response.status, body: await response.text() });
     } finally {

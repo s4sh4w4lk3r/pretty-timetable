@@ -11,6 +11,7 @@ query ActualTimetables($groupId: Int!, $weekNumber: Int!) {
             subjectId
             roomId
             lessonTimeId
+            relatedTimetableId
             date
             isModified
             isCanceled

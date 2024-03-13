@@ -102,6 +102,7 @@ export async function getActualTimetable({ groupId, weekNumber }: { groupId: num
             room: rooms.find(t => t.id === card.roomId),
             lessonTime: lessonTimes.find(t => t.id === card.lessonTimeId),
             date: card.date,
+            relatedTimetableId: card.relatedTimetableId,
             isModified: card.isModified,
             isCanceled: card.isCanceled,
             isMoved: card.isMoved,
