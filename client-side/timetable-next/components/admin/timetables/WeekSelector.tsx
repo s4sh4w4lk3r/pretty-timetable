@@ -24,6 +24,7 @@ export default function WeekSelector({ weekNumbers }: { weekNumbers: WeekType[] 
             onChange={e => (e.target.value ? router.push(`/admin/timetables/${groupId}/actual?weeknumber=${e.target.value}`) : null)}
             placeholder="Выберите неделю"
             name="weekSelector"
+            maxW={"900px"}
         >
             {weekNumberOptions}
         </Select>

@@ -79,9 +79,21 @@ export default function ActualTimetableEditor({ actualTimetable, lessonTimeOptio
 
     return (
         <>
-            <HStack divider={<StackDivider />}>
-                <VStack>{weekDaysButtons}</VStack>
-                <VStack>{cardsElement}</VStack>
+            <HStack
+                divider={<StackDivider />}
+                h={"600px"}
+                w={"1000px"}
+                justifyContent={"space-evenly"}
+            >
+                <VStack
+                    h={"full"}
+                    alignItems={"flex-start"}
+                    justifyContent={"center"}
+                    gap={10}
+                >
+                    {weekDaysButtons}
+                </VStack>
+                <VStack maxW={"500px"}>{cardsElement}</VStack>
             </HStack>
 
             <EditorModal
