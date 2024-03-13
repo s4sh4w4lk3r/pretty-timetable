@@ -15,6 +15,12 @@ namespace WebApi.Controllers
         [HttpPost, Route("apply-migration"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
         public async Task<IActionResult> ApplyMigration(CancellationToken cancellationToken = default)
         {
+            var pendingMigrations = await timetableContext.Database.GetPendingMigrationsAsync(cancellationToken: cancellationToken);
+            if (!pendingMigrations.Any())
+            {
+                return Ok(ServiceResult.Ok("Миграция базы данных не требуется."));
+            }
+
             try
             {
                 await timetableContext.Database.MigrateAsync(cancellationToken);

@@ -24,4 +24,8 @@ export const adminLinks: LinkType[] = [
         label: "Расписание",
         path: "/admin/timetables",
     },
+    {
+        label: "Прочее",
+        path: "/admin/extra",
+    },
 ];

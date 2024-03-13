@@ -89,7 +89,7 @@ function handleFetchException(error: unknown): FetchWrapperResult {
     return { success: false, description: "Произошла ошибка на сервере во время выполнения запроса." };
 }
 
-async function checkIsAuthorized(): Promise<CheckIsAuthorizedParams> {
+export async function checkIsAuthorized(): Promise<CheckIsAuthorizedParams> {
     const session = await getServerSession(authOptions);
 
     if (!session || !session.accessToken) {
