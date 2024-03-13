@@ -1,6 +1,6 @@
 "use client";
 import { getActualTimetableIdsOnlySchema, getActualTimetableWeekDaysSchema } from "@/fetching/zodSchemas";
-import { HStack, StackDivider, VStack, useDisclosure } from "@chakra-ui/react";
+import { Button, HStack, StackDivider, VStack, useDisclosure } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { z } from "zod";
 import { useImmer } from "use-immer";
@@ -91,7 +91,15 @@ export default function ActualTimetableEditor(props: Props) {
                 >
                     {weekDaysButtons}
                 </VStack>
-                <VStack maxW={"500px"}>{cardsElement}</VStack>
+                <VStack maxW={"500px"}>
+                    {cardsElement}
+                    <AddCardButton
+                        onClick={() => {
+                            setSelectedCard({ ...initialCard, relatedTimetableId: timetableFiltered.at(0)?.cards.at(0)?.relatedTimetableId ?? 0 });
+                            disclosure.onOpen();
+                        }}
+                    />
+                </VStack>
             </HStack>
 
             <ActualCardEditorModal
@@ -101,5 +109,18 @@ export default function ActualTimetableEditor(props: Props) {
                 groupId={group.id}
             />
         </>
+    );
+}
+
+function AddCardButton({ onClick }: { onClick: () => void }) {
+    return (
+        <Button
+            colorScheme="green"
+            w={"80%"}
+            mt={2}
+            onClick={onClick}
+        >
+            Добавить
+        </Button>
     );
 }

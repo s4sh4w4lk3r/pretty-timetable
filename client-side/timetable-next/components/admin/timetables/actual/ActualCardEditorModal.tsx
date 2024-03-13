@@ -1,9 +1,10 @@
-import { putActualCard } from "@/server-actions/actualCardActions";
+import { deleteActualCard, putActualCard } from "@/server-actions/actualCardActions";
 import { HStack, FormLabel, Switch, Button, UseDisclosureReturn, VStack, Input, Select, Text } from "@chakra-ui/react";
 import EditorModal from "../../EditorModal";
 import ReadonlyEditorInputs from "../../ReadonlyEditorInputs";
 import { z } from "zod";
 import { getActualTimetableIdsOnlySchema } from "@/fetching/zodSchemas";
+import useToasts from "@/utils/client/useToasts";
 
 type CardType = z.infer<typeof getActualTimetableIdsOnlySchema.shape.data.shape.actualTimetables.element.shape.cards.element>;
 type Props = {
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export default function ActualCardEditorModal({ selectedCard, disclosure, options, groupId }: Props) {
+    const { failedToast, loadingToast, successfulToast, toast } = useToasts();
     const { lessonTimeOptions, roomOptions, subjectOptions, teacherOptions } = options;
     return (
         <EditorModal
@@ -23,7 +25,10 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, option
             <form
                 onSubmit={async e => {
                     e.preventDefault();
-                    await putActualCard({ formData: new FormData(e.currentTarget), groupId: groupId });
+                    const toastId = loadingToast("Сохранение данных...");
+                    const res = await putActualCard({ formData: new FormData(e.currentTarget), groupId: groupId });
+                    toast.close(toastId);
+                    res.success ? successfulToast(res.message) : failedToast(res.message);
                 }}
             >
                 <VStack gap={3}>
@@ -91,14 +96,37 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, option
                     <HStack w={"full"}>
                         <Text>Дата занятия</Text>
                         <Input
-                            readOnly
                             defaultValue={selectedCard.date}
                             name="date"
+                            type="date"
                         ></Input>
                     </HStack>
 
                     <StatusSwitchers selectedCard={selectedCard} />
-                    <FormButtons />
+
+                    <HStack
+                        w={"full"}
+                        justifyContent={"space-around"}
+                    >
+                        <Button
+                            colorScheme="red"
+                            onClick={async () => {
+                                const toastId = loadingToast("Удаление...");
+                                const res = await deleteActualCard({ cardId: selectedCard.id, groupId: groupId });
+                                toast.close(toastId);
+                                res.success ? successfulToast(res.message) : failedToast(res.message);
+                                disclosure.onClose();
+                            }}
+                        >
+                            Удалить
+                        </Button>
+                        <Button
+                            type="submit"
+                            colorScheme="blue"
+                        >
+                            Сохранить
+                        </Button>
+                    </HStack>
                 </VStack>
             </form>
         </EditorModal>
@@ -132,23 +160,6 @@ function StatusSwitchers({ selectedCard }: { selectedCard: CardType }) {
                 colorScheme="red"
                 defaultChecked={selectedCard.isCanceled}
             />
-        </HStack>
-    );
-}
-
-function FormButtons() {
-    return (
-        <HStack
-            w={"full"}
-            justifyContent={"space-around"}
-        >
-            <Button colorScheme="red">Удалить</Button>
-            <Button
-                type="submit"
-                colorScheme="blue"
-            >
-                Сохранить
-            </Button>
         </HStack>
     );
 }
