@@ -21,6 +21,7 @@ export default function ExtraPage() {
                 <MigrationButton />
             </HStack>
 
+            <TimetablesProjection />
         </VStack>
     );
 }

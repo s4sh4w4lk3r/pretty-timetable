@@ -19,11 +19,8 @@ export default function FileUploadButton() {
                     const file = e.target.files?.item(0);
                     if (!file) return;
 
-                    const formData = new FormData();
-                    formData.append("timetable", file);
-
                     const toastId = loadingToast("Отправка файла...");
-                    const res = await importAsc(formData);
+                    const res = await importAsc(file);
                     toast.close(toastId);
                     res.success ? successfulToast(res.message) : failedToast(res.message);
                 }}
