@@ -14,6 +14,7 @@ export default function MigrationButton() {
                 toast.close(toastId);
                 res.success ? successfulToast(res.message) : failedToast(res.message);
             }}
+            colorScheme="red"
         >
             Провести миграцию
         </Button>
