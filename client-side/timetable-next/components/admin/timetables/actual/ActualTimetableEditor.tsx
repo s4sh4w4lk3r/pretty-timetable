@@ -91,7 +91,7 @@ export default function ActualTimetableEditor(props: Props) {
                 >
                     {weekDaysButtons}
                 </VStack>
-                <VStack maxW={"500px"}>
+                <VStack w={"500px"}>
                     {cardsElement}
                     <AddCardButton
                         onClick={() => {

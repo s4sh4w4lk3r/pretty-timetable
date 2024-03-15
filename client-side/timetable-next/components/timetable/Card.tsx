@@ -43,9 +43,10 @@ function getBadges(changes: ChangesType) {
 }
 
 export default function Card(props: Props) {
-    const { room: cabinet, lessonTime, subject, teacher, changes, date } = props;
+    const { room, lessonTime, subject, teacher, changes, date } = props;
 
-    const badge = getBadges(changes);
+    const badges = getBadges(changes);
+    const coniditionalBadges = badges ? <HStack mt={2}>{badges}</HStack> : null;
 
     const startsAt = durationToTimeOnly(lessonTime.startsAt);
     const endsAt = durationToTimeOnly(lessonTime.endsAt);
@@ -75,14 +76,14 @@ export default function Card(props: Props) {
                     justifyContent={"space-around"}
                     w={"100%"}
                 >
-                    {badge}
+                    {coniditionalBadges}
                     <p>{subject}</p>
                     <HStack
                         w={"100%"}
                         justifyContent={"space-around"}
                     >
                         <p>{teacher}</p>
-                        <p>{cabinet}</p>
+                        <p>{room}</p>
                     </HStack>
                 </VStack>
             </HStack>
