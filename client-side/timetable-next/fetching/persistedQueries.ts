@@ -2,6 +2,7 @@ export enum PublicQueries {}
 
 export enum AdminQueries {
     WeekNumbers = "AdminGetWeekNumbers",
+    GetStableTimetableByGroup = "AdminGetStableTimetableByGroup",
 }
 
 export enum SharedQueries {

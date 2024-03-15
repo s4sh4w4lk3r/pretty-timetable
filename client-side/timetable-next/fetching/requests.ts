@@ -1,7 +1,8 @@
 import "server-only";
-import { SharedQueries } from "./persistedQueries";
+import { AdminQueries, SharedQueries } from "./persistedQueries";
 import { RevalidationTags } from "@/server-actions/revalidation";
-import { getAllGroupsSchema, getAllLessonTimesSchema, getAllRoomsSchema, getAllSubjectsSchema, getAllTeachersSchema } from "./zodSchemas";
+import { getAllGroupsSchema, getAllLessonTimesSchema, getAllRoomsSchema, getAllSubjectsSchema } from "./zodSchemas";
+import { getAllTeachersSchema, getStableTimetableIdsOnlySchema, getStableTimetableSchema } from "./zodSchemas";
 import { getActualTimetableIdsOnlySchema, getActualTimetableSchema, getActualTimetableWeekDaysSchema } from "./zodSchemas";
 import config from "@/configs/config";
 import { distinctDates, getDayOfWeek } from "@/utils/date";
@@ -143,4 +144,53 @@ async function getActualTimetableIdsOnly({ groupId, weekNumber }: { groupId: num
 
     const timetables = await getActualTimetableIdsOnlySchema.parseAsync(await res.json());
     return timetables.data.actualTimetables[0];
+    // TODO: сделать получение не actualCards, а actyalTimetables
+}
+
+async function getStableTimetableIdsOnly({ groupId }: { groupId: number }) {
+    const query = AdminQueries.GetStableTimetableByGroup;
+
+    const res = await fetch(`${config.api.graphQLBaseUrl}/?id=${query}&variables={"groupId":${groupId}}`, {
+        method: "GET",
+        next: {
+            tags: [RevalidationTags.Group, RevalidationTags.LessonTime, RevalidationTags.Room, RevalidationTags.Subject, RevalidationTags.Teacher],
+        },
+    });
+
+    const timetables = await getStableTimetableIdsOnlySchema.parseAsync(await res.json());
+    return timetables.data.stableTimetables[0];
+}
+
+export async function getStableTimetable({ groupId }: { groupId: number }) {
+    const getAllGroupsPromise = getAllGroups();
+    const getAllSubjectsPromise = getAllSubjects();
+    const getAllTeachersPromise = getAllTeachers();
+    const getAllLessonTimesPromise = getAllLessonTimes();
+    const getAllRoomsPromise = getAllRooms();
+    const getIdsOnlyPromise = getStableTimetableIdsOnly({ groupId });
+
+    const [groups, subjects, teachers, lessonTimes, rooms, idsOnly] = await Promise.all([
+        getAllGroupsPromise,
+        getAllSubjectsPromise,
+        getAllTeachersPromise,
+        getAllLessonTimesPromise,
+        getAllRoomsPromise,
+        getIdsOnlyPromise,
+    ]);
+
+    const tt = {
+        group: groups.find(g => g.id === idsOnly.groupId),
+        cards: idsOnly.cards.map(card => ({
+            id: card.id,
+            teacher: teachers.find(t => t.id === card.teacherId),
+            subject: subjects.find(t => t.id === card.subjectId),
+            room: rooms.find(t => t.id === card.roomId),
+            lessonTime: lessonTimes.find(t => t.id === card.lessonTimeId),
+            isWeekEven: card.isWeekEven,
+            dayOfWeek: card.dayOfWeek,
+            subgroup: card.subGroup,
+            modifiedAt: card.modifiedAt,
+        })),
+    };
+    return getStableTimetableSchema.parse(tt);
 }
