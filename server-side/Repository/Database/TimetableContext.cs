@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using Repository.Entities.Timetable;
 using Repository.Entities.Timetable.Cards;
 using Repository.Entities.Timetable.Cards.Info;
-using System.Reflection;
 using static Repository.Database.TimetableSchemaMethods;
 
 namespace Repository.Database
@@ -13,6 +12,7 @@ namespace Repository.Database
     {
         private readonly PostgresConfiguration _configuration = options.Value ?? throw new ArgumentNullException($"{nameof(PostgresConfiguration)} является null.");
         private readonly ILoggerFactory _loggerFactory = loggerFactory ?? throw new ArgumentNullException($"{nameof(ILoggerFactory)} является null.");
+        private static readonly bool _isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -21,6 +21,7 @@ namespace Repository.Database
             ArgumentNullException.ThrowIfNull(loggerFactory);
 
             optionsBuilder.UseLoggerFactory(_loggerFactory);
+            optionsBuilder.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: _isDevelopment);
             optionsBuilder.UseNpgsql(_configuration.ConnectionString, options => 
             { options.MigrationsAssembly("WebApi"); });
         }

@@ -27,3 +27,4 @@ export default function EditorModal({ isOpen, onClose, size, children }: Props) 
         </Modal>
     );
 }
+// TODO сделать закрытие модального окна при удалении сущности

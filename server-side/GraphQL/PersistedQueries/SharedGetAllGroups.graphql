@@ -1,6 +1,8 @@
-query Groups {
+query {
     groups {
         id
         name
+        ascId
+        modifiedAt
     }
 }

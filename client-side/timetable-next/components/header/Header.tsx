@@ -2,7 +2,7 @@
 import { Box, useColorModeValue } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
-export default function Nav({ children }: { children?: ReactNode | ReactNode[] }) {
+export default function Header({ children }: { children?: ReactNode | ReactNode[] }) {
     const headerBgColor = useColorModeValue("whiteAlpha.800", "blackAlpha.700");
 
     return (

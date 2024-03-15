@@ -21,6 +21,7 @@ export default function AdminLayout({ children }: Readonly<{ children: React.Rea
                     h={"full"}
                     justifyContent={"center"}
                     p={5}
+                    as={"nav"}
                 >
                     {adminLinksElement}
                     <HStack
@@ -41,5 +42,3 @@ export default function AdminLayout({ children }: Readonly<{ children: React.Rea
         </AuthProvider>
     );
 }
-
-// TODO: попробовать сделать переиспользуемые адмнинские компоненеты.

@@ -12,7 +12,7 @@ namespace Mappers.CardParts
                 Id = model.Id,
                 Name = model.Name,
                 ModifiedAt = DateTime.UtcNow,
-                AscId = model.AscId,
+                AscId = string.IsNullOrWhiteSpace(model.AscId) ? null : model.AscId,
             };
         }
     }

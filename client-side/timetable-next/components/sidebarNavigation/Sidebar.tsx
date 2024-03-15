@@ -14,6 +14,7 @@ export default function Sidebar() {
 
     useEffect(() => {
         const handleWindowResize = () => setIsMobile(window.innerWidth < 768);
+        handleWindowResize();
         window.addEventListener("resize", handleWindowResize);
         return () => window.removeEventListener("resize", handleWindowResize);
     }, []);
@@ -38,6 +39,7 @@ export default function Sidebar() {
             zIndex={"200"}
             top={0}
             borderRightWidth={"2px"}
+            as={"aside"}
         >
             <HamburgerMenuButton
                 onClick={() => {
@@ -50,6 +52,7 @@ export default function Sidebar() {
                 mt={14}
                 alignItems={isCollapsed ? "center" : "stretch"}
                 px={2}
+                as={"nav"}
             >
                 {sideBarItems}
             </VStack>

@@ -5,14 +5,14 @@ namespace Mappers
 {
     public static class GroupMapper
     {
-        public static Group ToEntity(this GroupPut group)
+        public static Group ToEntity(this GroupPut model)
         {
             return new()
             {
-                Id = group.Id,
-                Name = group.Name,
+                Id = model.Id,
+                Name = model.Name,
                 ModifiedAt = DateTime.UtcNow,
-                AscId = group.AscId,
+                AscId = string.IsNullOrWhiteSpace(model.AscId) ? null : model.AscId,
             };
         }
     }

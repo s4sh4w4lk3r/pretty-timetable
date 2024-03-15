@@ -1,8 +1,9 @@
-﻿query LessonTimes {
+query  {
     lessonTimes {
         id
         number
         startsAt
         endsAt
+        modifiedAt
     }
 }

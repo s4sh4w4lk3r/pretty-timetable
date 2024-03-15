@@ -14,7 +14,7 @@ namespace Mappers.CardParts
                 Lastname = model.Lastname,
                 Middlename = model.Middlename,
                 ModifiedAt = DateTime.UtcNow,
-                AscId = model.AscId,
+                AscId = string.IsNullOrWhiteSpace(model.AscId) ? null : model.AscId,
             };
         }
     }

@@ -1,47 +1,38 @@
 "use server";
 
-import { AdminZodFetchSchemas } from "@/fetching/zodFetchSchemas";
 import { revalidateTag } from "next/cache";
 import { RevalidationTags } from "./revalidation";
 import config from "@/configs/config";
-import { ClientResult, putEntity } from "./actionsFetchWrappers";
+import { putRoomSchema } from "@/fetching/admin/zodSchemas";
+import { deleteEntity, putEntity } from "./actionsFetchWrappers";
+import { ClientResult } from "@/types/result";
+import { z } from "zod";
 
 const baseApiUrl = `${config.api.restBaseUrl}/room`;
 const revalidate = () => revalidateTag(RevalidationTags.Room);
 
-export async function createRoom(params: { address: string; number: string; fullName: string }) {
-    const res = await fetch(baseApiUrl, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({ id: 0, ...params }),
-    });
-    revalidate();
+type RoomErrorsFieldType = ErrorFieldsType<z.infer<typeof putRoomSchema>>;
 
-    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
-    return result.success ? result.data : result.error;
-}
-
-export async function updateRoom(prevState: any, formData: FormData): Promise<ClientResult> {
+export async function putRoom(formData: FormData): Promise<ClientResult<RoomErrorsFieldType, number>> {
     const rawFormData = Object.fromEntries(formData.entries());
-    const valResult = AdminZodFetchSchemas.updateRoomSchema.safeParse(rawFormData);
-
+    const valResult = putRoomSchema.safeParse(rawFormData);
     if (!valResult.success) {
-        console.error(valResult.error.flatten());
-        return { message: "check logs", success: false };
+        return { success: false, message: "Ошибка валидации", errors: valResult.error.flatten().fieldErrors };
     }
 
-    const res = await putEntity({ url: baseApiUrl, entity: valResult.data, revalidateFn: revalidate, authN: "" });
-    return res;
+    const res = await putEntity({ url: baseApiUrl, entity: valResult.data, revalidateFn: revalidate });
+    if (!res.success) {
+        return { success: false, message: res.description, errors: {} };
+    } else {
+        return { success: true, message: res.description, value: (res.value as number) && 0 };
+    }
 }
 
-export async function deleteRoom({ id }: { id: number }) {
-    const res = await fetch(`${baseApiUrl}?id=${id}`, {
-        method: "DELETE",
-    });
-    revalidate();
-
-    const result = AdminZodFetchSchemas.serviceResultSchema.safeParse(await res.json());
-    return result.success ? result.data : result.error;
+export async function deleteRoom({ id }: { id: number }): Promise<ClientResult<null, null>> {
+    const res = await deleteEntity({ url: baseApiUrl, id: id, revalidateFn: revalidate });
+    if (!res.success) {
+        return { success: false, message: res.description, errors: null };
+    } else {
+        return { success: true, message: res.description, value: null };
+    }
 }

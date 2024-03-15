@@ -12,8 +12,7 @@ export default function LoginButtonHome() {
             <HStack gap={7}>
                 <Button
                     w={64}
-                    bgColor={"purple.500"}
-                    _hover={{ backgroundColor: "purple.600" }}
+                    colorScheme="purple"
                     onClick={() => {
                         signIn("keycloak");
                     }}
@@ -26,11 +25,10 @@ export default function LoginButtonHome() {
     else
         return (
             <HStack gap={7}>
-                <Link href="/admin">
+                <Link href="/admin/timetables">
                     <Button
                         w={64}
-                        bgColor={"purple.500"}
-                        _hover={{ backgroundColor: "purple.600" }}
+                        colorScheme="purple"
                     >
                         Изменить расписание
                     </Button>
@@ -44,8 +42,7 @@ const goToHomeBtn = (
     <Link href="/">
         <Button
             w={64}
-            bgColor={"purple.500"}
-            _hover={{ backgroundColor: "purple.600" }}
+            colorScheme="purple"
         >
             Вернуться на главную
         </Button>

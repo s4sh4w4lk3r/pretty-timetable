@@ -1,8 +1,8 @@
-query Rooms {
+query {
     rooms {
         id
-        address
         number
+        address
         fullName
         ascId
         modifiedAt

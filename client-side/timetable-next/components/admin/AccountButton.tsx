@@ -10,24 +10,26 @@ export default function AccountButton() {
     return status === "authenticated" ? <LogoutButton /> : <LoginButton />;
 }
 
-export function LoginButton() {
+function LoginButton() {
     return (
         <Button
             onClick={() => {
                 signIn("keycloak");
             }}
+            colorScheme="blue"
         >
             Войти
         </Button>
     );
 }
 
-export function LogoutButton() {
+function LogoutButton() {
     return (
         <Button
             onClick={() => {
                 federatedLogout();
             }}
+            colorScheme="red"
         >
             Выйти
         </Button>

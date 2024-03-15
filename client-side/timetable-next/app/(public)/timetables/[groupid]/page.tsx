@@ -1,15 +1,28 @@
 import Card from "@/components/timetable/Card";
 import CardBox from "@/components/timetable/CardBox";
-import { getDailyCards, getWeekNumber } from "@/utils/date";
-import { parseGroup } from "@/utils/groups";
+import { getActualTimetable, getActualTimetableWeekDays } from "@/fetching/requests";
+import { getTeacherName } from "@/utils/card";
+import { getWeekNumber } from "@/utils/date";
+import parseGroup from "@/utils/parseGroup";
 import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 import { notFound } from "next/navigation";
-import { PublicFetches } from "@/fetching/fetchRequests";
 
 type Props = {
     params: { groupid: string };
     searchParams: { subgroup: string | undefined };
 };
+
+// export async function generateStaticParams() {
+//     const groups = await getAllGroups();
+//     const fetchPromises = groups.map(g => getActualTimetable({ groupId: g.id, weekNumber: getWeekNumber(new Date()) }));
+
+//     const slugs = groups.map(g => ({
+//         groupid: g.id.toString(),
+//     }));
+
+//     await Promise.all(fetchPromises);
+//     return slugs;
+// }
 
 export default async function Timetable({ params, searchParams }: Props) {
     const group = parseGroup(params.groupid, searchParams.subgroup);
@@ -17,33 +30,30 @@ export default async function Timetable({ params, searchParams }: Props) {
         notFound();
     }
 
-    const timetable = await PublicFetches.getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
-    if (!timetable || !timetable.cards) {
-        notFound();
-    }
+    const timetable = await getActualTimetableWeekDays({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
 
-    const { cards } = timetable;
-    const dailyCards = getDailyCards(cards, group.subgroup);
-    const cardBoxes = dailyCards.map(dc => {
-        const cardsElement = dc.cards.map(c => {
-            const { id, cabinet, lessonTime, subject, teacher, date } = c;
-            return (
-                <Card
-                    id={id}
-                    key={id}
-                    cabinet={cabinet.number}
-                    lessonTime={lessonTime}
-                    subject={subject.name}
-                    teacher={teacher.lastname + " " + teacher.firstname}
-                    changes={{ ...c }}
-                    date={date}
-                />
-            );
-        });
+    const cardBoxes = timetable.timetableFiltered.map(tt => {
+        const cardsElement = tt.cards
+            .filter(c => (group.subgroup !== "ALL" ? c.subGroup === "ALL" || c.subGroup === group.subgroup : c))
+            .map(c => {
+                const { id, room, lessonTime, subject, teacher, date } = c;
+                return (
+                    <Card
+                        id={id}
+                        key={id}
+                        room={room.number}
+                        lessonTime={lessonTime}
+                        subject={subject.name}
+                        teacher={getTeacherName({ ...teacher })}
+                        changes={{ ...c }}
+                        date={date}
+                    />
+                );
+            });
         return (
             <CardBox
-                key={dc.dayOfWeek}
-                dayOfWeek={dc.dayOfWeek}
+                key={tt.dayOfWeek.dayOfWeek}
+                dayOfWeek={tt.dayOfWeek.long}
                 doesHighlight={false}
             >
                 {cardsElement}
@@ -74,7 +84,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
         return null;
     }
 
-    const timetable = await PublicFetches.getTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
+    const timetable = await getActualTimetable({ groupId: group.groupId, weekNumber: getWeekNumber(new Date()) });
 
     if (!timetable) {
         return null;
