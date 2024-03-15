@@ -1,7 +1,7 @@
 "use client";
 import { project } from "@/server-actions/extraActions";
 import useToasts from "@/utils/client/useToasts";
-import { Button, Input, useToast } from "@chakra-ui/react";
+import { Button, Input, VStack } from "@chakra-ui/react";
 import React from "react";
 
 export default function TimetablesProjection() {
@@ -16,11 +16,18 @@ export default function TimetablesProjection() {
                 res.success ? successfulToast(res.message) : failedToast(res.message);
             }}
         >
-            <Input
-                type="date"
-                name="date"
-            />
-            <Button type="submit">Создать расписание</Button>
+            <VStack w={"full"}>
+                <Input
+                    type="date"
+                    name="date"
+                />
+                <Button
+                    type="submit"
+                    colorScheme="blue"
+                >
+                    Создать расписание
+                </Button>
+            </VStack>
         </form>
     );
 }

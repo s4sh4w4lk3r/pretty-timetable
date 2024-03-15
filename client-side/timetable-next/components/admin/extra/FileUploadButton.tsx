@@ -24,7 +24,7 @@ export default function FileUploadButton() {
                     toast.close(toastId);
                     res.success ? successfulToast(res.message) : failedToast(res.message);
                 }}
-            ></input>
+            />
 
             <Button
                 onClick={() => {
