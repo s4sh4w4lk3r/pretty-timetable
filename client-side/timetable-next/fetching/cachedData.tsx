@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { getAllLessonTimes, getAllRooms, getAllSubjects, getAllTeachers } from "@/fetching/requests";
+import { getAllGroups, getAllLessonTimes, getAllRooms, getAllSubjects, getAllTeachers } from "@/fetching/requests";
 import { RevalidationTags } from "@/server-actions/revalidation";
 
 export async function getAllCachedSubjects() {
@@ -14,3 +14,9 @@ export async function getAllCachedRooms() {
 export async function getAllCachedTeachers() {
     return await unstable_cache(async () => await getAllTeachers(), ["all-teachers"], { tags: [RevalidationTags.Teacher] })();
 }
+
+export async function getAllCachedGroups() {
+    return await unstable_cache(async () => await getAllGroups(), ["all-groups"], { tags: [RevalidationTags.Group] })();
+}
+
+// TODO избавиться везде от некешируемых запросов
