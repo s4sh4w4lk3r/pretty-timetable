@@ -1,22 +1,58 @@
+"use client";
 import { deleteActualCard, putActualCard } from "@/server-actions/actualCardActions";
-import { HStack, FormLabel, Switch, Button, UseDisclosureReturn, VStack, Input, Select, Text } from "@chakra-ui/react";
+import { HStack, Button, UseDisclosureReturn, VStack, Input, Select, Text } from "@chakra-ui/react";
 import EditorModal from "../../EditorModal";
 import ReadonlyEditorInputs from "../../ReadonlyEditorInputs";
 import { z } from "zod";
 import { getActualTimetableIdsOnlySchema } from "@/fetching/zodSchemas";
 import useToasts from "@/utils/client/useToasts";
+import { useContext } from "react";
+import { TimetableContext } from "@/utils/client/contexts/TimetableContext";
+import { getTeacherName } from "@/utils/card";
+import StatusSwitchers from "./StatusSwitchers";
 
-type CardType = z.infer<typeof getActualTimetableIdsOnlySchema.shape.data.shape.actualTimetables.element.shape.cards.element>;
 type Props = {
-    selectedCard: CardType;
+    selectedCard: z.infer<typeof getActualTimetableIdsOnlySchema.shape.data.shape.actualTimetables.element.shape.cards.element>;
     disclosure: UseDisclosureReturn;
-    options: { lessonTimeOptions: JSX.Element[]; roomOptions: JSX.Element[]; subjectOptions: JSX.Element[]; teacherOptions: JSX.Element[] };
     groupId: number;
 };
 
-export default function ActualCardEditorModal({ selectedCard, disclosure, options, groupId }: Props) {
+export default function ActualCardEditorModal({ selectedCard, disclosure, groupId }: Props) {
+    const { lessonTimes, rooms, subjects, teachers } = useContext(TimetableContext)!;
+
+    const lessonTimeOptions = lessonTimes.map(lt => (
+        <option
+            value={lt.id}
+            key={lt.id}
+        >{`${lt.number} пара`}</option>
+    ));
+
+    const roomOptions = rooms.map(r => (
+        <option
+            key={r.id}
+            value={r.id}
+        >{`${r.address}, ${r.number}`}</option>
+    ));
+
+    const subjectOptions = subjects.map(s => (
+        <option
+            key={s.id}
+            value={s.id}
+        >
+            {s.name}
+        </option>
+    ));
+
+    const teacherOptions = teachers.map(t => (
+        <option
+            key={t.id}
+            value={t.id}
+        >
+            {getTeacherName(t)}
+        </option>
+    ));
+
     const { failedToast, loadingToast, successfulToast, toast } = useToasts();
-    const { lessonTimeOptions, roomOptions, subjectOptions, teacherOptions } = options;
     return (
         <EditorModal
             {...disclosure}
@@ -130,36 +166,5 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, option
                 </VStack>
             </form>
         </EditorModal>
-    );
-}
-
-function StatusSwitchers({ selectedCard }: { selectedCard: CardType }) {
-    return (
-        <HStack
-            w={"full"}
-            justifyContent={"space-evenly"}
-            h={"40px"}
-        >
-            <FormLabel htmlFor="isModified">Заменен:</FormLabel>
-            <Switch
-                name="isModified"
-                colorScheme="yellow"
-                defaultChecked={selectedCard.isModified}
-            />
-
-            <FormLabel htmlFor="isMoved">Перенесен:</FormLabel>
-            <Switch
-                name="isMoved"
-                colorScheme="orange"
-                defaultChecked={selectedCard.isMoved}
-            />
-
-            <FormLabel htmlFor="isCanceled">Отменен:</FormLabel>
-            <Switch
-                name="isCanceled"
-                colorScheme="red"
-                defaultChecked={selectedCard.isCanceled}
-            />
-        </HStack>
     );
 }

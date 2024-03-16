@@ -8,13 +8,7 @@ import { WeekDayButton } from "../WeekDayButton";
 import { AdminActualCard } from "./AdminActualCard";
 import ActualCardEditorModal from "./ActualCardEditorModal";
 
-type Props = {
-    actualTimetable: z.infer<typeof getActualTimetableWeekDaysSchema>;
-    lessonTimeOptions: JSX.Element[];
-    roomOptions: JSX.Element[];
-    subjectOptions: JSX.Element[];
-    teacherOptions: JSX.Element[];
-};
+type Props = { actualTimetable: z.infer<typeof getActualTimetableWeekDaysSchema> };
 type CardType = z.infer<typeof getActualTimetableIdsOnlySchema.shape.data.shape.actualTimetables.element.shape.cards.element>;
 
 const initialCard: CardType = {
@@ -105,7 +99,6 @@ export default function ActualTimetableEditor(props: Props) {
             <ActualCardEditorModal
                 disclosure={disclosure}
                 selectedCard={selectedCard}
-                options={{ ...props }}
                 groupId={group.id}
             />
         </>
