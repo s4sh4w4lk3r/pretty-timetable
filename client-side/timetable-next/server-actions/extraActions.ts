@@ -70,7 +70,6 @@ export async function project(formData: FormData) {
         });
 
         const result = (await response.json()) as ServiceResult;
-        console.log(result);
         return { success: result.success, message: result.description };
     } catch (error) {
         console.error(error);

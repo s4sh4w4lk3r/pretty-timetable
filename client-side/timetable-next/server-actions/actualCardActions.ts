@@ -15,7 +15,6 @@ type PutProps = { groupId: number; formData: FormData };
 export async function putActualCard({ formData, groupId }: PutProps): Promise<ClientResult<ActualCardErrorsFieldType, number>> {
     const rawFormData = Object.fromEntries(formData.entries());
     const valResult = putActualCardSchema.safeParse(rawFormData);
-    console.log(valResult);
 
     if (!valResult.success) {
         return { success: false, message: "Ошибка валидации", errors: valResult.error.flatten().fieldErrors };

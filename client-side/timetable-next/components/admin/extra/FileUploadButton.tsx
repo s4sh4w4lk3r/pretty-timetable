@@ -29,7 +29,6 @@ export default function FileUploadButton() {
             <Button
                 onClick={() => {
                     inputRef.current?.click();
-                    console.log("first");
                 }}
                 colorScheme="yellow"
             >
