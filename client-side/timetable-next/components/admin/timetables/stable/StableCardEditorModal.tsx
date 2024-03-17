@@ -10,6 +10,7 @@ import { TimetableContext } from "@/utils/client/contexts/TimetableContext";
 import { useContext } from "react";
 import ReadonlyEditorInputs from "../../ReadonlyEditorInputs";
 import DayOfWeekSelect from "./DayOfWeekSelect";
+import { deleteStableCard, putStableCard } from "@/server-actions/stableCardActions";
 
 type StableCard = z.infer<typeof getStableTimetableIdsOnlySchema.shape.data.shape.stableTimetables.element.shape.cards.element>;
 type Props = { disclosure: UseDisclosureReturn; groupId: number; selectedCard: StableCard };
@@ -55,13 +56,13 @@ export default function StableCardEditorModal({ disclosure, groupId, selectedCar
             size={"xl"}
         >
             <form
-            // onSubmit={async e => {
-            //         e.preventDefault();
-            //         const toastId = loadingToast("Сохранение данных...");
-            //         const res = await putActualCard({ formData: new FormData(e.currentTarget), groupId: groupId });
-            //         toast.close(toastId);
-            //         res.success ? successfulToast(res.message) : failedToast(res.message);
-            //     }}
+                onSubmit={async e => {
+                    e.preventDefault();
+                    const toastId = loadingToast("Сохранение данных...");
+                    const res = await putStableCard({ formData: new FormData(e.currentTarget), groupId: groupId });
+                    toast.close(toastId);
+                    res.success ? successfulToast(res.message) : failedToast(res.message);
+                }}
             >
                 <VStack gap={3}>
                     <ReadonlyEditorInputs
@@ -116,7 +117,7 @@ export default function StableCardEditorModal({ disclosure, groupId, selectedCar
 
                         <Text>Подгруппа</Text>
                         <Select
-                            name="subgroup"
+                            name="subGroup"
                             defaultValue={selectedCard.subGroup}
                         >
                             <option value="0">Все</option>
@@ -129,7 +130,12 @@ export default function StableCardEditorModal({ disclosure, groupId, selectedCar
 
                     <HStack w={"full"}>
                         <Text>Четная неделя?</Text>
-                        <Switch defaultChecked={selectedCard.isWeekEven} />
+                        <Switch
+                            defaultChecked={selectedCard.isWeekEven}
+                            size={"lg"}
+                            colorScheme="purple"
+                            name="isWeekEven"
+                        />
                     </HStack>
 
                     <HStack

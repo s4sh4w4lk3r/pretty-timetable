@@ -67,3 +67,15 @@ export const putActualCardSchema = z.object({
     isMoved: z.coerce.boolean(),
     isCanceled: z.coerce.boolean(),
 });
+
+export const putStableCardSchema = z.object({
+    id: z.coerce.number(),
+    teacherId: z.coerce.number().positive(),
+    subjectId: z.coerce.number().positive(),
+    roomId: z.coerce.number().positive(),
+    lessonTimeId: z.coerce.number().positive(),
+    isWeekEven: z.coerce.boolean(),
+    dayOfWeek: z.coerce.number().gte(0).lte(6),
+    subGroup: z.coerce.number().gte(0).lte(4),
+    relatedTimetableId: z.coerce.number().positive(),
+});

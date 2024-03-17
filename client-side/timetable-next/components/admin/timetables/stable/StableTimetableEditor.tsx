@@ -39,7 +39,9 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
                 onClick={() => setweekDay(dayOfWeek)}
             />
         ));
-    const cardsFiltred = stableTimetable.cards.filter(c => c.isWeekEven === isWeekEven && c.dayOfWeek === weekday);
+    const cardsFiltred = stableTimetable.cards
+        .filter(c => c.isWeekEven === isWeekEven && c.dayOfWeek === weekday)
+        .sort((a, b) => (a.lessonTime.number > b.lessonTime.number ? 1 : -1));
     const elements = cardsFiltred.map(c => (
         <AdminActualCard
             key={c.id}
