@@ -1,7 +1,7 @@
 "use client";
 import { getStableTimetableIdsOnlySchema, getStableTimetableSchema } from "@/fetching/zodSchemas";
 import DayOfWeek from "@/types/DayOfWeek";
-import { Switch, VStack, Text, HStack, StackDivider, useDisclosure } from "@chakra-ui/react";
+import { Switch, VStack, Text, HStack, StackDivider, useDisclosure, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { z } from "zod";
 import { AdminActualCard } from "../actual/AdminActualCard";
@@ -42,7 +42,7 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
     const cardsFiltred = stableTimetable.cards
         .filter(c => c.isWeekEven === isWeekEven && c.dayOfWeek === weekday)
         .sort((a, b) => (a.lessonTime.number > b.lessonTime.number ? 1 : -1));
-    const elements = cardsFiltred.map(c => (
+    const cardsElement = cardsFiltred.map(c => (
         <AdminActualCard
             key={c.id}
             onClick={() => {
@@ -75,6 +75,14 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
             }}
         />
     ));
+    cardsElement.push(
+        <AddCardButton
+            onClick={() => {
+                setSelectedCard({ ...initialCard });
+                disclosure.onOpen();
+            }}
+        />
+    );
 
     return (
         <>
@@ -83,6 +91,7 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
                 <Switch
                     isChecked={isWeekEven}
                     onChange={() => setIsWeekEven(!isWeekEven)}
+                    size={"lg"}
                 />
             </HStack>
 
@@ -101,7 +110,7 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
                     {weekDayButtons}
                 </VStack>
 
-                <VStack w={"500px"}>{elements}</VStack>
+                <VStack w={"500px"}>{cardsElement}</VStack>
             </HStack>
 
             <StableCardEditorModal
@@ -110,5 +119,18 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
                 selectedCard={selectedCard}
             />
         </>
+    );
+}
+
+function AddCardButton({ onClick }: { onClick: () => void }) {
+    return (
+        <Button
+            colorScheme="green"
+            w={"80%"}
+            mt={2}
+            onClick={onClick}
+        >
+            Добавить
+        </Button>
     );
 }

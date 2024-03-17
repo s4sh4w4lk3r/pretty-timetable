@@ -144,13 +144,13 @@ export default function StableCardEditorModal({ disclosure, groupId, selectedCar
                     >
                         <Button
                             colorScheme="red"
-                            // onClick={async () => {
-                            //     const toastId = loadingToast("Удаление...");
-                            //     const res = await deleteActualCard({ cardId: selectedCard.id, groupId: groupId });
-                            //     toast.close(toastId);
-                            //     res.success ? successfulToast(res.message) : failedToast(res.message);
-                            //     disclosure.onClose();
-                            // }}
+                            onClick={async () => {
+                                const toastId = loadingToast("Удаление...");
+                                const res = await deleteStableCard({ cardId: selectedCard.id, groupId: groupId });
+                                toast.close(toastId);
+                                res.success ? successfulToast(res.message) : failedToast(res.message);
+                                disclosure.onClose();
+                            }}
                         >
                             Удалить
                         </Button>
