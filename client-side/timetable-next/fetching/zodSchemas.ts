@@ -246,7 +246,7 @@ export const getStableTimetableSchema = z.object({
             }),
             isWeekEven: z.boolean(),
             dayOfWeek: dayOfWeekSchema,
-            subgroup: z.string(),
+            subgroup: subgroupsSchema,
             modifiedAt: z.coerce.date(),
         })
     ),

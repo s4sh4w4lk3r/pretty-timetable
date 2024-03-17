@@ -7,6 +7,7 @@ import { useImmer } from "use-immer";
 import { WeekDayButton } from "../WeekDayButton";
 import { AdminActualCard } from "./AdminActualCard";
 import ActualCardEditorModal from "./ActualCardEditorModal";
+import DayOfWeek from "@/types/DayOfWeek";
 
 type Props = { actualTimetable: z.infer<typeof getActualTimetableWeekDaysSchema> };
 type CardType = z.infer<typeof getActualTimetableIdsOnlySchema.shape.data.shape.actualTimetables.element.shape.cards.element>;
@@ -28,7 +29,7 @@ const initialCard: CardType = {
 
 export default function ActualTimetableEditor(props: Props) {
     const { group, timetableFiltered } = props.actualTimetable;
-    const [selectedWeekday, setSelectedWeekday] = useState(1); // 1 - это понедельник
+    const [selectedWeekday, setSelectedWeekday] = useState<DayOfWeek>(DayOfWeek.Monday);
     const [selectedCard, setSelectedCard] = useImmer<CardType>(initialCard);
     const disclosure = useDisclosure();
 

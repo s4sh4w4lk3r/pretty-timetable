@@ -1,12 +1,12 @@
+import StableTimetableEditor from "@/components/admin/timetables/stable/StableTimetableEditor";
+import { getStableTimetable } from "@/fetching/requests";
 import { notFound } from "next/navigation";
 import React from "react";
 
-export default function AdminStableTimetables({ params }: { params: { groupid: string } }) {
-    const { groupid } = params;
-    const groupIdInt = Number.parseInt(groupid);
+export default async function AdminStableTimetables({ params }: { params: { groupid: string } }) {
+    const groupIdInt = Number.parseInt(params.groupid);
+    Number.isSafeInteger(groupIdInt) ? null : notFound();
+    const stableTimetable = await getStableTimetable({ groupId: groupIdInt });
 
-    if (!Number.isSafeInteger(groupIdInt)) {
-        notFound();
-    }
-    return <div>{JSON.stringify({ groupIdInt })}</div>;
+    return <StableTimetableEditor stableTimetable={stableTimetable}></StableTimetableEditor>;
 }
