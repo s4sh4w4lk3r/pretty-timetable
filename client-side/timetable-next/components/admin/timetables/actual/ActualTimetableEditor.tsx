@@ -8,6 +8,7 @@ import { WeekDayButton } from "../WeekDayButton";
 import { AdminActualCard } from "./AdminActualCard";
 import ActualCardEditorModal from "./ActualCardEditorModal";
 import DayOfWeek from "@/types/DayOfWeek";
+import AddCardButton from "../AddCardButton";
 
 type Props = { actualTimetable: z.infer<typeof getActualTimetableWeekDaysSchema> };
 type CardType = z.infer<typeof getActualTimetableIdsOnlySchema.shape.data.shape.actualTimetables.element.shape.cards.element>;
@@ -103,18 +104,5 @@ export default function ActualTimetableEditor(props: Props) {
                 groupId={group.id}
             />
         </>
-    );
-}
-
-function AddCardButton({ onClick }: { onClick: () => void }) {
-    return (
-        <Button
-            colorScheme="green"
-            w={"80%"}
-            mt={2}
-            onClick={onClick}
-        >
-            Добавить
-        </Button>
     );
 }

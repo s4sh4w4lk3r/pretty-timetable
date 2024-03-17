@@ -9,6 +9,7 @@ import { WeekDayButton } from "../WeekDayButton";
 import moment from "moment";
 import "moment/locale/ru";
 import StableCardEditorModal from "./StableCardEditorModal";
+import AddCardButton from "../AddCardButton";
 
 type StableCard = z.infer<typeof getStableTimetableIdsOnlySchema.shape.data.shape.stableTimetables.element.shape.cards.element>;
 const initialCard: StableCard = {
@@ -119,18 +120,5 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
                 selectedCard={selectedCard}
             />
         </>
-    );
-}
-
-function AddCardButton({ onClick }: { onClick: () => void }) {
-    return (
-        <Button
-            colorScheme="green"
-            w={"80%"}
-            mt={2}
-            onClick={onClick}
-        >
-            Добавить
-        </Button>
     );
 }
