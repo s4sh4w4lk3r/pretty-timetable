@@ -1,5 +1,5 @@
-query {
-    rooms {
+{
+    rooms(order: { address: ASC, number: ASC }) {
         id
         number
         address

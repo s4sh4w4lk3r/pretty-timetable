@@ -1,5 +1,5 @@
-﻿query {
-    subjects {
+﻿{
+    subjects(order: { name: ASC }) {
         id
         name
         ascId
