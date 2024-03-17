@@ -94,6 +94,7 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
                     isChecked={isWeekEven}
                     onChange={() => setIsWeekEven(!isWeekEven)}
                     size={"lg"}
+                    name="isWeekEven"
                 />
             </HStack>
 
