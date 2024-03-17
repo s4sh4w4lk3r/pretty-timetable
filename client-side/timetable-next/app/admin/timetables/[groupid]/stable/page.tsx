@@ -1,5 +1,6 @@
 import StableTimetableEditor from "@/components/admin/timetables/stable/StableTimetableEditor";
 import { getStableTimetable } from "@/fetching/requests";
+import { Center } from "@chakra-ui/react";
 import { notFound } from "next/navigation";
 import React from "react";
 
@@ -8,5 +9,9 @@ export default async function AdminStableTimetables({ params }: { params: { grou
     Number.isSafeInteger(groupIdInt) ? null : notFound();
     const stableTimetable = await getStableTimetable({ groupId: groupIdInt });
 
-    return <StableTimetableEditor stableTimetable={stableTimetable}></StableTimetableEditor>;
+    return (
+        <Center>
+            <StableTimetableEditor stableTimetable={stableTimetable}></StableTimetableEditor>
+        </Center>
+    );
 }

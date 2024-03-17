@@ -87,7 +87,7 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
     );
 
     return (
-        <>
+        <VStack>
             <HStack>
                 <Text>Четная неделя?</Text>
                 <Switch
@@ -121,6 +121,6 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
                 groupId={stableTimetable.group.id}
                 selectedCard={selectedCard}
             />
-        </>
+        </VStack>
     );
 }
