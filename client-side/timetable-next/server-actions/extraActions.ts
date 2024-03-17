@@ -5,10 +5,7 @@ import { checkIsAuthorized } from "./actionsFetchWrappers";
 import config from "@/configs/config";
 import { getWeekNumber } from "@/utils/date";
 
-export async function importAsc(file: File) {
-    const formData = new FormData();
-    formData.append("timetable", file);
-
+export async function importAsc(formData: FormData) {
     const session = await checkIsAuthorized();
 
     if (!session.success) return { success: false, message: session.description };
