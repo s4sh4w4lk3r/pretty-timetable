@@ -78,6 +78,7 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
     ));
     cardsElement.push(
         <AddCardButton
+            key={"stable"}
             onClick={() => {
                 setSelectedCard({ ...initialCard });
                 disclosure.onOpen();

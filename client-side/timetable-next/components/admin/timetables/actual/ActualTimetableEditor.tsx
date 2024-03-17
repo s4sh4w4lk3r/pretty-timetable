@@ -90,6 +90,7 @@ export default function ActualTimetableEditor(props: Props) {
                 <VStack w={"500px"}>
                     {cardsElement}
                     <AddCardButton
+                        key={"actual"}
                         onClick={() => {
                             setSelectedCard({ ...initialCard, relatedTimetableId: timetableFiltered.at(0)?.cards.at(0)?.relatedTimetableId ?? 0 });
                             disclosure.onOpen();
