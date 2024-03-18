@@ -12,6 +12,7 @@ export default function SearchBar({ onChange }: { onChange: (e: ChangeEvent<HTML
             w={"lg"}
             placeholder="Поиск по всем полям"
             ref={inputRef}
+            type="search"
         ></Input>
     );
 }

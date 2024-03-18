@@ -28,6 +28,7 @@ export default function GroupList({ groups }: { groups: { id: number; name: stri
                     w={["300px", null, "600px", null, null]}
                     placeholder="Поиск по группам"
                     ref={inputRef}
+                    type="search"
                 ></Input>
                 <Center>
                     <SimpleGrid
