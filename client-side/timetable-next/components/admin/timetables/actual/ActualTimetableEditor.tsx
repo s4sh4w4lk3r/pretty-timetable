@@ -1,6 +1,6 @@
 "use client";
 import { getActualTimetableIdsOnlySchema, getActualTimetableWeekDaysSchema } from "@/fetching/zodSchemas";
-import { Button, HStack, StackDivider, VStack, useDisclosure } from "@chakra-ui/react";
+import { HStack, StackDivider, VStack, useDisclosure } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { z } from "zod";
 import { useImmer } from "use-immer";
@@ -15,7 +15,7 @@ type CardType = z.infer<typeof getActualTimetableIdsOnlySchema.shape.data.shape.
 
 const initialCard: CardType = {
     id: 0,
-    date: "",
+    date: new Date("12-12-2024"),
     isCanceled: false,
     isModified: false,
     isMoved: false,

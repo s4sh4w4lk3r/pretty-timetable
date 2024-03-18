@@ -13,7 +13,10 @@ export function getWeekNumber(date: Date) {
 }
 
 export function distinctDates(cards: ActualCardType[]) {
-    return [...new Set(cards.map(c => c.date))].map(d => new Date(d)).sort((date1, date2) => (date1.getTime() > date2.getTime() ? 1 : -1));
+    const cardDatesNumeric = cards.map(c => c.date.getTime());
+    const distinctedDatesNumeric = [...new Set(cardDatesNumeric)];
+    const distinctedDatesNumericSorted = distinctedDatesNumeric.sort((date1, date2) => (date1 > date2 ? 1 : -1));
+    return distinctedDatesNumericSorted.map(d => new Date(d));
 }
 
 export function durationToTimeOnly(duration: string) {

@@ -1,7 +1,7 @@
 import { type ColorMode } from "@chakra-ui/react";
 import moment from "moment";
 
-export function defineHintsRequired(params: { lessonStartsAt: string; lessonEndsAt: string; dateFromCard: string }): {
+export function defineHintsRequired(params: { lessonStartsAt: string; lessonEndsAt: string; dateFromCard: Date }): {
     isNow: boolean;
     isPending: boolean;
 } {
@@ -11,7 +11,7 @@ export function defineHintsRequired(params: { lessonStartsAt: string; lessonEnds
 
     const startDate = new Date(new Date().setHours(Number.parseInt(lessonStartsAt.split(":")[0]), Number.parseInt(lessonStartsAt.split(":")[1]), 0));
     const endDate = new Date(new Date().setHours(Number.parseInt(lessonEndsAt.split(":")[0]), Number.parseInt(lessonEndsAt.split(":")[1]), 0));
-    const dateOk = new Date(Date.parse(dateFromCard)).getUTCDate() === new Date().getUTCDate();
+    const dateOk = dateFromCard.getUTCDate() === new Date().getUTCDate();
 
     const isNow = dateOk && new Date() >= startDate && new Date() <= endDate;
 

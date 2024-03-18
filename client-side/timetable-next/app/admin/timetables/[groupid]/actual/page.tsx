@@ -37,5 +37,3 @@ export default async function AdminActualTimetable({ params, searchParams }: Pro
         </VStack>
     );
 }
-
-// FIXME убрать полчение квери парамсов

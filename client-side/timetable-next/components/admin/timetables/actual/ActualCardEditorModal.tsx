@@ -132,7 +132,7 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, groupI
                     <HStack w={"full"}>
                         <Text>Дата занятия</Text>
                         <Input
-                            defaultValue={selectedCard.date}
+                            defaultValue={selectedCard.date.toISOString().split("T")[0]}
                             name="date"
                             type="date"
                         ></Input>

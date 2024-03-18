@@ -23,7 +23,9 @@ const initialCard: StableCard = {
     subjectId: 0,
     teacherId: 0,
 };
+const mockDate = new Date("12-12-2024");
 type Props = { stableTimetable: z.infer<typeof getStableTimetableSchema> };
+
 export default function StableTimetableEditor({ stableTimetable }: Props) {
     const [isWeekEven, setIsWeekEven] = useState(false);
     const [weekday, setweekDay] = useState<DayOfWeek>(DayOfWeek.Monday);
@@ -66,7 +68,7 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
                 isModified: false,
                 isMoved: false,
                 lessonTime: c.lessonTime,
-                date: "12-12-2024",
+                date: mockDate,
                 modifiedAt: c.modifiedAt,
                 relatedTimetableId: 0,
                 room: c.room,
