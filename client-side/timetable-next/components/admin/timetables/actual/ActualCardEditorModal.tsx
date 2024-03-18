@@ -150,8 +150,12 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, groupI
                                 const toastId = loadingToast("Удаление...");
                                 const res = await deleteActualCard({ cardId: selectedCard.id, groupId: groupId });
                                 toast.close(toastId);
-                                res.success ? successfulToast(res.message) : failedToast(res.message);
-                                disclosure.onClose();
+                                if (res.success) {
+                                    successfulToast(res.message);
+                                    disclosure.onClose();
+                                } else {
+                                    failedToast(res.message);
+                                }
                             }}
                         >
                             Удалить
