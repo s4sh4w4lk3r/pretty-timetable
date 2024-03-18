@@ -13,6 +13,7 @@ export default function StatusSwitchers({ selectedCard }: { selectedCard: CardTy
             <FormLabel htmlFor="isModified">Заменен:</FormLabel>
             <Switch
                 name="isModified"
+                id="isModified"
                 colorScheme="yellow"
                 defaultChecked={selectedCard.isModified}
             />
@@ -20,6 +21,7 @@ export default function StatusSwitchers({ selectedCard }: { selectedCard: CardTy
             <FormLabel htmlFor="isMoved">Перенесен:</FormLabel>
             <Switch
                 name="isMoved"
+                id="isMoved"
                 colorScheme="orange"
                 defaultChecked={selectedCard.isMoved}
             />
@@ -27,6 +29,7 @@ export default function StatusSwitchers({ selectedCard }: { selectedCard: CardTy
             <FormLabel htmlFor="isCanceled">Отменен:</FormLabel>
             <Switch
                 name="isCanceled"
+                id="isCanceled"
                 colorScheme="red"
                 defaultChecked={selectedCard.isCanceled}
             />
