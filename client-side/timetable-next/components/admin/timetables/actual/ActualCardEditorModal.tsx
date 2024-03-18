@@ -19,6 +19,7 @@ type Props = {
 
 export default function ActualCardEditorModal({ selectedCard, disclosure, groupId }: Props) {
     const { lessonTimes, rooms, subjects, teachers } = useContext(TimetableContext)!;
+    const { failedToast, loadingToast, successfulToast, toast } = useToasts();
 
     const lessonTimeOptions = lessonTimes.map(lt => (
         <option
@@ -52,7 +53,6 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, groupI
         </option>
     ));
 
-    const { failedToast, loadingToast, successfulToast, toast } = useToasts();
     return (
         <EditorModal
             {...disclosure}

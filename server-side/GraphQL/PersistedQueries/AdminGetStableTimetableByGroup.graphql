@@ -1,15 +1,17 @@
 query StableTimetables($groupId: Int!) {
     stableTimetables(where: { groupId: { eq: $groupId } }) {
+        id
         groupId
         cards {
             id
-            teacherId
             subjectId
-            roomId
+            teacherId
             lessonTimeId
-            isWeekEven
+            roomId
             dayOfWeek
+            isWeekEven
             subGroup
+            relatedTimetableId
             modifiedAt
         }
     }

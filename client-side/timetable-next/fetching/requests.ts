@@ -95,6 +95,7 @@ export async function getActualTimetable({ groupId, weekNumber }: { groupId: num
     ]);
 
     const tt = {
+        id: idsOnly.id,
         group: groups.find(g => g.id === idsOnly.groupId),
         cards: idsOnly.cards.map(card => ({
             id: card.id,
@@ -127,7 +128,7 @@ export async function getActualTimetableWeekDays({ groupId, weekNumber }: { grou
         return { dayOfWeek: getDayOfWeek(date), cards: cardsFiltred };
     });
 
-    const result = { group: tt.group, timetableFiltered: timetableFiltered };
+    const result = { group: tt.group, timetableFiltered: timetableFiltered, id: tt.id };
 
     return getActualTimetableWeekDaysSchema.parse(result);
 }
@@ -144,7 +145,6 @@ async function getActualTimetableIdsOnly({ groupId, weekNumber }: { groupId: num
 
     const timetables = await getActualTimetableIdsOnlySchema.parseAsync(await res.json());
     return timetables.data.actualTimetables[0];
-    // TODO: сделать получение не actualCards, а actyalTimetables
 }
 
 async function getStableTimetableIdsOnly({ groupId }: { groupId: number }) {
@@ -179,6 +179,7 @@ export async function getStableTimetable({ groupId }: { groupId: number }) {
     ]);
 
     const tt = {
+        id: idsOnly.id,
         group: groups.find(g => g.id === idsOnly.groupId),
         cards: idsOnly.cards.map(card => ({
             id: card.id,
@@ -189,6 +190,7 @@ export async function getStableTimetable({ groupId }: { groupId: number }) {
             isWeekEven: card.isWeekEven,
             dayOfWeek: card.dayOfWeek,
             subgroup: card.subGroup,
+            relatedTimetableId: card.relatedTimetableId,
             modifiedAt: card.modifiedAt,
         })),
     };

@@ -29,7 +29,7 @@ const initialCard: CardType = {
 };
 
 export default function ActualTimetableEditor(props: Props) {
-    const { group, timetableFiltered } = props.actualTimetable;
+    const { group, timetableFiltered, id } = props.actualTimetable;
     const [selectedWeekday, setSelectedWeekday] = useState<DayOfWeek>(DayOfWeek.Monday);
     const [selectedCard, setSelectedCard] = useImmer<CardType>(initialCard);
     const disclosure = useDisclosure();
@@ -92,7 +92,7 @@ export default function ActualTimetableEditor(props: Props) {
                     <AddCardButton
                         key={"actual"}
                         onClick={() => {
-                            setSelectedCard({ ...initialCard, relatedTimetableId: timetableFiltered.at(0)?.cards.at(0)?.relatedTimetableId ?? 0 });
+                            setSelectedCard({ ...initialCard, relatedTimetableId: id, date: new Date() });
                             disclosure.onOpen();
                         }}
                     />
@@ -107,3 +107,4 @@ export default function ActualTimetableEditor(props: Props) {
         </>
     );
 }
+// TODO: сделать хранение в стейте не только дня недели, но и соотв дату.

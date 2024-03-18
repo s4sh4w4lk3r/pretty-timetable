@@ -142,6 +142,7 @@ export const getActualTimetableIdsOnlySchema = z.object({
 });
 
 export const getActualTimetableSchema = z.object({
+    id: z.number(),
     group: getAllGroupsSchema.shape.data.shape.groups.element,
 
     cards: z.array(
@@ -163,6 +164,7 @@ export const getActualTimetableSchema = z.object({
 });
 
 export const getActualTimetableWeekDaysSchema = z.object({
+    id: z.number(),
     group: z.object({
         id: z.number(),
         name: z.string(),
@@ -186,6 +188,7 @@ export const getStableTimetableIdsOnlySchema = z.object({
     data: z.object({
         stableTimetables: z.array(
             z.object({
+                id: z.number(),
                 groupId: z.number(),
                 cards: z.array(
                     z.object({
@@ -197,6 +200,7 @@ export const getStableTimetableIdsOnlySchema = z.object({
                         isWeekEven: z.boolean(),
                         dayOfWeek: dayOfWeekSchema,
                         subGroup: subgroupsSchema,
+                        relatedTimetableId: z.number(),
                         modifiedAt: z.coerce.date(),
                     })
                 ),
@@ -206,6 +210,7 @@ export const getStableTimetableIdsOnlySchema = z.object({
 });
 
 export const getStableTimetableSchema = z.object({
+    id: z.number(),
     group: z.object({
         id: z.number(),
         name: z.string(),
@@ -247,6 +252,7 @@ export const getStableTimetableSchema = z.object({
             isWeekEven: z.boolean(),
             dayOfWeek: dayOfWeekSchema,
             subgroup: subgroupsSchema,
+            relatedTimetableId: z.number(),
             modifiedAt: z.coerce.date(),
         })
     ),
