@@ -107,4 +107,3 @@ export default function ActualTimetableEditor(props: Props) {
         </>
     );
 }
-// TODO: сделать хранение в стейте не только дня недели, но и соотв дату.

@@ -22,6 +22,7 @@ const initialCard: StableCard = {
     subGroup: "ALL",
     subjectId: 0,
     teacherId: 0,
+    relatedTimetableId: 0,
 };
 const mockDate = new Date("12-12-2024");
 type Props = { stableTimetable: z.infer<typeof getStableTimetableSchema> };
@@ -59,6 +60,7 @@ export default function StableTimetableEditor({ stableTimetable }: Props) {
                     subGroup: c.subgroup,
                     subjectId: c.subject.id,
                     teacherId: c.teacher.id,
+                    relatedTimetableId: c.relatedTimetableId,
                 });
                 disclosure.onOpen();
             }}
