@@ -66,17 +66,7 @@ export default function RoomEditor({ rooms }: { rooms: RoomType[] }) {
                 Номер кабинета
             </Th>
 
-            <Th
-                _hover={hover}
-                // onClick={() =>
-                //     setSorting(draft => {
-                //         draft.sortingField = "number";
-                //         draft.isAsc = !draft.isAsc;
-                //     })
-                // }
-            >
-                Последнее изменение
-            </Th>
+            <Th _hover={hover}>Последнее изменение</Th>
         </>
     );
 

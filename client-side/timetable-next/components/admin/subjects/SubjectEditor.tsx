@@ -78,7 +78,12 @@ export default function SubjectEditor({ subjects }: { subjects: SubjectType[] })
             }}
         >
             <Td>{s.id}</Td>
-            <Td maxW={"lg"}>{s.name}</Td>
+            <Td
+                maxW={"lg"}
+                whiteSpace={"wrap"}
+            >
+                {s.name}
+            </Td>
             <Td>{s.modifiedAt.toLocaleString("ru-ru")}</Td>
         </Tr>
     ));
