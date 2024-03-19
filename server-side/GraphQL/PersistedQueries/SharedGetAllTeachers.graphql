@@ -1,5 +1,5 @@
-query {
-    teachers {
+{
+    teachers(order: { lastname: ASC, firstname: ASC }) {
         id
         lastname
         firstname

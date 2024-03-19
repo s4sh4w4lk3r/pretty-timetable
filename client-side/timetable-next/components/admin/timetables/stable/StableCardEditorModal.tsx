@@ -1,25 +1,22 @@
 "use client";
-import { deleteActualCard, putActualCard } from "@/server-actions/actualCardActions";
-import { HStack, Button, UseDisclosureReturn, VStack, Input, Select, Text } from "@chakra-ui/react";
-import EditorModal from "../../EditorModal";
-import ReadonlyEditorInputs from "../../ReadonlyEditorInputs";
+
+import { getStableTimetableIdsOnlySchema } from "@/fetching/zodSchemas";
+import { HStack, Input, Select, UseDisclosureReturn, VStack, Text, Button, Switch } from "@chakra-ui/react";
 import { z } from "zod";
-import { getActualTimetableIdsOnlySchema } from "@/fetching/zodSchemas";
+import EditorModal from "../../EditorModal";
 import useToasts from "@/utils/client/useToasts";
-import { useContext } from "react";
-import { TimetableContext } from "@/utils/client/contexts/TimetableContext";
 import { getTeacherName } from "@/utils/card";
-import StatusSwitchers from "./StatusSwitchers";
+import { TimetableContext } from "@/utils/client/contexts/TimetableContext";
+import { useContext } from "react";
+import ReadonlyEditorInputs from "../../ReadonlyEditorInputs";
+import DayOfWeekSelect from "./DayOfWeekSelect";
+import { deleteStableCard, putStableCard } from "@/server-actions/stableCardActions";
 
-type Props = {
-    selectedCard: z.infer<typeof getActualTimetableIdsOnlySchema.shape.data.shape.actualTimetables.element.shape.cards.element>;
-    disclosure: UseDisclosureReturn;
-    groupId: number;
-};
-
-export default function ActualCardEditorModal({ selectedCard, disclosure, groupId }: Props) {
-    const { lessonTimes, rooms, subjects, teachers } = useContext(TimetableContext)!;
+type StableCard = z.infer<typeof getStableTimetableIdsOnlySchema.shape.data.shape.stableTimetables.element.shape.cards.element>;
+type Props = { disclosure: UseDisclosureReturn; groupId: number; selectedCard: StableCard };
+export default function StableCardEditorModal({ disclosure, groupId, selectedCard }: Props) {
     const { failedToast, loadingToast, successfulToast, toast } = useToasts();
+    const { lessonTimes, rooms, subjects, teachers } = useContext(TimetableContext)!;
 
     const lessonTimeOptions = lessonTimes.map(lt => (
         <option
@@ -62,7 +59,7 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, groupI
                 onSubmit={async e => {
                     e.preventDefault();
                     const toastId = loadingToast("Сохранение данных...");
-                    const res = await putActualCard({ formData: new FormData(e.currentTarget), groupId: groupId });
+                    const res = await putStableCard({ formData: new FormData(e.currentTarget), groupId: groupId });
                     toast.close(toastId);
                     res.success ? successfulToast(res.message) : failedToast(res.message);
                 }}
@@ -75,7 +72,7 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, groupI
 
                     <Input
                         name="relatedTimetableId"
-                        defaultValue={selectedCard.relatedTimetableId}
+                        defaultValue={groupId}
                         hidden
                     ></Input>
 
@@ -120,7 +117,7 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, groupI
 
                         <Text>Подгруппа</Text>
                         <Select
-                            name="subgroup"
+                            name="subGroup"
                             defaultValue={selectedCard.subGroup}
                         >
                             <option value="0">Все</option>
@@ -129,16 +126,17 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, groupI
                         </Select>
                     </HStack>
 
-                    <HStack w={"full"}>
-                        <Text>Дата занятия</Text>
-                        <Input
-                            defaultValue={selectedCard.date.toISOString().split("T")[0]}
-                            name="date"
-                            type="date"
-                        ></Input>
-                    </HStack>
+                    <DayOfWeekSelect dayOfWeek={selectedCard.dayOfWeek} />
 
-                    <StatusSwitchers selectedCard={selectedCard} />
+                    <HStack w={"full"}>
+                        <Text>Четная неделя?</Text>
+                        <Switch
+                            defaultChecked={selectedCard.isWeekEven}
+                            size={"lg"}
+                            colorScheme="purple"
+                            name="isWeekEven"
+                        />
+                    </HStack>
 
                     <HStack
                         w={"full"}
@@ -148,7 +146,7 @@ export default function ActualCardEditorModal({ selectedCard, disclosure, groupI
                             colorScheme="red"
                             onClick={async () => {
                                 const toastId = loadingToast("Удаление...");
-                                const res = await deleteActualCard({ cardId: selectedCard.id, groupId: groupId });
+                                const res = await deleteStableCard({ cardId: selectedCard.id, groupId: groupId });
                                 toast.close(toastId);
                                 if (res.success) {
                                     successfulToast(res.message);

@@ -20,7 +20,7 @@ type Props = {
     };
     room: string;
     changes: ChangesType;
-    date: any;
+    date: Date;
 };
 
 function getBadges(changes: ChangesType) {

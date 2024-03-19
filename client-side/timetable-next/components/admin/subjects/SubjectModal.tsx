@@ -57,7 +57,12 @@ export default function SubjectModal({ disclosure, selectedSubject }: { disclosu
                             colorScheme="red"
                             onClick={async () => {
                                 const res = await deleteSubject({ id: selectedSubject.id });
-                                res.success ? successfulToast(res.message) : failedToast(res.message);
+                                if (res.success) {
+                                    successfulToast(res.message);
+                                    disclosure.onClose();
+                                } else {
+                                    failedToast(res.message);
+                                }
                             }}
                         >
                             Удалить

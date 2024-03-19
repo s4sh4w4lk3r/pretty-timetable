@@ -73,6 +73,7 @@ export default function GroupModal({ groups, disclosure, onGroupSelected }: Prop
                     onChange={e => {
                         setQuery(e.target.value);
                     }}
+                    type="search"
                 />
 
                 <Button

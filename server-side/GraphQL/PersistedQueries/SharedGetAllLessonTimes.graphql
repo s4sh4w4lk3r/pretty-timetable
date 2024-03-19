@@ -1,5 +1,5 @@
-query  {
-    lessonTimes {
+{
+    lessonTimes(order: { number: ASC }) {
         id
         number
         startsAt

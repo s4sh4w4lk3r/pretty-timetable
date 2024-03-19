@@ -12,18 +12,6 @@ type Props = {
     searchParams: { subgroup: string | undefined };
 };
 
-// export async function generateStaticParams() {
-//     const groups = await getAllGroups();
-//     const fetchPromises = groups.map(g => getActualTimetable({ groupId: g.id, weekNumber: getWeekNumber(new Date()) }));
-
-//     const slugs = groups.map(g => ({
-//         groupid: g.id.toString(),
-//     }));
-
-//     await Promise.all(fetchPromises);
-//     return slugs;
-// }
-
 export default async function Timetable({ params, searchParams }: Props) {
     const group = parseGroup(params.groupid, searchParams.subgroup);
     if (!group) {

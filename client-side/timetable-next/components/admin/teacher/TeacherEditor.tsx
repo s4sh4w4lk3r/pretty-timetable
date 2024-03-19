@@ -106,5 +106,3 @@ export default function TeacherEditor({ teachers }: { teachers: TeacherType[] })
         </>
     );
 }
-
-// TODO: везде где инпуты для поиска сделать type="search"

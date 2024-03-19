@@ -34,5 +34,3 @@ export async function deleteTeacher({ id }: { id: number }): Promise<ClientResul
         return { success: true, message: res.description, value: null };
     }
 }
-
-// TODO : сделать generic action, а то эти экешны какие-то одинаковые слишком

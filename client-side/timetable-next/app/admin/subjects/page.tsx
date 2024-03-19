@@ -1,7 +1,7 @@
 import SubjectEditor from "@/components/admin/subjects/SubjectEditor";
-import { getAllSubjects } from "@/fetching/requests";
+import { getAllCachedSubjects } from "@/fetching/cachedData";
 
 export default async function SubjectsAdmin() {
-    const subjects = await getAllSubjects();
+    const subjects = await getAllCachedSubjects();
     return <SubjectEditor subjects={subjects}></SubjectEditor>;
 }

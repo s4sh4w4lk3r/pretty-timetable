@@ -27,6 +27,7 @@ export default function WeekSelector({ weekNumbers }: { weekNumbers: WeekType[] 
             name="weekSelector"
             maxW={"900px"}
             defaultValue={weekNumber ? weekNumber : undefined}
+            my={4}
         >
             {weekNumberOptions}
         </Select>

@@ -77,7 +77,12 @@ export default function RoomModal({ disclosure, selectedRoom }: { disclosure: Us
                             colorScheme="red"
                             onClick={async () => {
                                 const res = await deleteRoom({ id: selectedRoom.id });
-                                res.success ? successfulToast(res.message) : failedToast(res.message);
+                                if (res.success) {
+                                    successfulToast(res.message);
+                                    disclosure.onClose();
+                                } else {
+                                    failedToast(res.message);
+                                }
                             }}
                         >
                             Удалить

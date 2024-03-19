@@ -1,25 +1,21 @@
 "use client";
 import { getActualTimetableIdsOnlySchema, getActualTimetableWeekDaysSchema } from "@/fetching/zodSchemas";
-import { Button, HStack, StackDivider, VStack, useDisclosure } from "@chakra-ui/react";
+import { HStack, StackDivider, VStack, useDisclosure } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { z } from "zod";
 import { useImmer } from "use-immer";
 import { WeekDayButton } from "../WeekDayButton";
 import { AdminActualCard } from "./AdminActualCard";
 import ActualCardEditorModal from "./ActualCardEditorModal";
+import DayOfWeek from "@/types/DayOfWeek";
+import AddCardButton from "../AddCardButton";
 
-type Props = {
-    actualTimetable: z.infer<typeof getActualTimetableWeekDaysSchema>;
-    lessonTimeOptions: JSX.Element[];
-    roomOptions: JSX.Element[];
-    subjectOptions: JSX.Element[];
-    teacherOptions: JSX.Element[];
-};
+type Props = { actualTimetable: z.infer<typeof getActualTimetableWeekDaysSchema> };
 type CardType = z.infer<typeof getActualTimetableIdsOnlySchema.shape.data.shape.actualTimetables.element.shape.cards.element>;
 
 const initialCard: CardType = {
     id: 0,
-    date: "",
+    date: new Date("12-12-2024"),
     isCanceled: false,
     isModified: false,
     isMoved: false,
@@ -33,8 +29,8 @@ const initialCard: CardType = {
 };
 
 export default function ActualTimetableEditor(props: Props) {
-    const { group, timetableFiltered } = props.actualTimetable;
-    const [selectedWeekday, setSelectedWeekday] = useState(1); // 1 - это понедельник
+    const { group, timetableFiltered, id } = props.actualTimetable;
+    const [selectedWeekday, setSelectedWeekday] = useState<DayOfWeek>(DayOfWeek.Monday);
     const [selectedCard, setSelectedCard] = useImmer<CardType>(initialCard);
     const disclosure = useDisclosure();
 
@@ -94,8 +90,9 @@ export default function ActualTimetableEditor(props: Props) {
                 <VStack w={"500px"}>
                     {cardsElement}
                     <AddCardButton
+                        key={"actual"}
                         onClick={() => {
-                            setSelectedCard({ ...initialCard, relatedTimetableId: timetableFiltered.at(0)?.cards.at(0)?.relatedTimetableId ?? 0 });
+                            setSelectedCard({ ...initialCard, relatedTimetableId: id, date: new Date() });
                             disclosure.onOpen();
                         }}
                     />
@@ -105,22 +102,8 @@ export default function ActualTimetableEditor(props: Props) {
             <ActualCardEditorModal
                 disclosure={disclosure}
                 selectedCard={selectedCard}
-                options={{ ...props }}
                 groupId={group.id}
             />
         </>
-    );
-}
-
-function AddCardButton({ onClick }: { onClick: () => void }) {
-    return (
-        <Button
-            colorScheme="green"
-            w={"80%"}
-            mt={2}
-            onClick={onClick}
-        >
-            Добавить
-        </Button>
     );
 }
