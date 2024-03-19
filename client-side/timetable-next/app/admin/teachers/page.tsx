@@ -1,7 +1,7 @@
 import TeacherEditor from "@/components/admin/teacher/TeacherEditor";
-import { getAllTeachers } from "@/fetching/requests";
+import { getAllCachedTeachers } from "@/fetching/cachedData";
 
 export default async function TeachersAdmin() {
-    const teachers = await getAllTeachers();
+    const teachers = await getAllCachedTeachers();
     return <TeacherEditor teachers={teachers}></TeacherEditor>;
 }

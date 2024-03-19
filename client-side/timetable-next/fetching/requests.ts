@@ -6,6 +6,7 @@ import { getAllTeachersSchema, getStableTimetableIdsOnlySchema, getStableTimetab
 import { getActualTimetableIdsOnlySchema, getActualTimetableSchema, getActualTimetableWeekDaysSchema } from "./zodSchemas";
 import config from "@/configs/config";
 import { distinctDates, getDayOfWeek } from "@/utils/date";
+import { getAllCachedGroups, getAllCachedSubjects, getAllCachedTeachers, getAllCachedLessonTimes, getAllCachedRooms } from "./cachedData";
 
 export async function getAllSubjects() {
     const query = SharedQueries.GetAllSubjects;
@@ -76,13 +77,13 @@ export async function getAllGroups() {
     const timetables = await getAllGroupsSchema.parseAsync(await res.json());
     return timetables.data.groups;
 }
-/////////////////////////
+//------------------------------------ >8 ------------------------------------
 export async function getActualTimetable({ groupId, weekNumber }: { groupId: number; weekNumber: number }) {
-    const getAllGroupsPromise = getAllGroups();
-    const getAllSubjectsPromise = getAllSubjects();
-    const getAllTeachersPromise = getAllTeachers();
-    const getAllLessonTimesPromise = getAllLessonTimes();
-    const getAllRoomsPromise = getAllRooms();
+    const getAllGroupsPromise = getAllCachedGroups();
+    const getAllSubjectsPromise = getAllCachedSubjects();
+    const getAllTeachersPromise = getAllCachedTeachers();
+    const getAllLessonTimesPromise = getAllCachedLessonTimes();
+    const getAllRoomsPromise = getAllCachedRooms();
     const getIdsOnlyPromise = getActualTimetableIdsOnly({ groupId, weekNumber });
 
     const [groups, subjects, teachers, lessonTimes, rooms, idsOnly] = await Promise.all([
@@ -163,10 +164,10 @@ async function getStableTimetableIdsOnly({ groupId }: { groupId: number }) {
 
 export async function getStableTimetable({ groupId }: { groupId: number }) {
     const getAllGroupsPromise = getAllGroups();
-    const getAllSubjectsPromise = getAllSubjects();
-    const getAllTeachersPromise = getAllTeachers();
-    const getAllLessonTimesPromise = getAllLessonTimes();
-    const getAllRoomsPromise = getAllRooms();
+    const getAllSubjectsPromise = getAllCachedSubjects();
+    const getAllTeachersPromise = getAllCachedTeachers();
+    const getAllLessonTimesPromise = getAllCachedLessonTimes();
+    const getAllRoomsPromise = getAllCachedRooms();
     const getIdsOnlyPromise = getStableTimetableIdsOnly({ groupId });
 
     const [groups, subjects, teachers, lessonTimes, rooms, idsOnly] = await Promise.all([

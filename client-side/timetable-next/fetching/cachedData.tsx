@@ -18,5 +18,3 @@ export async function getAllCachedTeachers() {
 export async function getAllCachedGroups() {
     return await unstable_cache(async () => await getAllGroups(), ["all-groups"], { tags: [RevalidationTags.Group] })();
 }
-
-// TODO избавиться везде от некешируемых запросов

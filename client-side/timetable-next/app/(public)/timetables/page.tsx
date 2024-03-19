@@ -1,7 +1,7 @@
 import GroupList from "@/components/group/GroupList";
-import { getAllGroups } from "@/fetching/requests";
+import { getAllCachedGroups } from "@/fetching/cachedData";
 
 export default async function Timetables() {
-    const groups = await getAllGroups();
+    const groups = await getAllCachedGroups();
     return <GroupList groups={groups}></GroupList>;
 }

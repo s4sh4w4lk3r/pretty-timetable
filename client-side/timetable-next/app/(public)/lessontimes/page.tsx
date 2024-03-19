@@ -1,9 +1,9 @@
 import LessonTime from "@/components/lessontime/LessonTime";
-import { getAllLessonTimes } from "@/fetching/requests";
+import { getAllCachedLessonTimes } from "@/fetching/cachedData";
 import { Text, VStack } from "@chakra-ui/react";
 
 export default async function LessonTimes() {
-    const lessontimes = await getAllLessonTimes();
+    const lessontimes = await getAllCachedLessonTimes();
 
     const lessonTimesElement = lessontimes.map(l => (
         <LessonTime
