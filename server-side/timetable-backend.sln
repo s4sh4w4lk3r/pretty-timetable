@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Types", "Types", "{2A40B5B3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mappers", "Mappers\Mappers.csproj", "{EC5400AA-25CD-4562-BE53-F37FECDDB753}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestProject", "XUnitTestProject\XUnitTestProject.csproj", "{80E6F638-7052-4CB0-978F-B5AD01AD966D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{EC5400AA-25CD-4562-BE53-F37FECDDB753}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC5400AA-25CD-4562-BE53-F37FECDDB753}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC5400AA-25CD-4562-BE53-F37FECDDB753}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80E6F638-7052-4CB0-978F-B5AD01AD966D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80E6F638-7052-4CB0-978F-B5AD01AD966D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80E6F638-7052-4CB0-978F-B5AD01AD966D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80E6F638-7052-4CB0-978F-B5AD01AD966D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{056DF628-E287-4BF1-882D-98B7B9F035F4} = {85F2D9A1-C593-48FA-8CF5-64B891E9789F}
 		{F43EE609-F9CD-4D7D-BC76-C68CEFD8FECB} = {2A40B5B3-B569-488D-9000-D36FA88C8F46}
 		{EC5400AA-25CD-4562-BE53-F37FECDDB753} = {2A40B5B3-B569-488D-9000-D36FA88C8F46}
+		{80E6F638-7052-4CB0-978F-B5AD01AD966D} = {67E6A5BD-AAA9-4124-A392-7917F83EE937}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA38CD6D-DD1D-4678-A9F0-FE5CD794A791}
