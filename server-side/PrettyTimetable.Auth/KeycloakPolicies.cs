@@ -1,0 +1,4 @@
+﻿namespace PrettyTimetable.Auth
+{
+    
+}
