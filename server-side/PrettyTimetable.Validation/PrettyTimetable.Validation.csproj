@@ -17,8 +17,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Models\PrettyTimetable.Models.csproj" />
-	  <ProjectReference Include="..\Repository\PrettyTimetable.Repository.csproj" />
+	  <ProjectReference Include="..\PrettyTimetable.Models\PrettyTimetable.Models.csproj" />
+	  <ProjectReference Include="..\PrettyTimetable.Repository\PrettyTimetable.Repository.csproj" />
 	</ItemGroup>
 	
 	
