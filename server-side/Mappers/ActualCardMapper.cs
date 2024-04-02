@@ -1,12 +1,12 @@
 ﻿
 using Models.Request;
-using Repository.Entities.Timetable.Cards.Info;
+using PrettyTimetable.Core.Entities.Timetable.Cards.Info;
 
 namespace Mappers
 {
     public static class ActualCardMapper
     {
-        public static Repository.Entities.Timetable.Cards.ActualCard ToEntity(this ActualCardModels.ActualCardPut model)
+        public static PrettyTimetable.Core.Entities.Timetable.Cards.ActualCard ToEntity(this ActualCardModels.ActualCardPut model)
         {
             return new()
             {

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Repository.Entities.Timetable;
+using PrettyTimetable.Core.Entities.Timetable;
 using System.Globalization;
 
 namespace Validation.Entities

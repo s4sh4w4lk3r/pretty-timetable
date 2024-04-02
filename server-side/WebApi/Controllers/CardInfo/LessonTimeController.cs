@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models.Request.CardParts;
-using Services.Interfaces.CardParts;
 using Mappers.CardParts;
 using Auth;
 using Microsoft.AspNetCore.Authorization;
+using PrettyTimetable.Abstractions.CardParts;
 
 namespace WebApi.Controllers.CardParts
 {

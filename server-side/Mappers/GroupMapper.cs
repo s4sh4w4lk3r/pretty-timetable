@@ -1,4 +1,4 @@
-﻿using Repository.Entities.Timetable;
+﻿using PrettyTimetable.Core.Entities.Timetable;
 using static Models.Request.GroupModels;
 
 namespace Mappers

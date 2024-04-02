@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using static Services.ResultMessages;
+using PrettyTimetable.Core;
+using static PrettyTimetable.Core.ResultMessages;
 
 namespace Services
 {

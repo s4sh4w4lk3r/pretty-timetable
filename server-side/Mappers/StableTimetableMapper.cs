@@ -1,5 +1,5 @@
 ﻿using Models.Request;
-using Repository.Entities.Timetable;
+using PrettyTimetable.Core.Entities.Timetable;
 
 namespace Mappers
 {

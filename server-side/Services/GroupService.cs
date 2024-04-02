@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PrettyTimetable.Abstractions;
+using PrettyTimetable.Core;
+using PrettyTimetable.Core.Entities.Timetable;
 using Repository.Database;
-using Repository.Entities.Timetable;
-using Services.Interfaces;
 using Validation.Entities;
 
 namespace Services

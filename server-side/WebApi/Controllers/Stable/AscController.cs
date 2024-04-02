@@ -1,7 +1,7 @@
 ﻿using Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services.Interfaces.Stable;
+using PrettyTimetable.Abstractions.Stable;
 
 namespace WebApi.Controllers.Stable
 {

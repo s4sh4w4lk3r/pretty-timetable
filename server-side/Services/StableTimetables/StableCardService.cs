@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Database;
-using Repository.Entities.Timetable.Cards;
-using Services.Interfaces.Stable;
+using PrettyTimetable.Core.Entities.Timetable.Cards;
+using PrettyTimetable.Abstractions.Stable;
 using Validation.Entities;
+using PrettyTimetable.Core;
 
 namespace Services.StableTimetables
 {

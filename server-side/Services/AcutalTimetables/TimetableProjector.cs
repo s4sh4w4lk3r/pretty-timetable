@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PrettyTimetable.Core;
+using PrettyTimetable.Core.Entities.Timetable;
+using PrettyTimetable.Core.Entities.Timetable.Cards;
 using Repository.Database;
-using Repository.Entities.Timetable;
-using Repository.Entities.Timetable.Cards;
+
 using System.Globalization;
 
 namespace Services.AcutalTimetables

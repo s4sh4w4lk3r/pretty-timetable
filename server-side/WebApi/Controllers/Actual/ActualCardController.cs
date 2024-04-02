@@ -3,7 +3,7 @@ using Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Request;
-using Services.Interfaces.Actual;
+using PrettyTimetable.Abstractions.Actual;
 
 namespace WebApi.Controllers.Actual
 {

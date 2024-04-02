@@ -2,8 +2,8 @@
 using HotChocolate.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PrettyTimetable.Core;
 using Repository.Database;
-using Services;
 
 namespace WebApi.Controllers
 {

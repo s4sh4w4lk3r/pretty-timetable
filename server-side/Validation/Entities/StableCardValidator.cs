@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Repository.Entities.Timetable.Cards;
+using PrettyTimetable.Core.Entities.Timetable.Cards;
 
 namespace Validation.Entities
 {

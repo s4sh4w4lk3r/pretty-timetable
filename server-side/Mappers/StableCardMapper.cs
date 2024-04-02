@@ -1,6 +1,6 @@
 ﻿using Models.Request;
-using Repository.Entities.Timetable.Cards;
-using Repository.Entities.Timetable.Cards.Info;
+using PrettyTimetable.Core.Entities.Timetable.Cards;
+using PrettyTimetable.Core.Entities.Timetable.Cards.Info;
 
 namespace Mappers
 {

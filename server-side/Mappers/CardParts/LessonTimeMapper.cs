@@ -1,5 +1,5 @@
 ﻿using Models.Request.CardParts;
-using Repository.Entities.Timetable.Cards.Info;
+using PrettyTimetable.Core.Entities.Timetable.Cards.Info;
 
 namespace Mappers.CardParts
 {

@@ -1,5 +1,6 @@
-﻿using Repository.Database;
-using Services.Interfaces.Stable;
+﻿using PrettyTimetable.Abstractions.Stable;
+using PrettyTimetable.Core;
+using Repository.Database;
 using System.Xml;
 
 namespace Services.Asc.Changes

@@ -1,4 +1,4 @@
-﻿using Repository.Entities.Timetable.Cards.Info;
+﻿using PrettyTimetable.Core.Entities.Timetable.Cards.Info;
 
 namespace Services.Asc.Timetable
 {

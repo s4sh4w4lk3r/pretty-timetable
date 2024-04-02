@@ -1,7 +1,7 @@
 ﻿using Repository.Database;
-using Repository.Entities.Timetable;
-using Repository.Entities.Timetable.Cards;
-using Repository.Entities.Timetable.Cards.Info;
+using PrettyTimetable.Core.Entities.Timetable;
+using PrettyTimetable.Core.Entities.Timetable.Cards;
+using PrettyTimetable.Core.Entities.Timetable.Cards.Info;
 using System.Globalization;
 
 namespace GraphQL

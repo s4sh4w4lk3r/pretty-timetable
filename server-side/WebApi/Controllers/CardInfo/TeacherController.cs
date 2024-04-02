@@ -3,7 +3,7 @@ using Mappers.CardParts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Request.CardParts;
-using Services.Interfaces.CardParts;
+using PrettyTimetable.Abstractions.CardParts;
 
 namespace WebApi.Controllers.CardParts
 {

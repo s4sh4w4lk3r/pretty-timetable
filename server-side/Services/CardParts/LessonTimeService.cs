@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PrettyTimetable.Abstractions.CardParts;
+using PrettyTimetable.Core;
+using PrettyTimetable.Core.Entities.Timetable.Cards.Info;
 using Repository.Database;
-using Repository.Entities.Timetable.Cards.Info;
-using Services.Interfaces.CardParts;
 using Validation.Entities.CardParts;
 
 namespace Services.CardParts

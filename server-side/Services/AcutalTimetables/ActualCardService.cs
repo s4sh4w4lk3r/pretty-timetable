@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PrettyTimetable.Abstractions.Actual;
+using PrettyTimetable.Core;
+using PrettyTimetable.Core.Entities.Timetable.Cards;
 using Repository.Database;
-using Repository.Entities.Timetable.Cards;
-using Services.Interfaces.Actual;
 using System.Globalization;
 using Validation.Entities;
 

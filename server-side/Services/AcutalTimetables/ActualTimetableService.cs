@@ -1,8 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using PrettyTimetable.Abstractions.Actual;
+using PrettyTimetable.Core;
+using PrettyTimetable.Core.Entities.Timetable;
 using Repository.Database;
-using Repository.Entities.Timetable;
-using Services.Interfaces.Actual;
 using Validation.Entities;
 
 namespace Services.AcutalTimetables

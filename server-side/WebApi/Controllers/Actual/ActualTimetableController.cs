@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.Request;
 using Npgsql;
-using Services;
-using Services.Interfaces.Actual;
+using PrettyTimetable.Abstractions.Actual;
+using PrettyTimetable.Core;
 using System.Globalization;
 
 namespace WebApi.Controllers.Actual

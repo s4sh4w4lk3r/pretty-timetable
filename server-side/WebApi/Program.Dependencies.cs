@@ -1,13 +1,12 @@
-﻿using Repository.Database;
+﻿using PrettyTimetable.Abstractions.Stable;
+using Repository.Database;
 using Services;
 using Services.AcutalTimetables;
 using Services.Asc.Changes;
 using Services.CardParts;
-using Services.Interfaces;
-using Services.Interfaces.Actual;
-using Services.Interfaces.CardParts;
-using Services.Interfaces.Stable;
-using Services.Interfaces.Substs;
+using PrettyTimetable.Abstractions;
+using PrettyTimetable.Abstractions.Actual;
+using PrettyTimetable.Abstractions.CardParts;
 using Services.StableTimetables;
 
 namespace WebApi
@@ -31,8 +30,6 @@ namespace WebApi
             builder.Services.AddScoped<ILessonTimeService, LessonTimeService>();
             builder.Services.AddScoped<IGroupService, GroupService>();
 
-#warning добавить реализацию сервиса
-            //builder.Services.AddScoped<ISubstService>();
         }
     }
 }

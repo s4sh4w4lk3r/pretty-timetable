@@ -1,5 +1,4 @@
 ﻿using Repository.Database;
-using Repository.Entities.Timetable.Cards.Info;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
@@ -9,13 +8,13 @@ namespace Services.Asc.Timetable
 {
     internal class Converter(TimetableContext timetableContext)
     {
-        public List<Room> Cabinets { get; private set; } = [];
-        public List<Teacher> Teachers { get; private set; } = [];
-        public List<LessonTime> LessonTimes { get; private set; } = [];
-        public List<Subject> Subjects { get; private set; } = [];
-        public List<Repository.Entities.Timetable.Cards.StableCard> StableCards { get; private set; } = [];
-        public List<Repository.Entities.Timetable.StableTimetable> StableTimetables { get; private set; } = [];
-        public List<Repository.Entities.Timetable.Group> Groups { get; private set; } = [];
+        public List<PrettyTimetable.Core.Entities.Timetable.Cards.Info.Room> Cabinets { get; private set; } = [];
+        public List<PrettyTimetable.Core.Entities.Timetable.Cards.Info.Teacher> Teachers { get; private set; } = [];
+        public List<PrettyTimetable.Core.Entities.Timetable.Cards.Info.LessonTime> LessonTimes { get; private set; } = [];
+        public List<PrettyTimetable.Core.Entities.Timetable.Cards.Info.Subject> Subjects { get; private set; } = [];
+        public List<PrettyTimetable.Core.Entities.Timetable.Cards.StableCard> StableCards { get; private set; } = [];
+        public List<PrettyTimetable.Core.Entities.Timetable.StableTimetable> StableTimetables { get; private set; } = [];
+        public List<PrettyTimetable.Core.Entities.Timetable.Group> Groups { get; private set; } = [];
 
         private AscClasses.AscTimetable _ascTimetable = null!;
 
@@ -52,10 +51,10 @@ namespace Services.Asc.Timetable
         {
             ArgumentNullException.ThrowIfNull(_ascTimetable);
 
-            Groups = _ascTimetable.Classes.Class.Select(e => new Repository.Entities.Timetable.Group()
+            Groups = _ascTimetable.Classes.Class.Select(e => new PrettyTimetable.Core.Entities.Timetable.Group()
             { Id = default, AscId = e.Id, Name = e.Name, ModifiedAt = DateTime.UtcNow }).ToList();
 
-            Teachers = _ascTimetable.Teachers.Teacher.Select(e => new Repository.Entities.Timetable.Cards.Info.Teacher()
+            Teachers = _ascTimetable.Teachers.Teacher.Select(e => new PrettyTimetable.Core.Entities.Timetable.Cards.Info.Teacher()
             {
                 Id = default,
                 AscId = e.Id,
@@ -65,13 +64,13 @@ namespace Services.Asc.Timetable
                 ModifiedAt = DateTime.UtcNow
             }).ToList();
 
-            Subjects = _ascTimetable.Subjects.Subject.Select(e => new Repository.Entities.Timetable.Cards.Info.Subject()
+            Subjects = _ascTimetable.Subjects.Subject.Select(e => new PrettyTimetable.Core.Entities.Timetable.Cards.Info.Subject()
             { Id = default, AscId = e.Id, Name = e.Name, ModifiedAt = DateTime.UtcNow }).ToList();
 
-            LessonTimes = _ascTimetable.Periods.Period.Select(e => new Repository.Entities.Timetable.Cards.Info.LessonTime()
+            LessonTimes = _ascTimetable.Periods.Period.Select(e => new PrettyTimetable.Core.Entities.Timetable.Cards.Info.LessonTime()
             { Id = default, StartsAt = TimeOnly.Parse(e.Starttime), EndsAt = TimeOnly.Parse(e.Endtime), Number = int.Parse(e._period), ModifiedAt = DateTime.UtcNow }).ToList();
 
-            Cabinets = _ascTimetable.Classrooms.Classroom.Select(e => new Repository.Entities.Timetable.Cards.Info.Room()
+            Cabinets = _ascTimetable.Classrooms.Classroom.Select(e => new PrettyTimetable.Core.Entities.Timetable.Cards.Info.Room()
             {
                 Id = default,
                 AscId = e.Id,
@@ -94,11 +93,11 @@ namespace Services.Asc.Timetable
         }
         private async Task CreateCardsAndSaveLocallyAsync(CancellationToken cancellationToken = default)
         {
-            List<Repository.Entities.Timetable.StableTimetable> stableTimetables = [];
+            List<PrettyTimetable.Core.Entities.Timetable.StableTimetable> stableTimetables = [];
 
             foreach (var group in Groups)
             {
-                var stableCardsOfCurrentGroup = new List<Repository.Entities.Timetable.Cards.StableCard>();
+                var stableCardsOfCurrentGroup = new List<PrettyTimetable.Core.Entities.Timetable.Cards.StableCard>();
                 var lessonsOfCurrentGroup = _ascTimetable.Lessons.Lesson.Where(e => e.Classids == group.AscId).ToList();
                 var ascCardsOfCurrentGroup = new List<AscClasses.Card>();
                 foreach (var lesson in lessonsOfCurrentGroup)
@@ -118,16 +117,16 @@ namespace Services.Asc.Timetable
 
                     DayOfWeek dayOfWeek = DetermineDayOfWeek(card.Days);
 
-                    Teacher teacher = Teachers.Single(e => e.AscId == lesson.Teacherids);
-                    Subject subject = Subjects.Single(e => e.AscId == lesson.Subjectid);
-                    LessonTime lessonTime = LessonTimes.Single(e => e.Number == int.Parse(card.Period));
-                    Room cabinet = DetermineCabinets(Cabinets, lesson.Classroomids);
+                    PrettyTimetable.Core.Entities.Timetable.Cards.Info.Teacher teacher = Teachers.Single(e => e.AscId == lesson.Teacherids);
+                    PrettyTimetable.Core.Entities.Timetable.Cards.Info.Subject subject = Subjects.Single(e => e.AscId == lesson.Subjectid);
+                    PrettyTimetable.Core.Entities.Timetable.Cards.Info.LessonTime lessonTime = LessonTimes.Single(e => e.Number == int.Parse(card.Period));
+                    PrettyTimetable.Core.Entities.Timetable.Cards.Info.Room cabinet = DetermineCabinets(Cabinets, lesson.Classroomids);
 
-                    SubGroup subGroup = DetermineSubgroup(_ascTimetable.Groups.Group.Single(e => e.Id == lesson.Groupids).Name);
+                    PrettyTimetable.Core.Entities.Timetable.Cards.Info.SubGroup subGroup = DetermineSubgroup(_ascTimetable.Groups.Group.Single(e => e.Id == lesson.Groupids).Name);
                     switch (DetermineWeekEvenness(card.Weeks))
                     {
                         case WeekEvenness.Both:
-                            stableCardsOfCurrentGroup.Add(new Repository.Entities.Timetable.Cards.StableCard()
+                            stableCardsOfCurrentGroup.Add(new PrettyTimetable.Core.Entities.Timetable.Cards.StableCard()
                             {
                                 Id = default,
                                 SubjectId = subject.Id,
@@ -141,7 +140,7 @@ namespace Services.Asc.Timetable
                                 RelatedTimetableId = default
                             });
 
-                            stableCardsOfCurrentGroup.Add(new Repository.Entities.Timetable.Cards.StableCard()
+                            stableCardsOfCurrentGroup.Add(new PrettyTimetable.Core.Entities.Timetable.Cards.StableCard()
                             {
                                 Id = default,
                                 SubjectId = subject.Id,
@@ -157,7 +156,7 @@ namespace Services.Asc.Timetable
                             break;
 
                         case WeekEvenness.Even:
-                            stableCardsOfCurrentGroup.Add(new Repository.Entities.Timetable.Cards.StableCard()
+                            stableCardsOfCurrentGroup.Add(new PrettyTimetable.Core.Entities.Timetable.Cards.StableCard()
                             {
                                 Id = default,
                                 SubjectId = subject.Id,
@@ -173,7 +172,7 @@ namespace Services.Asc.Timetable
                             break;
 
                         case WeekEvenness.Odd:
-                            stableCardsOfCurrentGroup.Add(new Repository.Entities.Timetable.Cards.StableCard()
+                            stableCardsOfCurrentGroup.Add(new PrettyTimetable.Core.Entities.Timetable.Cards.StableCard()
                             {
                                 Id = default,
                                 SubjectId = subject.Id,
@@ -193,7 +192,7 @@ namespace Services.Asc.Timetable
                     }
 
                 }
-                var currentStableTimetable = new Repository.Entities.Timetable.StableTimetable() { Id = default, Cards = stableCardsOfCurrentGroup, GroupId = group.Id, ModifiedAt = DateTime.UtcNow };
+                var currentStableTimetable = new PrettyTimetable.Core.Entities.Timetable.StableTimetable() { Id = default, Cards = stableCardsOfCurrentGroup, GroupId = group.Id, ModifiedAt = DateTime.UtcNow };
                 await timetableContext.AddAsync(currentStableTimetable, cancellationToken);
             }
         }
