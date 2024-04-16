@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace PrettyTimetable.Services.AcutalTimetables
 {
-    internal class TimetableProjector(TimetableContext timetableContext)
+    public class TimetableProjector(TimetableContext timetableContext)
     {
         private readonly List<ActualTimetable> actualTimetables = [];
         private readonly List<StableTimetable> stableTimetables = timetableContext.StableTimetables.Include(e => e.Cards).ToList();
@@ -53,7 +53,7 @@ namespace PrettyTimetable.Services.AcutalTimetables
         /// </summary>
         /// <param name="dates"></param>
         /// <returns>Возвращает номер недели, если все ок, если произошла ошибка, то значение будет -1.</returns>
-        private static ServiceResult<int> CheckDates(IEnumerable<DateOnly> dates)
+        public static ServiceResult<int> CheckDates(IEnumerable<DateOnly> dates)
         {
             const int WEEK_NUMBER_IF_ERROR = -1;
 

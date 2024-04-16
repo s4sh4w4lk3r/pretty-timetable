@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrettyTimetable.Abstraction
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrettyTimetable.Mappers", "PrettyTimetable.Mappers\PrettyTimetable.Mappers.csproj", "{9FD3E28C-DD50-4C57-94DE-11315885B79B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrettyTimetable.Tests", "PrettyTimetable.Tests\PrettyTimetable.Tests.csproj", "{04937077-1035-4121-A0D5-F661BE0F9A7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{9FD3E28C-DD50-4C57-94DE-11315885B79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FD3E28C-DD50-4C57-94DE-11315885B79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FD3E28C-DD50-4C57-94DE-11315885B79B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04937077-1035-4121-A0D5-F661BE0F9A7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04937077-1035-4121-A0D5-F661BE0F9A7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04937077-1035-4121-A0D5-F661BE0F9A7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04937077-1035-4121-A0D5-F661BE0F9A7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
