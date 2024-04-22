@@ -15,17 +15,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Controllers\TestContoller.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="Controllers\TestContoller.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="IdentityModel" Version="6.2.0" />
-		<PackageReference Include="Keycloak.AuthServices.Authentication" Version="1.6.0" />
-		<PackageReference Include="Keycloak.AuthServices.Authorization" Version="1.6.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

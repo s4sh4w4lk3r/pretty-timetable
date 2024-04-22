@@ -1,8 +1,0 @@
-﻿{
-    subjects(order: { name: ASC }) {
-        id
-        name
-        ascId
-        modifiedAt
-    }
-}

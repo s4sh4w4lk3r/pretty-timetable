@@ -1,9 +1,0 @@
-{
-    lessonTimes(order: { number: ASC }) {
-        id
-        number
-        startsAt
-        endsAt
-        modifiedAt
-    }
-}

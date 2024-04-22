@@ -9,7 +9,7 @@ namespace PrettyTimetable.WebApi.Controllers.Stable
     [ApiController, Route("stable")]
     public class StableTimetableController(IStableTimetableService stableTimetableService) : ControllerBase
     {
-        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPut, Route("")]
         public async Task<IActionResult> Update(StableTimetableModels.StableTimetablePut models)
         {
             var result = await stableTimetableService.PutAsync(models.ToEntity());
@@ -17,7 +17,7 @@ namespace PrettyTimetable.WebApi.Controllers.Stable
             return result.Success is true ? Ok(result) : BadRequest(result);
         }
 
-        [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpDelete, Route("")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await stableTimetableService.DeleteAsync(id);

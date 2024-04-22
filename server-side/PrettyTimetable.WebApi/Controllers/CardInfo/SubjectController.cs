@@ -9,7 +9,7 @@ namespace PrettyTimetable.WebApi.Controllers.CardInfo
     [ApiController, Route("subject")]
     public class SubjectController(ISubjectService subjectService) : ControllerBase
     {
-        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPut, Route("")]
         public async Task<IActionResult> Put(SubjectModels.SubjectPut model)
         {
             var result = await subjectService.PutAsync(model.ToEntity());
@@ -18,7 +18,7 @@ namespace PrettyTimetable.WebApi.Controllers.CardInfo
         }
 
 
-        [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpDelete, Route("")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await subjectService.DeleteAsync(id);

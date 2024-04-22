@@ -11,18 +11,14 @@ namespace PrettyTimetable.WebApi
             .AddGraphQLServer()
             .ModifyOptions(options => { options.DefaultBindingBehavior = BindingBehavior.Implicit; })
 
-            .AllowIntrospection(builder.Environment.IsDevelopment())
-            .ModifyRequestOptions(o => o.OnlyAllowPersistedQueries = !builder.Environment.IsDevelopment())
-
-            .UsePersistedQueryPipeline()
-            .AddReadOnlyFileSystemQueryStorage("./../PrettyTimetable.GraphQL/PersistedQueries")
+            .AllowIntrospection(true)
+            .ModifyRequestOptions(o => o.OnlyAllowPersistedQueries = false)
 
             .AddQueryType<Query>()
 
             .AddProjections()
             .AddFiltering()
-            .AddSorting()
-            .AddAuthorization();
+            .AddSorting();
         }
     }
 }

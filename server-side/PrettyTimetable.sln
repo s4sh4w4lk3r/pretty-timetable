@@ -9,25 +9,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrettyTimetable.Repository"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrettyTimetable.Services", "PrettyTimetable.Services\PrettyTimetable.Services.csproj", "{C2D4B417-1FDD-4D55-8E4F-4BBEF72ABB70}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{85F2D9A1-C593-48FA-8CF5-64B891E9789F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrettyTimetable.GraphQL", "PrettyTimetable.GraphQL\PrettyTimetable.GraphQL.csproj", "{557B66FA-36C7-423B-B277-7CC9FB556F41}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{79C06170-3F0D-44C7-A2BD-97603969A6ED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrettyTimetable.Validation", "PrettyTimetable.Validation\PrettyTimetable.Validation.csproj", "{056DF628-E287-4BF1-882D-98B7B9F035F4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrettyTimetable.Models", "PrettyTimetable.Models\PrettyTimetable.Models.csproj", "{F43EE609-F9CD-4D7D-BC76-C68CEFD8FECB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Types", "Types", "{2A40B5B3-B569-488D-9000-D36FA88C8F46}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrettyTimetable.Core", "PrettyTimetable.Core\PrettyTimetable.Core.csproj", "{A7BD4FC6-1E60-4404-A9E7-B687D2E7623A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrettyTimetable.Abstractions", "PrettyTimetable.Abstractions\PrettyTimetable.Abstractions.csproj", "{4B3E598C-E265-4304-AC83-EE72AF19C903}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrettyTimetable.Mappers", "PrettyTimetable.Mappers\PrettyTimetable.Mappers.csproj", "{9FD3E28C-DD50-4C57-94DE-11315885B79B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrettyTimetable.Tests", "PrettyTimetable.Tests\PrettyTimetable.Tests.csproj", "{04937077-1035-4121-A0D5-F661BE0F9A7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,20 +63,9 @@ Global
 		{9FD3E28C-DD50-4C57-94DE-11315885B79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FD3E28C-DD50-4C57-94DE-11315885B79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FD3E28C-DD50-4C57-94DE-11315885B79B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04937077-1035-4121-A0D5-F661BE0F9A7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04937077-1035-4121-A0D5-F661BE0F9A7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04937077-1035-4121-A0D5-F661BE0F9A7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04937077-1035-4121-A0D5-F661BE0F9A7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{0291E0E0-98B8-4A9E-A579-517F8527A05E} = {79C06170-3F0D-44C7-A2BD-97603969A6ED}
-		{557B66FA-36C7-423B-B277-7CC9FB556F41} = {79C06170-3F0D-44C7-A2BD-97603969A6ED}
-		{056DF628-E287-4BF1-882D-98B7B9F035F4} = {85F2D9A1-C593-48FA-8CF5-64B891E9789F}
-		{F43EE609-F9CD-4D7D-BC76-C68CEFD8FECB} = {2A40B5B3-B569-488D-9000-D36FA88C8F46}
-		{9FD3E28C-DD50-4C57-94DE-11315885B79B} = {2A40B5B3-B569-488D-9000-D36FA88C8F46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA38CD6D-DD1D-4678-A9F0-FE5CD794A791}

@@ -7,7 +7,7 @@ namespace PrettyTimetable.WebApi.Controllers.Stable
     [ApiController, Route("stable/asc")]
     public class AscController(IAscService ascService) : ControllerBase
     {
-        [HttpPost, Route("timetable"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPost, Route("timetable")]
         public async Task<IActionResult> AddTimetable(IFormFile timetable)
         {
             var stream = timetable.OpenReadStream();
@@ -16,7 +16,7 @@ namespace PrettyTimetable.WebApi.Controllers.Stable
         }
 
 
-        [HttpPost, Route("substitutions"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPost, Route("substitutions")]
         public IActionResult AddSubstitutions(IFormFile substitutions)
         {
             /*var stream = substitutions.OpenReadStream();

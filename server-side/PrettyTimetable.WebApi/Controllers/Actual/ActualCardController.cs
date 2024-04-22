@@ -10,7 +10,7 @@ namespace PrettyTimetable.WebApi.Controllers.Actual
     public class ActualCardController(IActualCardService actualCardService) : ControllerBase
     {
 
-        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPut, Route("")]
         public async Task<IActionResult> Update(ActualCardModels.ActualCardPut model)
         {
             var result = await actualCardService.PutAsync(model.ToEntity());
@@ -18,7 +18,7 @@ namespace PrettyTimetable.WebApi.Controllers.Actual
             return result.Success ? Ok(result) : BadRequest(result);
         }
 
-        [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpDelete, Route("")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await actualCardService.DeleteAsync(id);

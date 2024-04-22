@@ -33,7 +33,7 @@ namespace PrettyTimetable.WebApi.Controllers.Actual
         /// 
         /// <param name="stableToActualModel"></param>
         /// <returns></returns>
-        [HttpPost, Route("convert-from-stable"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPost, Route("convert-from-stable")]
         public async Task<IActionResult> StableToActual(ActualTimetableModels.StableToActual stableToActualModel)
         {
             var dates = stableToActualModel.Dates.Select(d => DateOnly.ParseExact(d, "dd.MM.yyyy"));
@@ -48,7 +48,7 @@ namespace PrettyTimetable.WebApi.Controllers.Actual
         }
 
 
-        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPut, Route("")]
         public async Task<IActionResult> Update(ActualTimetableModels.ActualTimetablePut model)
         {
             var result = await actualTimetableService.PutAsync(model.ToEntity());
@@ -56,7 +56,7 @@ namespace PrettyTimetable.WebApi.Controllers.Actual
             return result.Success is true ? Ok(result) : BadRequest(result);
         }
 
-        [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpDelete, Route("")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await actualTimetableService.DeleteAsync(id);
@@ -64,7 +64,7 @@ namespace PrettyTimetable.WebApi.Controllers.Actual
             return result.Success is true ? Ok(result) : BadRequest(result);
         }
 
-        [HttpPost, Route("convert-from-stable/mon-to-fri"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPost, Route("convert-from-stable/mon-to-fri")]
         public async Task<IActionResult> StableToActual(int weekNumber)
         {
             if (weekNumber < 0 || weekNumber > 53)

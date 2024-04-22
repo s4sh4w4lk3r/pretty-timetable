@@ -11,7 +11,7 @@ namespace PrettyTimetable.WebApi.Controllers
     {
         private readonly ILogger _logger = loggerFactory.CreateLogger<UtilsController>();
 
-        [HttpPost, Route("apply-migration"), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPost, Route("apply-migration")]
         public async Task<IActionResult> ApplyMigration(CancellationToken cancellationToken = default)
         {
             var pendingMigrations = await timetableContext.Database.GetPendingMigrationsAsync(cancellationToken: cancellationToken);

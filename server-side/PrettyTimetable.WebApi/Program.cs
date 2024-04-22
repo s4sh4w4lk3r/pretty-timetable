@@ -26,9 +26,6 @@ namespace PrettyTimetable.WebApi
 
             app.UseForwardedHeaders();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
 
             var origins = app.Services.GetRequiredService<IOptions<CorsConfiguration>>().Value.Origins;
             app.UseCors(o => o.AllowAnyMethod()
@@ -38,7 +35,7 @@ namespace PrettyTimetable.WebApi
 
             app.MapGraphQL();
 
-            app.MapControllers().RequireAuthorization();
+            app.MapControllers();
 
 
             if (app.Environment.IsDevelopment())

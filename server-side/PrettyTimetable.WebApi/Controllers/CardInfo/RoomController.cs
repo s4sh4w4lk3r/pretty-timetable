@@ -9,7 +9,7 @@ namespace PrettyTimetable.WebApi.Controllers.CardInfo
     [ApiController, Route("room")]
     public class RoomController(IRoomService cabinetService) : ControllerBase
     {
-        [HttpPut, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpPut, Route("")]
         public async Task<IActionResult> Put(RoomModels.RoomPut model)
         {
             var result = await cabinetService.PutAsync(model.ToEntity());
@@ -18,7 +18,7 @@ namespace PrettyTimetable.WebApi.Controllers.CardInfo
         }
 
 
-        [HttpDelete, Route(""), Authorize(policy: KeycloakPolicies.TimetableCRUD)]
+        [HttpDelete, Route("")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await cabinetService.DeleteAsync(id);
