@@ -23,7 +23,7 @@ namespace PrettyTimetable.Repository.Database
             optionsBuilder.UseLoggerFactory(_loggerFactory);
             optionsBuilder.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: _isDevelopment);
             optionsBuilder.UseNpgsql(_configuration.ConnectionString, options =>
-            { options.MigrationsAssembly("WebApi"); });
+            { options.MigrationsAssembly("PrettyTimetable.WebApi"); });
         }
 
         public DbSet<Room> Cabinets => Set<Room>();
