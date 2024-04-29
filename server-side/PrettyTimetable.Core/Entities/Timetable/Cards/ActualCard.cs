@@ -1,4 +1,5 @@
 ﻿using PrettyTimetable.Core.Entities.Timetable.Cards.Info;
+using System.Text.Json.Serialization;
 
 namespace PrettyTimetable.Core.Entities.Timetable.Cards
 {
@@ -21,6 +22,6 @@ namespace PrettyTimetable.Core.Entities.Timetable.Cards
         public required DateTime ModifiedAt { get; set; }
 
         public required int RelatedTimetableId { get; init; }
-        public ActualTimetable? RelatedTimetable { get; set; }
+        [JsonIgnore] public ActualTimetable? RelatedTimetable { get; set; }
     }
 }
